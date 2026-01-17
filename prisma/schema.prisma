@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js User Models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  refresh_token_expires_in Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  PATIENT
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(PATIENT)
+  
+  accounts      Account[]
+  sessions      Session[]
+  patients      Patient[] // Relatives/Myself managed by this account
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// App Specific Models
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Relationship {
+  SELF
+  FAMILY
+}
+
+model Patient {
+  id              String       @id @default(cuid())
+  userId          String
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name            String
+  dateOfBirth     DateTime
+  gender          Gender
+  relationship    Relationship @default(SELF)
+  residentNumber  String? // Encrypted or partial
+  
+  appointments    Appointment[]
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model DoctorProfile {
+  id              String   @id @default(cuid())
+  name            String
+  bio             String?  @db.Text
+  specialty       String?
+  imageUrl        String?
+  
+  // Bank Info for transfers
+  bankName        String?
+  bankAccount     String?
+  bankHolder      String?
+  
+  // Operational Hours (JSON for flexibility, e.g. { "mon": ["09:00", "18:00"] })
+  workingHours    Json?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model Appointment {
+  id            String            @id @default(cuid())
+  patientId     String
+  patient       Patient           @relation(fields: [patientId], references: [id])
+  
+  startDateTime DateTime
+  endDateTime   DateTime
+  
+  status        AppointmentStatus @default(PENDING)
+  meetingLink   String?
+  
+  payment       Payment?
+  
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  appointmentId String        @unique
+  appointment   Appointment   @relation(fields: [appointmentId], references: [id])
+  
+  amount        Int
+  method        PaymentMethod @default(BANK_TRANSFER)
+  status        PaymentStatus @default(PENDING)
+  
+  senderName    String?       // For verifying bank transfer
+  confirmedAt   DateTime?
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
