@@ -1,0 +1,110 @@
+{
+    "Index": {
+        "title": "CallDoc Reservation",
+        "description": "The best choice for telemedicine reservation",
+        "nav": {
+            "login": "Log In",
+            "myPage": "My Page"
+        },
+        "hero": {
+            "headlinePrefix": "Your Doctor,",
+            "headlineSuffix": "Available Anytime.",
+            "subtitle": "Book a video consultation with trusted family physicians. Manage appointments for yourself and your loved ones from one clean dashboard.",
+            "bookBtn": "Book Appointment",
+            "verifiedDoctor": "Verified Doctor",
+            "easyScheduling": "Easy Scheduling"
+        },
+        "footer": {
+            "copyright": "All rights reserved."
+        }
+    },
+    "Dashboard": {
+        "title": "Dashboard",
+        "quickActions": {
+            "family": {
+                "title": "My Family",
+                "desc": "Manage profiles"
+            },
+            "book": {
+                "title": "Book Appointment",
+                "desc": "Schedule a new visit"
+            }
+        },
+        "appointments": {
+            "title": "Your Appointments",
+            "patient": "Patient",
+            "payment": {
+                "required": "Payment Required",
+                "paid": "Paid"
+            },
+            "empty": "No upcoming appointments.",
+            "bookNow": "Book Now"
+        }
+    },
+    "Profile": {
+        "back": "Back",
+        "title": "Manage Patients",
+        "familyMembers": "Family Members",
+        "me": "Me",
+        "delete": "Delete",
+        "noPatients": "No patients added yet.",
+        "addNew": "Add New Patient",
+        "form": {
+            "name": "Full Name",
+            "residentNumber": "Resident Number (Example: 800101-1234567)",
+            "residentNumberPlaceholder": "YYMMDD-XXXXXXX",
+            "dob": "Date of Birth",
+            "gender": {
+                "label": "Gender",
+                "male": "Male",
+                "female": "Female"
+            },
+            "relationship": {
+                "label": "Relationship",
+                "family": "Family Member",
+                "self": "Myself"
+            },
+            "save": "Save"
+        }
+    },
+    "Booking": {
+        "title": "New Appointment",
+        "cancel": "Cancel",
+        "steps": {
+            "patient": {
+                "title": "Who is this visit for?",
+                "noProfile": "You need to add a patient profile first.",
+                "manageProfiles": "Manage Profiles",
+                "addFamily": "+ Add another family member"
+            },
+            "date": {
+                "back": "Back",
+                "selectDate": "Select Date",
+                "availableTime": "Available Time",
+                "loadingSlots": "Loading slots...",
+                "noSlots": "No slots available for this day.",
+                "continue": "Continue"
+            },
+            "confirm": {
+                "title": "Confirm Booking",
+                "patient": "Patient",
+                "dateTime": "Date & Time",
+                "fee": "Consultation Fee",
+                "payment": "Payment Instructions:",
+                "transferTo": "Please transfer the fee to:",
+                "manualVerify": "Payment will be verified by the admin manually.",
+                "confirmBtn": "Confirm Appointment",
+                "processing": "Processing..."
+            },
+            "success": {
+                "title": "Booking Confirmed!",
+                "message": "Your appointment request has been sent.<br/>Please complete the payment transfer.",
+                "dashboardBtn": "Go to Dashboard",
+                "bookAnotherBtn": "Book Another"
+            }
+        },
+        "alerts": {
+            "fail": "Failed to book appointment"
+        }
+    }
+}

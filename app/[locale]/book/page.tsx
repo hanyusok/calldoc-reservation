@@ -6,11 +6,14 @@ import { format, addDays, startOfToday } from 'date-fns';
 import { Users, Calendar as CalendarIcon, Clock, CheckCircle, CreditCard } from 'lucide-react';
 import { getAvailableSlots, createAppointment, getDoctorProfile } from '@/app/actions/appointment';
 import { getPatients } from '@/app/actions/patient';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 // Types
 type Step = 'PATIENT' | 'DATE' | 'CONFIRM' | 'SUCCESS';
 
 export default function BookingPage() {
+    const t = useTranslations('Booking');
     const router = useRouter();
     const [step, setStep] = useState<Step>('PATIENT');
     const [patients, setPatients] = useState<any[]>([]);
@@ -60,7 +63,7 @@ export default function BookingPage() {
             setSuccessInfo(result);
             setStep('SUCCESS');
         } else {
-            alert('Failed to book appointment');
+            alert(t('alerts.fail'));
         }
     };
 
@@ -68,7 +71,7 @@ export default function BookingPage() {
 
     const PatientSelection = () => (
         <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Who is this visit for?</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('steps.patient.title')}</h2>
             <div className="grid gap-3">
                 {patients.map(p => (
                     <button
@@ -89,23 +92,23 @@ export default function BookingPage() {
                 ))}
                 {patients.length === 0 && (
                     <div className="text-center py-8 text-gray-500">
-                        You need to add a patient profile first.
+                        {t('steps.patient.noProfile')}
                         <br />
-                        <a href="/dashboard/profile" className="text-blue-600 underline text-sm mt-2 inline-block">Manage Profiles</a>
+                        <Link href="/dashboard/profile" className="text-blue-600 underline text-sm mt-2 inline-block">{t('steps.patient.manageProfiles')}</Link>
                     </div>
                 )}
-                <a href="/dashboard/profile" className="text-center text-blue-600 text-sm mt-2 block">+ Add another family member</a>
+                <Link href="/dashboard/profile" className="text-center text-blue-600 text-sm mt-2 block">{t('steps.patient.addFamily')}</Link>
             </div>
         </div>
     );
 
     const DateSelection = () => (
         <div className="space-y-6">
-            <button onClick={() => setStep('PATIENT')} className="text-sm text-gray-500 mb-2">&larr; Back</button>
+            <button onClick={() => setStep('PATIENT')} className="text-sm text-gray-500 mb-2">&larr; {t('steps.date.back')}</button>
 
             {/* Simple Date Strip (Just next 5 days for simplicity) */}
             <div>
-                <h3 className="text-lg font-medium mb-3">Select Date</h3>
+                <h3 className="text-lg font-medium mb-3">{t('steps.date.selectDate')}</h3>
                 <div className="flex space-x-2 overflow-x-auto pb-2">
                     {[0, 1, 2, 3, 4].map(days => {
                         const d = addDays(startOfToday(), days);
@@ -128,9 +131,9 @@ export default function BookingPage() {
 
             {/* Time Slots */}
             <div>
-                <h3 className="text-lg font-medium mb-3">Available Time</h3>
+                <h3 className="text-lg font-medium mb-3">{t('steps.date.availableTime')}</h3>
                 {loading ? (
-                    <div className="text-gray-400 text-center py-4">Loading slots...</div>
+                    <div className="text-gray-400 text-center py-4">{t('steps.date.loadingSlots')}</div>
                 ) : (
                     <div className="grid grid-cols-3 gap-3">
                         {slots.map(t => (
@@ -144,7 +147,7 @@ export default function BookingPage() {
                                 {t}
                             </button>
                         ))}
-                        {slots.length === 0 && <div className="col-span-3 text-center text-gray-500 text-sm">No slots available for this day.</div>}
+                        {slots.length === 0 && <div className="col-span-3 text-center text-gray-500 text-sm">{t('steps.date.noSlots')}</div>}
                     </div>
                 )}
             </div>
@@ -155,7 +158,7 @@ export default function BookingPage() {
                     onClick={() => setStep('CONFIRM')}
                     className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                 >
-                    Continue
+                    {t('steps.date.continue')}
                 </button>
             </div>
         </div>
@@ -165,29 +168,29 @@ export default function BookingPage() {
         const p = patients.find(patient => patient.id === selectedPatientId);
         return (
             <div className="space-y-6">
-                <button onClick={() => setStep('DATE')} className="text-sm text-gray-500 mb-2">&larr; Back</button>
+                <button onClick={() => setStep('DATE')} className="text-sm text-gray-500 mb-2">&larr; {t('steps.date.back')}</button>
 
-                <h2 className="text-xl font-bold">Confirm Booking</h2>
+                <h2 className="text-xl font-bold">{t('steps.confirm.title')}</h2>
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-100">
                     <div className="p-4 flex items-center">
                         <Users className="h-5 w-5 text-gray-400 mr-3" />
                         <div>
-                            <div className="text-sm text-gray-500">Patient</div>
+                            <div className="text-sm text-gray-500">{t('steps.confirm.patient')}</div>
                             <div className="font-medium">{p?.name}</div>
                         </div>
                     </div>
                     <div className="p-4 flex items-center">
                         <CalendarIcon className="h-5 w-5 text-gray-400 mr-3" />
                         <div>
-                            <div className="text-sm text-gray-500">Date & Time</div>
+                            <div className="text-sm text-gray-500">{t('steps.confirm.dateTime')}</div>
                             <div className="font-medium">{format(selectedDate, 'MMM d, yyyy')} at {selectedTime}</div>
                         </div>
                     </div>
                     <div className="p-4 flex items-center">
                         <CreditCard className="h-5 w-5 text-gray-400 mr-3" />
                         <div>
-                            <div className="text-sm text-gray-500">Consultation Fee</div>
+                            <div className="text-sm text-gray-500">{t('steps.confirm.fee')}</div>
                             <div className="font-medium text-blue-600">₩15,000</div>
                         </div>
                     </div>
@@ -195,10 +198,10 @@ export default function BookingPage() {
 
                 {doctor?.bankAccount && (
                     <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-800">
-                        <strong>Payment Instructions:</strong><br />
-                        Please transfer the fee to: <br />
+                        <strong>{t('steps.confirm.payment')}</strong><br />
+                        {t('steps.confirm.transferTo')} <br />
                         {doctor.bankName} {doctor.bankAccount} ({doctor.bankHolder})
-                        <br /><span className="text-xs text-yellow-600 mt-1 inline-block">Payment will be verified by the admin manually.</span>
+                        <br /><span className="text-xs text-yellow-600 mt-1 inline-block">{t('steps.confirm.manualVerify')}</span>
                     </div>
                 )}
 
@@ -207,7 +210,7 @@ export default function BookingPage() {
                     disabled={loading}
                     className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 shadow-lg"
                 >
-                    {loading ? 'Processing...' : 'Confirm Appointment'}
+                    {loading ? t('steps.confirm.processing') : t('steps.confirm.confirmBtn')}
                 </button>
             </div>
         );
@@ -218,14 +221,15 @@ export default function BookingPage() {
             <div className="inline-flex items-center justify-center p-4 bg-green-100 rounded-full text-green-600 mb-4">
                 <CheckCircle className="h-12 w-12" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Booking Confirmed!</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t('steps.success.title')}</h2>
             <p className="text-gray-500">
-                Your appointment request has been sent.<br />
-                Please complete the payment transfer.
+                {t.rich('steps.success.message', {
+                    br: () => <br />
+                })}
             </p>
             <div className="pt-8 space-y-3">
-                <button onClick={() => router.push('/dashboard')} className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium">Go to Dashboard</button>
-                <button onClick={() => { setStep('PATIENT'); setSuccessInfo(null); }} className="w-full bg-white text-blue-600 py-3 rounded-lg font-medium">Book Another</button>
+                <button onClick={() => router.push('/dashboard')} className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium">{t('steps.success.dashboardBtn')}</button>
+                <button onClick={() => { setStep('PATIENT'); setSuccessInfo(null); }} className="w-full bg-white text-blue-600 py-3 rounded-lg font-medium">{t('steps.success.bookAnotherBtn')}</button>
             </div>
         </div>
     );
@@ -233,8 +237,8 @@ export default function BookingPage() {
     return (
         <div className="min-h-screen bg-gray-50 pb-safe">
             <header className="bg-white shadow-sm sticky top-0 z-10 px-4 py-4 flex justify-between items-center">
-                <button onClick={() => router.back()} className="text-gray-500">Cancel</button>
-                <h1 className="font-bold text-lg">New Appointment</h1>
+                <button onClick={() => router.back()} className="text-gray-500">{t('cancel')}</button>
+                <h1 className="font-bold text-lg">{t('title')}</h1>
                 <div className="w-10"></div>{/* Spacer */}
             </header>
 

@@ -1,0 +1,110 @@
+{
+    "Index": {
+        "title": "CallDoc 예약",
+        "description": "원격진료 예약을 위한 최고의 선택",
+        "nav": {
+            "login": "로그인",
+            "myPage": "마이페이지"
+        },
+        "hero": {
+            "headlinePrefix": "당신의 주치의,",
+            "headlineSuffix": "언제 어디서나.",
+            "subtitle": "신뢰할 수 있는 가정의학과 전문의와 화상 상담하세요. 하나의 대시보드에서 본인과 가족의 진료 예약을 간편하게 관리할 수 있습니다.",
+            "bookBtn": "예약하기",
+            "verifiedDoctor": "검증된 전문의",
+            "easyScheduling": "간편한 예약"
+        },
+        "footer": {
+            "copyright": "All rights reserved."
+        }
+    },
+    "Dashboard": {
+        "title": "대시보드",
+        "quickActions": {
+            "family": {
+                "title": "가족 관리",
+                "desc": "프로필 관리"
+            },
+            "book": {
+                "title": "진료 예약",
+                "desc": "새로운 예약 잡기"
+            }
+        },
+        "appointments": {
+            "title": "나의 예약",
+            "patient": "환자",
+            "payment": {
+                "required": "결제 필요",
+                "paid": "결제 완료"
+            },
+            "empty": "예정된 예약이 없습니다.",
+            "bookNow": "예약하기"
+        }
+    },
+    "Profile": {
+        "back": "뒤로",
+        "title": "가족 관리",
+        "familyMembers": "가족 구성원",
+        "me": "나",
+        "delete": "삭제",
+        "noPatients": "등록된 가족이 없습니다.",
+        "addNew": "새 환자 추가",
+        "form": {
+            "name": "이름",
+            "residentNumber": "주민등록번호 (예: 800101-1234567)",
+            "residentNumberPlaceholder": "YYMMDD-XXXXXXX",
+            "dob": "생년월일",
+            "gender": {
+                "label": "성별",
+                "male": "남성",
+                "female": "여성"
+            },
+            "relationship": {
+                "label": "관계",
+                "family": "가족",
+                "self": "본인"
+            },
+            "save": "저장"
+        }
+    },
+    "Booking": {
+        "title": "새 예약",
+        "cancel": "취소",
+        "steps": {
+            "patient": {
+                "title": "누구를 위한 진료인가요?",
+                "noProfile": "먼저 환자 프로필을 등록해야 합니다.",
+                "manageProfiles": "프로필 관리",
+                "addFamily": "+ 가족 구성원 추가"
+            },
+            "date": {
+                "back": "뒤로",
+                "selectDate": "날짜 선택",
+                "availableTime": "가능한 시간",
+                "loadingSlots": "시간표 불러오는 중...",
+                "noSlots": "해당 날짜에 가능한 시간이 없습니다.",
+                "continue": "다음"
+            },
+            "confirm": {
+                "title": "예약 확인",
+                "patient": "환자",
+                "dateTime": "일시",
+                "fee": "진료비",
+                "payment": "결제 안내:",
+                "transferTo": "아래 계좌로 입금해 주세요:",
+                "manualVerify": "입금 확인은 관리자가 수동으로 진행합니다.",
+                "confirmBtn": "예약 확정",
+                "processing": "처리 중..."
+            },
+            "success": {
+                "title": "예약이 확정되었습니다!",
+                "message": "예약 요청이 전송되었습니다.<br/>진료비를 입금해 주세요.",
+                "dashboardBtn": "대시보드로 이동",
+                "bookAnotherBtn": "추가 예약하기"
+            }
+        },
+        "alerts": {
+            "fail": "예약에 실패했습니다."
+        }
+    }
+}

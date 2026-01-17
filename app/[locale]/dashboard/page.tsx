@@ -3,10 +3,12 @@ import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { Users, Calendar, CreditCard, ChevronRight, Clock } from "lucide-react"
-import { getUserAppointments } from "../actions/appointment"
+import { getUserAppointments } from "@/app/actions/appointment"
 import { format } from "date-fns"
+import { getTranslations } from 'next-intl/server'; // Server Component
 
 import LogoutButton from "@/components/LogoutButton"
+import LanguageSwitcher from "@/components/LanguageSwitcher"
 
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions)
@@ -16,14 +18,16 @@ export default async function DashboardPage() {
     }
 
     const appointments = await getUserAppointments()
+    const t = await getTranslations('Dashboard'); // Server-side translation
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
             <header className="bg-white shadow-sm sticky top-0 z-10">
                 <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                    <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
-                    <div className="flex items-center space-x-4">
-                        <div className="text-sm text-gray-500">{session.user?.name}</div>
+                    <h1 className="text-xl font-bold text-gray-900">{t('title')}</h1>
+                    <div className="flex items-center space-x-2 sm:space-x-4">
+                        <div className="text-sm text-gray-500 hidden sm:block">{session.user?.name}</div>
+                        <LanguageSwitcher />
                         <LogoutButton />
                     </div>
                 </div>
@@ -41,8 +45,8 @@ export default async function DashboardPage() {
                                     <Users className="h-6 w-6 text-blue-600" />
                                 </div>
                                 <div className="ml-4">
-                                    <h3 className="text-lg font-medium text-gray-900">My Family</h3>
-                                    <p className="text-sm text-gray-500">Manage profiles</p>
+                                    <h3 className="text-lg font-medium text-gray-900">{t('quickActions.family.title')}</h3>
+                                    <p className="text-sm text-gray-500">{t('quickActions.family.desc')}</p>
                                 </div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-gray-400" />
@@ -56,8 +60,8 @@ export default async function DashboardPage() {
                                     <Calendar className="h-6 w-6 text-teal-600" />
                                 </div>
                                 <div className="ml-4">
-                                    <h3 className="text-lg font-medium text-gray-900">Book Appointment</h3>
-                                    <p className="text-sm text-gray-500">Schedule a new visit</p>
+                                    <h3 className="text-lg font-medium text-gray-900">{t('quickActions.book.title')}</h3>
+                                    <p className="text-sm text-gray-500">{t('quickActions.book.desc')}</p>
                                 </div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-gray-400" />
@@ -68,7 +72,7 @@ export default async function DashboardPage() {
 
                 {/* Upcoming Appointments */}
                 <section>
-                    <h2 className="text-lg font-medium text-gray-900 mb-3">Your Appointments</h2>
+                    <h2 className="text-lg font-medium text-gray-900 mb-3">{t('appointments.title')}</h2>
 
                     {appointments.length > 0 ? (
                         <div className="space-y-4">
@@ -84,7 +88,7 @@ export default async function DashboardPage() {
                                                 {format(new Date(appt.startDateTime), 'HH:mm')} - {format(new Date(appt.endDateTime), 'HH:mm')}
                                             </div>
                                             <div className="text-sm text-gray-500 mt-2">
-                                                Patient: <strong>{appt.patient.name}</strong>
+                                                {t('appointments.patient')}: <strong>{appt.patient.name}</strong>
                                             </div>
                                         </div>
                                         <div className="text-right">
@@ -92,7 +96,7 @@ export default async function DashboardPage() {
                                                 {appt.status}
                                             </div>
                                             <div className={`text-xs mt-1 ${appt.payment?.status === 'COMPLETED' ? 'text-green-600' : 'text-red-500'}`}>
-                                                {appt.payment?.status === 'PENDING' ? 'Payment Required' : 'Paid'}
+                                                {appt.payment?.status === 'PENDING' ? t('appointments.payment.required') : t('appointments.payment.paid')}
                                             </div>
                                         </div>
                                     </div>
@@ -102,9 +106,9 @@ export default async function DashboardPage() {
                     ) : (
                         <div className="bg-white shadow rounded-lg p-6 text-center text-gray-500">
                             <Calendar className="h-10 w-10 mx-auto text-gray-300 mb-2" />
-                            <p>No upcoming appointments.</p>
+                            <p>{t('appointments.empty')}</p>
                             <Link href="/book" className="text-teal-600 font-medium text-sm mt-2 inline-block">
-                                Book Now &rarr;
+                                {t('appointments.bookNow')} &rarr;
                             </Link>
                         </div>
                     )}
