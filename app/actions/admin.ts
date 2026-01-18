@@ -352,3 +352,34 @@ export async function searchPatients(query: string) {
         include: { user: { select: { email: true } } }
     })
 }
+
+export async function setAppointmentPayment(appointmentId: string, amount: number) {
+    await checkAdmin()
+    try {
+        await prisma.payment.update({
+            where: { appointmentId },
+            data: { amount }
+        })
+        // Could optional verify insurance here update other flags
+        revalidatePath('/admin/appointments')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to set payment:", error)
+        return { error: "Failed to set payment" }
+    }
+}
+
+export async function sendMeetingLink(appointmentId: string, meetingLink: string) {
+    await checkAdmin()
+    try {
+        await prisma.appointment.update({
+            where: { id: appointmentId },
+            data: { meetingLink }
+        })
+        revalidatePath('/admin/appointments')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to update meeting link:", error)
+        return { error: "Failed to set meeting link" }
+    }
+}

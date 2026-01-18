@@ -11,6 +11,7 @@ import LogoutButton from "@/components/LogoutButton"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
 
 import { getUserProfile } from "@/app/actions/user";
+import PayButton from "@/components/dashboard/PayButton";
 
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions)
@@ -107,14 +108,33 @@ export default async function DashboardPage() {
                                             <div className="text-sm text-gray-500 mt-2">
                                                 {t('appointments.patient')}: <strong>{appt.patient.name}</strong>
                                             </div>
+                                            {/* @ts-ignore */}
+                                            {appt.symptoms && (
+                                                <div className="mt-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
+                                                    <span className="font-semibold">Symptoms:</span> {appt.symptoms}
+                                                </div>
+                                            )}
+                                            {appt.meetingLink && (
+                                                <div className="mt-2">
+                                                    <a href={appt.meetingLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-sm font-medium">
+                                                        Join Video Call
+                                                    </a>
+                                                </div>
+                                            )}
                                         </div>
-                                        <div className="text-right">
+                                        <div className="text-right flex flex-col items-end">
                                             <div className={`text-sm font-bold px-2 py-1 rounded inline-block ${appt.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                                                 {appt.status}
                                             </div>
                                             <div className={`text-xs mt-1 ${appt.payment?.status === 'COMPLETED' ? 'text-green-600' : 'text-red-500'}`}>
-                                                {appt.payment?.status === 'PENDING' ? t('appointments.payment.required') : t('appointments.payment.paid')}
+                                                {appt.payment?.status === 'PENDING'
+                                                    ? (appt.payment.amount > 0 ? "Payment Required" : "Waiting for Price")
+                                                    : t('appointments.payment.paid')}
                                             </div>
+
+                                            {appt.status === 'PENDING' && appt.payment?.status === 'PENDING' && appt.payment.amount > 0 && (
+                                                <PayButton appointmentId={appt.id} amount={appt.payment.amount} />
+                                            )}
                                         </div>
                                     </div>
                                 </div>

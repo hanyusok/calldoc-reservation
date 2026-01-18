@@ -49,12 +49,16 @@ export default function BookingPage() {
         fetchSlots();
     }, [selectedDate]);
 
+    // Symptoms State
+    const [symptoms, setSymptoms] = useState('');
+
     const handleCreateAppointment = async () => {
         setLoading(true);
         const result = await createAppointment({
             patientId: selectedPatientId,
             dateString: format(selectedDate, 'yyyy-MM-dd'),
-            timeString: selectedTime
+            timeString: selectedTime,
+            symptoms // Pass symptoms
         });
 
         setLoading(false);
@@ -69,7 +73,7 @@ export default function BookingPage() {
 
     // --- Step Components ---
 
-    const PatientSelection = () => (
+    const renderPatientSelection = () => (
         <div className="space-y-4">
             <h2 className="text-xl font-semibold mb-4">{t('steps.patient.title')}</h2>
             <div className="grid gap-3">
@@ -102,7 +106,7 @@ export default function BookingPage() {
         </div>
     );
 
-    const DateSelection = () => (
+    const renderDateSelection = () => (
         <div className="space-y-6">
             <button onClick={() => setStep('PATIENT')} className="text-sm text-gray-500 mb-2">&larr; {t('steps.date.back')}</button>
 
@@ -164,7 +168,7 @@ export default function BookingPage() {
         </div>
     );
 
-    const ConfirmStep = () => {
+    const renderConfirmStep = () => {
         const p = patients.find(patient => patient.id === selectedPatientId);
         return (
             <div className="space-y-6">
@@ -187,36 +191,40 @@ export default function BookingPage() {
                             <div className="font-medium">{format(selectedDate, 'MMM d, yyyy')} at {selectedTime}</div>
                         </div>
                     </div>
-                    <div className="p-4 flex items-center">
-                        <CreditCard className="h-5 w-5 text-gray-400 mr-3" />
-                        <div>
-                            <div className="text-sm text-gray-500">{t('steps.confirm.fee')}</div>
-                            <div className="font-medium text-blue-600">₩15,000</div>
-                        </div>
-                    </div>
                 </div>
 
-                {doctor?.bankAccount && (
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-800">
-                        <strong>{t('steps.confirm.payment')}</strong><br />
-                        {t('steps.confirm.transferTo')} <br />
-                        {doctor.bankName} {doctor.bankAccount} ({doctor.bankHolder})
-                        <br /><span className="text-xs text-yellow-600 mt-1 inline-block">{t('steps.confirm.manualVerify')}</span>
-                    </div>
-                )}
+                {/* Symptoms Input */}
+                <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Description of Symptoms</label>
+                    <textarea
+                        className="w-full border border-gray-300 rounded-lg p-3 h-24 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Please describe your symptoms briefly..."
+                        value={symptoms}
+                        onChange={(e) => setSymptoms(e.target.value)}
+                    ></textarea>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-800">
+                    <strong className="block mb-1">Process Info</strong>
+                    <ul className="list-disc pl-4 space-y-1 text-xs">
+                        <li>Submit request with symptoms.</li>
+                        <li>Admin will verify and set the consultation fee.</li>
+                        <li>Pay via Dashboard to confirm appointment.</li>
+                    </ul>
+                </div>
 
                 <button
                     onClick={handleCreateAppointment}
                     disabled={loading}
                     className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 shadow-lg"
                 >
-                    {loading ? t('steps.confirm.processing') : t('steps.confirm.confirmBtn')}
+                    {loading ? t('steps.confirm.processing') : "Request Consultation"}
                 </button>
             </div>
         );
     };
 
-    const SuccessStep = () => (
+    const renderSuccessStep = () => (
         <div className="text-center py-12 space-y-6">
             <div className="inline-flex items-center justify-center p-4 bg-green-100 rounded-full text-green-600 mb-4">
                 <CheckCircle className="h-12 w-12" />
@@ -243,10 +251,10 @@ export default function BookingPage() {
             </header>
 
             <main className="max-w-md mx-auto px-4 py-6">
-                {step === 'PATIENT' && <PatientSelection />}
-                {step === 'DATE' && <DateSelection />}
-                {step === 'CONFIRM' && <ConfirmStep />}
-                {step === 'SUCCESS' && <SuccessStep />}
+                {step === 'PATIENT' && renderPatientSelection()}
+                {step === 'DATE' && renderDateSelection()}
+                {step === 'CONFIRM' && renderConfirmStep()}
+                {step === 'SUCCESS' && renderSuccessStep()}
             </main>
         </div>
     );

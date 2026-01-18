@@ -91,11 +91,12 @@ export async function createAppointment(data: {
     patientId: string
     dateString: string
     timeString: string
+    symptoms?: string
 }) {
     const session = await getServerSession(authOptions)
     if (!session?.user) return { error: "Unauthorized" }
 
-    const { patientId, dateString, timeString } = data
+    const { patientId, dateString, timeString, symptoms } = data
 
     // Parse Datetime
     const date = parseISO(dateString)
@@ -110,10 +111,10 @@ export async function createAppointment(data: {
                 startDateTime,
                 endDateTime,
                 status: 'PENDING',
-                // paymentStatus removed, using Payment relation
+                symptoms,
                 payment: {
                     create: {
-                        amount: 15000, // Example Consultation Fee
+                        amount: 0, // 0 initially, set by Admin later
                         method: 'BANK_TRANSFER',
                         status: 'PENDING'
                     }
@@ -125,5 +126,63 @@ export async function createAppointment(data: {
     } catch (error) {
         console.error(error)
         return { error: "Failed to create appointment" }
+    }
+}
+
+export async function payForAppointment(appointmentId: string) {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) return { error: "Unauthorized" }
+
+    const userId = session.user.id
+
+    try {
+        const appointment = await prisma.appointment.findUnique({
+            where: { id: appointmentId },
+            include: { payment: true, patient: true } // Need patient to verify owner
+        })
+
+        if (!appointment || !appointment.payment) return { error: "Appointment not found or invalid" }
+        // Verify ownership (Patient -> User)
+        const patient = await prisma.patient.findUnique({ where: { id: appointment.patientId } })
+        if (patient?.userId !== userId) return { error: "Unauthorized" }
+
+        const amount = appointment.payment.amount
+        if (amount <= 0) return { error: "Payment amount not set" }
+
+        // Check Balance
+        const user = await prisma.user.findUnique({ where: { id: userId }, select: { prepaidBalance: true } })
+        if (!user || user.prepaidBalance < amount) {
+            return { error: "Insufficient prepaid balance" }
+        }
+
+        // Transaction: Deduct Balance, Create Transaction, Update Payment, Update Appointment
+        await prisma.$transaction([
+            prisma.user.update({
+                where: { id: userId },
+                data: { prepaidBalance: { decrement: amount } }
+            }),
+            prisma.prepaidTransaction.create({
+                data: {
+                    userId,
+                    amount,
+                    type: 'DEDUCT',
+                    description: `Payment for Appointment ${format(appointment.startDateTime, 'yyyy-MM-dd')}`
+                }
+            }),
+            prisma.payment.update({
+                where: { id: appointment.payment!.id },
+                data: { status: 'COMPLETED', confirmedAt: new Date() }
+            }),
+            prisma.appointment.update({
+                where: { id: appointmentId },
+                data: { status: 'CONFIRMED' }
+            })
+        ])
+
+        revalidatePath('/dashboard')
+        return { success: true }
+    } catch (error) {
+        console.error("Payment failed:", error)
+        return { error: "Payment failed" }
     }
 }

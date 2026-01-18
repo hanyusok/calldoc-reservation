@@ -141,6 +141,8 @@ model Appointment {
   
   status        AppointmentStatus @default(PENDING)
   meetingLink   String?
+  symptoms      String?   @db.Text
+  insuranceVerified Boolean @default(false)
   
   payment       Payment?
   

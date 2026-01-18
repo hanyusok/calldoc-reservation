@@ -6,6 +6,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import AddAppointmentButton from "@/components/admin/AddAppointmentButton";
 import AppointmentActions from "@/components/admin/AppointmentActions";
+import AppointmentFlowManager from "@/components/admin/AppointmentFlowManager";
 
 export default async function AdminAppointmentsPage({
     searchParams
@@ -83,8 +84,12 @@ export default async function AdminAppointmentsPage({
                                     )}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                                    {/* @ts-ignore - Data structure compatible with Patient info included */}
-                                    <AppointmentActions appointment={appt} />
+                                    <div className="flex items-center justify-end gap-2">
+                                        {/* @ts-ignore */}
+                                        <AppointmentFlowManager appointment={appt} />
+                                        {/* @ts-ignore */}
+                                        <AppointmentActions appointment={appt} />
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -115,6 +120,6 @@ export default async function AdminAppointmentsPage({
                     Next
                 </Link>
             </div>
-        </div>
+        </div >
     );
 }
