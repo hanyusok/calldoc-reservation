@@ -199,3 +199,156 @@ export async function getPrepaidTransactions(page = 1, pageSize = 20) {
 
     return { transactions, total, totalPages: Math.ceil(total / pageSize) }
 }
+
+import { Gender, Relationship } from "@prisma/client"
+
+export async function createPatient(data: {
+    userId: string
+    name: string
+    dateOfBirth: string
+    gender: Gender
+    relationship: Relationship
+    residentNumber?: string
+}) {
+    await checkAdmin()
+
+    try {
+        await prisma.patient.create({
+            data: {
+                ...data,
+                dateOfBirth: new Date(data.dateOfBirth)
+            }
+        })
+        revalidatePath('/admin/patients')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to create patient:", error)
+        return { error: "Failed to create patient" }
+    }
+}
+
+export async function updatePatient(id: string, data: {
+    name?: string
+    gender?: Gender
+    relationship?: Relationship
+    residentNumber?: string
+    dateOfBirth?: string
+}) {
+    await checkAdmin()
+
+    try {
+        const updateData: any = { ...data }
+        if (data.dateOfBirth) {
+            updateData.dateOfBirth = new Date(data.dateOfBirth)
+        }
+
+        await prisma.patient.update({
+            where: { id },
+            data: updateData
+        })
+        revalidatePath('/admin/patients')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to update patient:", error)
+        return { error: "Failed to update patient" }
+    }
+}
+
+export async function deletePatient(id: string) {
+    await checkAdmin()
+
+    try {
+        await prisma.patient.delete({
+            where: { id }
+        })
+        revalidatePath('/admin/patients')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to delete patient:", error)
+        return { error: "Failed to delete patient" }
+    }
+}
+
+export async function createAppointmentAdmin(data: {
+    patientId: string
+    startDateTime: string // ISO
+    endDateTime: string // ISO
+    status: AppointmentStatus
+    amount?: number
+}) {
+    await checkAdmin()
+
+    try {
+        await prisma.appointment.create({
+            data: {
+                patientId: data.patientId,
+                startDateTime: new Date(data.startDateTime),
+                endDateTime: new Date(data.endDateTime),
+                status: data.status,
+                payment: {
+                    create: {
+                        amount: data.amount || 0,
+                        method: 'BANK_TRANSFER', // Default
+                        status: 'PENDING'
+                    }
+                }
+            }
+        })
+        revalidatePath('/admin/appointments')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to create appointment:", error)
+        return { error: "Failed to create appointment" }
+    }
+}
+
+export async function updateAppointmentAdmin(id: string, data: {
+    startDateTime?: string
+    endDateTime?: string
+    status?: AppointmentStatus
+}) {
+    await checkAdmin()
+
+    try {
+        const updateData: any = { ...data }
+        if (data.startDateTime) updateData.startDateTime = new Date(data.startDateTime)
+        if (data.endDateTime) updateData.endDateTime = new Date(data.endDateTime)
+
+        await prisma.appointment.update({
+            where: { id },
+            data: updateData
+        })
+        revalidatePath('/admin/appointments')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to update appointment:", error)
+        return { error: "Failed to update appointment" }
+    }
+}
+
+export async function deleteAppointment(id: string) {
+    await checkAdmin()
+    try {
+        await prisma.appointment.delete({ where: { id } })
+        revalidatePath('/admin/appointments')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to delete appointment:", error)
+        return { error: "Failed to delete appointment" }
+    }
+}
+
+// Helper to find patients for dropdown
+export async function searchPatients(query: string) {
+    await checkAdmin()
+    return await prisma.patient.findMany({
+        where: {
+            OR: [
+                { name: { contains: query, mode: 'insensitive' } },
+                { user: { email: { contains: query, mode: 'insensitive' } } }
+            ]
+        },
+        take: 10,
+        include: { user: { select: { email: true } } }
+    })
+}

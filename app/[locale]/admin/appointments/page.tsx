@@ -4,6 +4,8 @@ import AppointmentStatusSelect from "@/components/admin/AppointmentStatusSelect"
 import { AppointmentStatus } from "@prisma/client";
 import Link from "next/link";
 import { format } from "date-fns";
+import AddAppointmentButton from "@/components/admin/AddAppointmentButton";
+import AppointmentActions from "@/components/admin/AppointmentActions";
 
 export default async function AdminAppointmentsPage({
     searchParams
@@ -27,20 +29,25 @@ export default async function AdminAppointmentsPage({
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Appointments</h1>
-                <div className="flex space-x-2">
-                    {tabs.map(tab => (
-                        <Link
-                            key={tab.label}
-                            href={`?status=${tab.value || ''}`}
-                            className={`px-3 py-1 rounded-full text-sm ${(tab.value === status) || (!tab.value && !status)
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
-                                }`}
-                        >
-                            {tab.label}
-                        </Link>
-                    ))}
+                <div className="flex items-center gap-4">
+                    {/* Show total count? */}
+                    <AddAppointmentButton />
                 </div>
+            </div>
+
+            <div className="flex space-x-2 overflow-x-auto pb-2">
+                {tabs.map(tab => (
+                    <Link
+                        key={tab.label}
+                        href={`?status=${tab.value || ''}`}
+                        className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${(tab.value === status) || (!tab.value && !status)
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
+                            }`}
+                    >
+                        {tab.label}
+                    </Link>
+                ))}
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-700">
@@ -51,7 +58,7 @@ export default async function AdminAppointmentsPage({
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Patient</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Payment</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -75,9 +82,9 @@ export default async function AdminAppointmentsPage({
                                         <span className="text-gray-400">No Record</span>
                                     )}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {/* Action buttons like View Details could go here */}
-                                    <button className="text-blue-600 hover:underline">View</button>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                                    {/* @ts-ignore - Data structure compatible with Patient info included */}
+                                    <AppointmentActions appointment={appt} />
                                 </td>
                             </tr>
                         ))}

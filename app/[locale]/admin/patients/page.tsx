@@ -1,7 +1,8 @@
-
 import { getAdminPatients } from "@/app/actions/admin";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import AddPatientButton from "@/components/admin/AddPatientButton";
+import PatientActions from "@/components/admin/PatientActions";
 
 export default async function AdminPatientsPage({
     searchParams
@@ -16,7 +17,10 @@ export default async function AdminPatientsPage({
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Patients Management</h1>
-                <div className="text-sm text-gray-500">Total: {total}</div>
+                <div className="flex items-center gap-4">
+                    <div className="text-sm text-gray-500">Total: {total}</div>
+                    <AddPatientButton />
+                </div>
             </div>
 
             {/* Search Bar */}
@@ -43,8 +47,8 @@ export default async function AdminPatientsPage({
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Related User</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Gender</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date of Birth</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Resident Num</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Created</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -59,9 +63,12 @@ export default async function AdminPatientsPage({
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">{patient.gender}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">{new Date(patient.dateOfBirth).toLocaleDateString()}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-gray-500">{patient.residentNumber || "-"}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
                                     {new Date(patient.createdAt).toLocaleDateString()}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-right">
+                                    {/* @ts-ignore - Date types compatible enough */}
+                                    <PatientActions patient={patient} />
                                 </td>
                             </tr>
                         ))}

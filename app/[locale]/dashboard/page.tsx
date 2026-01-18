@@ -10,6 +10,8 @@ import { getTranslations } from 'next-intl/server'; // Server Component
 import LogoutButton from "@/components/LogoutButton"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
 
+import { getUserProfile } from "@/app/actions/user";
+
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions)
 
@@ -17,7 +19,11 @@ export default async function DashboardPage() {
         redirect('/auth/login')
     }
 
-    const appointments = await getUserAppointments()
+    const [appointments, userProfile] = await Promise.all([
+        getUserAppointments(),
+        getUserProfile()
+    ]);
+
     const t = await getTranslations('Dashboard'); // Server-side translation
 
     return (
@@ -34,6 +40,17 @@ export default async function DashboardPage() {
             </header>
 
             <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+
+                {/* Prepaid Balance Card */}
+                <section className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-lg p-6 text-white flex justify-between items-center">
+                    <div>
+                        <h2 className="text-lg font-semibold opacity-90">Prepaid Balance</h2>
+                        <p className="text-3xl font-bold mt-1">
+                            {new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(userProfile?.prepaidBalance || 0)}
+                        </p>
+                    </div>
+                    <CreditCard className="w-12 h-12 opacity-80" />
+                </section>
 
                 {/* Quick Actions / Status Cards */}
                 <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
