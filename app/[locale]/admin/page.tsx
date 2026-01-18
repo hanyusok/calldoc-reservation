@@ -1,71 +1,46 @@
-import { getAdminAppointments, updateAppointmentStatus } from "@/app/actions/admin"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
-import { redirect } from "next/navigation"
-import { format } from "date-fns"
-import { Check, X } from "lucide-react"
+import { getAdminStats } from "@/app/actions/admin";
+import { Users, Calendar, Clock, DollarSign } from "lucide-react";
 
-import LogoutButton from "@/components/LogoutButton"
+export default async function AdminDashboardPage() {
+    const stats = await getAdminStats();
 
-export default async function AdminPage() {
-    const session = await getServerSession(authOptions)
-    if (!session) redirect('/auth/login')
+    // Helper for formatting currency (KRW)
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(amount);
+    };
 
-    const appointments = await getAdminAppointments()
+    const statCards = [
+        { label: "Total Patients", value: stats.totalPatients, icon: Users, color: "text-blue-600", bg: "bg-blue-100" },
+        { label: "Total Appointments", value: stats.totalAppointments, icon: Calendar, color: "text-purple-600", bg: "bg-purple-100" },
+        { label: "Pending Appointments", value: stats.pendingAppointments, icon: Clock, color: "text-orange-600", bg: "bg-orange-100" },
+        { label: "Revenue", value: formatCurrency(stats.revenue), icon: DollarSign, color: "text-green-600", bg: "bg-green-100" },
+    ];
 
     return (
-        <div className="min-h-screen bg-gray-100 pb-20">
-            <header className="bg-white shadow-sm sticky top-0 z-10 px-6 py-4 flex justify-between items-center">
-                <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
-                <LogoutButton />
-            </header>
+        <div className="space-y-6">
+            <h1 className="text-3xl font-bold">Dashboard Overview</h1>
 
-            <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-                <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                    <ul className="divide-y divide-gray-200">
-                        {appointments.map((appt) => (
-                            <li key={appt.id} className="p-4 hover:bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
-                                <div>
-                                    <div className="font-bold text-lg text-gray-900">
-                                        {format(new Date(appt.startDateTime), 'MMM d, HH:mm')} - {format(new Date(appt.endDateTime), 'HH:mm')}
-                                    </div>
-                                    <div className="text-gray-700">{appt.patient.name} ({appt.patient.relationship})</div>
-                                    <div className="text-sm text-gray-500">
-                                        Status: <span className={`font-medium ${appt.status === 'CONFIRMED' ? 'text-green-600' : 'text-yellow-600'}`}>{appt.status}</span>
-                                        <span className="mx-2">•</span>
-                                        Payment: <span className={`font-medium ${appt.payment?.status === 'COMPLETED' ? 'text-green-600' : 'text-red-600'}`}>{appt.payment?.status ?? 'N/A'}</span>
-                                    </div>
-                                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                {statCards.map((stat, index) => (
+                    <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-4">
+                        <div className={`p-4 rounded-full flex-shrink-0 ${stat.bg}`}>
+                            <stat.icon className={`w-8 h-8 ${stat.color}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium truncate">{stat.label}</p>
+                            <p className="text-xl md:text-2xl font-bold truncate" title={String(stat.value)}>{stat.value}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
-                                <div className="flex space-x-2">
-                                    {appt.payment?.status === 'PENDING' && (
-                                        <form action={async () => {
-                                            'use server';
-                                            await updateAppointmentStatus(appt.id, 'CONFIRMED', 'COMPLETED');
-                                        }}>
-                                            <button className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
-                                                <Check className="h-4 w-4 mr-2" /> Confirm Payment
-                                            </button>
-                                        </form>
-                                    )}
-                                    {/* Cancel Button */}
-                                    {appt.status !== 'CANCELLED' && (
-                                        <form action={async () => {
-                                            'use server';
-                                            await updateAppointmentStatus(appt.id, 'CANCELLED', 'REFUNDED');
-                                        }}>
-                                            <button className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm font-medium">
-                                                <X className="h-4 w-4 mr-2" /> Cancel
-                                            </button>
-                                        </form>
-                                    )}
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                    {appointments.length === 0 && <div className="p-12 text-center text-gray-500">No appointments found.</div>}
-                </div>
-            </main>
+            {/* Todo: Recent Activity Table or Charts could go here */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                <h2 className="text-xl font-bold mb-4">Welcome, Admin</h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                    Select a category from the sidebar to manage the application.
+                </p>
+            </div>
         </div>
-    )
+    );
 }
