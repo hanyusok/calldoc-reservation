@@ -157,6 +157,10 @@
         },
         "alerts": {
             "fail": "Failed to create appointment."
+        },
+        "relationshipEnum": {
+            "SELF": "Myself",
+            "FAMILY": "Family Member"
         }
     },
     "Admin": {
@@ -240,6 +244,14 @@
             "PAID": "Paid",
             "REFUNDED": "Refunded",
             "REJECTED": "Rejected"
+        },
+        "genderEnum": {
+            "MALE": "Male",
+            "FEMALE": "Female"
+        },
+        "relationshipEnum": {
+            "SELF": "Self",
+            "FAMILY": "Family Member"
         },
         "appointmentForm": {
             "selectPatient": "Select Patient",

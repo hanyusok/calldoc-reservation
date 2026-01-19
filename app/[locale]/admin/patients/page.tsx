@@ -64,7 +64,7 @@ export default async function AdminPatientsPage({
                                         <span className="text-xs text-gray-500">{patient.user.email}</span>
                                     </div>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{patient.gender}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{t(`genderEnum.${patient.gender}`)}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">{new Date(patient.dateOfBirth).toLocaleDateString()}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
                                     {new Date(patient.createdAt).toLocaleDateString()}

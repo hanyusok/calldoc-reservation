@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { createPatient, updatePatient, geAllUsers } from "@/app/actions/admin";
+import { createPatient, updatePatient, getAllUsers } from "@/app/actions/admin";
 import { Gender, Relationship } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
@@ -22,7 +22,10 @@ type Props = {
     onSuccess: () => void;
 };
 
+import { useTranslations } from "next-intl";
+
 export default function PatientForm({ initialData, onSuccess }: Props) {
+    const t = useTranslations('Admin');
     const isEdit = !!initialData;
     const router = useRouter();
 
@@ -48,7 +51,7 @@ export default function PatientForm({ initialData, onSuccess }: Props) {
         if (isEdit) return; // Cannot change user in edit mode usually
         const timer = setTimeout(async () => {
             if (userSearch.length > 1) {
-                const users = await geAllUsers(userSearch);
+                const users = await getAllUsers(userSearch);
                 setUserResults(users);
             } else {
                 setUserResults([]);
@@ -144,8 +147,8 @@ export default function PatientForm({ initialData, onSuccess }: Props) {
                         onChange={e => setGender(e.target.value as Gender)}
                         className="w-full border rounded p-2 bg-transparent"
                     >
-                        <option value="MALE">Male</option>
-                        <option value="FEMALE">Female</option>
+                        <option value="MALE">{t('genderEnum.MALE')}</option>
+                        <option value="FEMALE">{t('genderEnum.FEMALE')}</option>
                     </select>
                 </div>
                 <div>
@@ -155,8 +158,8 @@ export default function PatientForm({ initialData, onSuccess }: Props) {
                         onChange={e => setRelationship(e.target.value as Relationship)}
                         className="w-full border rounded p-2 bg-transparent"
                     >
-                        <option value="SELF">Self</option>
-                        <option value="FAMILY">Family</option>
+                        <option value="SELF">{t('relationshipEnum.SELF')}</option>
+                        <option value="FAMILY">{t('relationshipEnum.FAMILY')}</option>
                     </select>
                 </div>
             </div>

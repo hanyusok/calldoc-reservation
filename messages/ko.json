@@ -157,6 +157,10 @@
         },
         "alerts": {
             "fail": "예약 요청에 실패했습니다."
+        },
+        "relationshipEnum": {
+            "SELF": "본인",
+            "FAMILY": "가족"
         }
     },
     "Admin": {
@@ -240,6 +244,14 @@
             "PAID": "결제됨",
             "REFUNDED": "환불됨",
             "REJECTED": "거절됨"
+        },
+        "genderEnum": {
+            "MALE": "남성",
+            "FEMALE": "여성"
+        },
+        "relationshipEnum": {
+            "SELF": "본인",
+            "FAMILY": "가족"
         },
         "appointmentForm": {
             "selectPatient": "환자 선택",

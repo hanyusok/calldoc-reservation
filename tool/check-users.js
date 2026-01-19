@@ -9,7 +9,7 @@ async function main() {
         }
     })
 
-    console.log('--- User List ---')
+    console.log('### User List ###')
     if (users.length === 0) {
         console.log('No users found.')
     } else {

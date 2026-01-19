@@ -97,7 +97,7 @@ export default function BookingPage() {
                         </div>
                         <div>
                             <div className="font-medium text-lg">{p.name}</div>
-                            <div className="text-sm text-gray-500 text-sm">{p.relationship}</div>
+                            <div className="text-sm text-gray-500 text-sm">{t(`relationshipEnum.${p.relationship}`)}</div>
                         </div>
                     </button>
                 ))}
