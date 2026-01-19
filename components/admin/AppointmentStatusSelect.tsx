@@ -3,6 +3,7 @@
 import { AppointmentStatus } from "@prisma/client";
 import { updateAppointmentStatus } from "@/app/actions/admin";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function AppointmentStatusSelect({
     id,
@@ -11,18 +12,22 @@ export default function AppointmentStatusSelect({
     id: string,
     currentStatus: AppointmentStatus
 }) {
+    const t = useTranslations('Admin');
     const [loading, setLoading] = useState(false);
 
     const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newStatus = e.target.value as AppointmentStatus;
-        if (!confirm(`Are you sure you want to change status to ${newStatus}?`)) return;
+        // @ts-ignore
+        const statusLabel = t(`statusEnum.${newStatus}`);
+
+        if (!confirm(t('appointmentForm.changeStatusConfirm', { status: statusLabel }))) return;
 
         setLoading(true);
         const result = await updateAppointmentStatus(id, newStatus);
         setLoading(false);
 
         if (!result.success) {
-            alert("Failed to update status");
+            alert(t('appointmentForm.error'));
         }
     };
 
@@ -43,7 +48,8 @@ export default function AppointmentStatusSelect({
         >
             {Object.keys(colors).map(status => (
                 <option key={status} value={status}>
-                    {status}
+                    {/* @ts-ignore */}
+                    {t(`statusEnum.${status}`)}
                 </option>
             ))}
         </select>

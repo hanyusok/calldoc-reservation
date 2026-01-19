@@ -20,6 +20,7 @@
     },
     "Dashboard": {
         "title": "Dashboard",
+        "prepaidBalance": "Prepaid Balance",
         "quickActions": {
             "family": {
                 "title": "My Family",
@@ -33,12 +34,21 @@
         "appointments": {
             "title": "Your Appointments",
             "patient": "Patient",
+            "symptomsLabel": "Symptoms",
+            "joinCall": "Join Video Call",
             "payment": {
                 "required": "Payment Required",
+                "waiting": "Waiting for Price",
                 "paid": "Paid"
             },
             "empty": "No upcoming appointments.",
             "bookNow": "Book Now"
+        },
+        "status": {
+            "PENDING": "Pending",
+            "CONFIRMED": "Confirmed",
+            "COMPLETED": "Completed",
+            "CANCELLED": "Cancelled"
         }
     },
     "Profile": {
@@ -105,6 +115,48 @@
         },
         "alerts": {
             "fail": "Failed to book appointment"
+        }
+    },
+    "Book": {
+        "title": "Booking Confirmation",
+        "cancel": "Cancel",
+        "steps": {
+            "patient": {
+                "title": "Select Patient",
+                "noProfile": "No profiles found.",
+                "manageProfiles": "Manage Profiles",
+                "addFamily": "Add Family Member"
+            },
+            "date": {
+                "back": "Back",
+                "selectDate": "Select Date",
+                "availableTime": "Available Time",
+                "loadingSlots": "Loading slots...",
+                "noSlots": "No slots available today.",
+                "continue": "Continue"
+            },
+            "confirm": {
+                "title": "Confirm Booking",
+                "patient": "Patient",
+                "dateTime": "Date & Time",
+                "symptomsLabel": "Description of Symptoms",
+                "symptomsPlaceholder": "Please describe your symptoms briefly...",
+                "processInfoTitle": "Process Info",
+                "processInfo1": "Submit request with symptoms.",
+                "processInfo2": "Admin will verify and set the consultation fee.",
+                "processInfo3": "Pay via Dashboard to confirm appointment.",
+                "processing": "Processing...",
+                "requestButton": "Request Consultation"
+            },
+            "success": {
+                "title": "Request Sent",
+                "message": "Your booking request has been sent successfully.<br />Please wait for admin confirmation.",
+                "dashboardBtn": "Go to Dashboard",
+                "bookAnotherBtn": "Book Another"
+            }
+        },
+        "alerts": {
+            "fail": "Failed to create appointment."
         }
     },
     "Admin": {
@@ -202,7 +254,23 @@
             "selectPatientAlert": "Please select a patient",
             "error": "Operation failed",
             "buttonLabel": "New Appointment",
+            "changeStatusConfirm": "Are you sure you want to change status to '{status}'?",
             "modalTitle": "Create New Appointment"
+        },
+        "flowManager": {
+            "viewSymptoms": "View Symptoms",
+            "viewSymptomsTitle": "Patient Symptoms",
+            "close": "Close",
+            "setPriceTitle": "Set Consultation Fee",
+            "setPriceDesc": "Review insurance (mock) and set the patient's fee.",
+            "amountLabel": "Amount (KRW)",
+            "saveButton": "Saving...",
+            "setPriceButton": "Set Price & Notify",
+            "sendLinkTitle": "Send Meeting Link",
+            "sendLinkDesc": "Send the video call link to the patient dashboard.",
+            "meetingUrlLabel": "Meeting URL",
+            "sendingButton": "Sending...",
+            "sendLinkButton": "Send Link"
         },
         "prepaid": {
             "title": "Prepaid Credits Management",

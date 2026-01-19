@@ -3,21 +3,28 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { format, addDays, startOfToday } from 'date-fns';
+import { ko, enUS } from 'date-fns/locale';
 import { Users, Calendar as CalendarIcon, Clock, CheckCircle, CreditCard } from 'lucide-react';
 import { getAvailableSlots, createAppointment, getDoctorProfile } from '@/app/actions/appointment';
 import { getPatients } from '@/app/actions/patient';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 
 // Types
 type Step = 'PATIENT' | 'DATE' | 'CONFIRM' | 'SUCCESS';
 
 export default function BookingPage() {
-    const t = useTranslations('Booking');
+    const t = useTranslations('Book');
     const router = useRouter();
+    const locale = useLocale();
     const [step, setStep] = useState<Step>('PATIENT');
     const [patients, setPatients] = useState<any[]>([]);
     const [doctor, setDoctor] = useState<any>(null);
+
+    // Date formatting helper
+    const dateLocale = locale === 'ko' ? ko : enUS;
+    const dateFormatStr = locale === 'ko' ? 'yyyy년 M월 d일' : 'MMM d, yyyy';
+    const dayFormatStr = locale === 'ko' ? 'E' : 'EEE';
 
     // Selection State
     const [selectedPatientId, setSelectedPatientId] = useState('');
@@ -125,7 +132,7 @@ export default function BookingPage() {
                                 ${isSelected ? 'bg-blue-600 text-white border-blue-600' : 'bg-white border-gray-200 text-gray-600'}
                             `}
                             >
-                                <span className="text-xs uppercase font-bold">{format(d, 'EEE')}</span>
+                                <span className="text-xs uppercase font-bold">{format(d, dayFormatStr, { locale: dateLocale })}</span>
                                 <span className="text-xl font-bold">{format(d, 'd')}</span>
                             </button>
                         );
@@ -188,28 +195,28 @@ export default function BookingPage() {
                         <CalendarIcon className="h-5 w-5 text-gray-400 mr-3" />
                         <div>
                             <div className="text-sm text-gray-500">{t('steps.confirm.dateTime')}</div>
-                            <div className="font-medium">{format(selectedDate, 'MMM d, yyyy')} at {selectedTime}</div>
+                            <div className="font-medium">{format(selectedDate, dateFormatStr, { locale: dateLocale })} at {selectedTime}</div>
                         </div>
                     </div>
                 </div>
 
                 {/* Symptoms Input */}
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Description of Symptoms</label>
+                    <label className="block text-sm font-medium text-gray-700">{t('steps.confirm.symptomsLabel')}</label>
                     <textarea
                         className="w-full border border-gray-300 rounded-lg p-3 h-24 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Please describe your symptoms briefly..."
+                        placeholder={t('steps.confirm.symptomsPlaceholder')}
                         value={symptoms}
                         onChange={(e) => setSymptoms(e.target.value)}
                     ></textarea>
                 </div>
 
                 <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-800">
-                    <strong className="block mb-1">Process Info</strong>
+                    <strong className="block mb-1">{t('steps.confirm.processInfoTitle')}</strong>
                     <ul className="list-disc pl-4 space-y-1 text-xs">
-                        <li>Submit request with symptoms.</li>
-                        <li>Admin will verify and set the consultation fee.</li>
-                        <li>Pay via Dashboard to confirm appointment.</li>
+                        <li>{t('steps.confirm.processInfo1')}</li>
+                        <li>{t('steps.confirm.processInfo2')}</li>
+                        <li>{t('steps.confirm.processInfo3')}</li>
                     </ul>
                 </div>
 
@@ -218,7 +225,7 @@ export default function BookingPage() {
                     disabled={loading}
                     className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 shadow-lg"
                 >
-                    {loading ? t('steps.confirm.processing') : "Request Consultation"}
+                    {loading ? t('steps.confirm.processing') : t('steps.confirm.requestButton')}
                 </button>
             </div>
         );

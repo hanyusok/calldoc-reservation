@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Users, Calendar, CreditCard, ChevronRight, Clock } from "lucide-react"
 import { getUserAppointments } from "@/app/actions/appointment"
 import { format } from "date-fns"
+import { ko, enUS } from 'date-fns/locale'
 import { getTranslations } from 'next-intl/server'; // Server Component
 
 import LogoutButton from "@/components/LogoutButton"
@@ -13,7 +14,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher"
 import { getUserProfile } from "@/app/actions/user";
 import PayButton from "@/components/dashboard/PayButton";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ params: { locale } }: { params: { locale: string } }) {
     const session = await getServerSession(authOptions)
 
     if (!session) {
@@ -25,7 +26,11 @@ export default async function DashboardPage() {
         getUserProfile()
     ]);
 
-    const t = await getTranslations('Dashboard'); // Server-side translation
+    const t = await getTranslations('Dashboard');
+
+    // Date formatting helper
+    const dateLocale = locale === 'ko' ? ko : enUS;
+    const dateFormatStr = locale === 'ko' ? 'yyyy년 M월 d일' : 'MMMM d, yyyy';
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
@@ -45,7 +50,7 @@ export default async function DashboardPage() {
                 {/* Prepaid Balance Card */}
                 <section className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-lg p-6 text-white flex justify-between items-center">
                     <div>
-                        <h2 className="text-lg font-semibold opacity-90">Prepaid Balance</h2>
+                        <h2 className="text-lg font-semibold opacity-90">{t('prepaidBalance')}</h2>
                         <p className="text-3xl font-bold mt-1">
                             {new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(userProfile?.prepaidBalance || 0)}
                         </p>
@@ -99,7 +104,7 @@ export default async function DashboardPage() {
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <h3 className="font-bold text-gray-900 flex items-center">
-                                                {format(new Date(appt.startDateTime), 'MMMM d, yyyy')}
+                                                {format(new Date(appt.startDateTime), dateFormatStr, { locale: dateLocale })}
                                             </h3>
                                             <div className="text-gray-600 flex items-center mt-1">
                                                 <Clock className="h-4 w-4 mr-1" />
@@ -111,24 +116,25 @@ export default async function DashboardPage() {
                                             {/* @ts-ignore */}
                                             {appt.symptoms && (
                                                 <div className="mt-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-                                                    <span className="font-semibold">Symptoms:</span> {appt.symptoms}
+                                                    <span className="font-semibold">{t('appointments.symptomsLabel')}:</span> {appt.symptoms}
                                                 </div>
                                             )}
                                             {appt.meetingLink && (
                                                 <div className="mt-2">
                                                     <a href={appt.meetingLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-sm font-medium">
-                                                        Join Video Call
+                                                        {t('appointments.joinCall')}
                                                     </a>
                                                 </div>
                                             )}
                                         </div>
                                         <div className="text-right flex flex-col items-end">
                                             <div className={`text-sm font-bold px-2 py-1 rounded inline-block ${appt.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                                {appt.status}
+                                                {/* @ts-ignore */}
+                                                {t(`status.${appt.status}`) || appt.status}
                                             </div>
                                             <div className={`text-xs mt-1 ${appt.payment?.status === 'COMPLETED' ? 'text-green-600' : 'text-red-500'}`}>
                                                 {appt.payment?.status === 'PENDING'
-                                                    ? (appt.payment.amount > 0 ? "Payment Required" : "Waiting for Price")
+                                                    ? (appt.payment.amount > 0 ? t('appointments.payment.required') : t('appointments.payment.waiting'))
                                                     : t('appointments.payment.paid')}
                                             </div>
 
