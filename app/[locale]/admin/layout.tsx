@@ -3,7 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, Users, Calendar, CreditCard, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, CreditCard, LogOut, UserCog } from "lucide-react";
 
 export default async function AdminLayout({
     children,
@@ -21,6 +21,7 @@ export default async function AdminLayout({
 
     const navItems = [
         { href: `/${locale}/admin`, label: "Dashboard", icon: LayoutDashboard },
+        { href: `/${locale}/admin/users`, label: "Users", icon: UserCog },
         { href: `/${locale}/admin/patients`, label: "Patients", icon: Users },
         { href: `/${locale}/admin/appointments`, label: "Appointments", icon: Calendar },
         { href: `/${locale}/admin/prepaid`, label: "Prepaid / Credits", icon: CreditCard },

@@ -58,46 +58,60 @@ export default function LoginPage() {
                         Sign in with Kakao
                     </button>
 
-                    <div className="relative py-4">
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-gray-300" />
-                        </div>
-                        <div className="relative flex justify-center text-sm">
-                            <span className="bg-gray-50 px-2 text-gray-500">Or use email (Testing)</span>
-                        </div>
-                    </div>
+                    <button
+                        onClick={() => signIn('naver')}
+                        className="flex w-full items-center justify-center rounded-lg bg-[#03C75A] px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-[#02b351] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    >
+                        <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16.273 12.845L7.376 0H0v24h7.726V11.156L16.624 24H24V0h-7.727v12.845z" />
+                        </svg>
+                        Sign in with Naver
+                    </button>
 
-                    <form onSubmit={(e) => {
-                        e.preventDefault();
-                        const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value;
-                        const password = (e.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
-                        signIn('credentials', { email, password });
-                    }} className="space-y-4">
-                        <div>
-                            <input
-                                name="email"
-                                type="email"
-                                placeholder="Email (admin@calldoc.com or patient@test.com)"
-                                required
-                                className="block w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                            />
-                        </div>
-                        <div>
-                            <input
-                                name="password"
-                                type="password"
-                                placeholder="Password (any)"
-                                required
-                                className="block w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                        >
-                            Sign in with Credentials
-                        </button>
-                    </form>
+                    {false && (
+                        <>
+                            <div className="relative py-4">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-300" />
+                                </div>
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="bg-gray-50 px-2 text-gray-500">Or use email (Testing)</span>
+                                </div>
+                            </div>
+
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value;
+                                const password = (e.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
+                                signIn('credentials', { email, password });
+                            }} className="space-y-4">
+                                <div>
+                                    <input
+                                        name="email"
+                                        type="email"
+                                        placeholder="Email (admin@calldoc.com or patient@test.com)"
+                                        required
+                                        className="block w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        name="password"
+                                        type="password"
+                                        placeholder="Password (any)"
+                                        required
+                                        className="block w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                >
+                                    Sign in with Credentials
+                                </button>
+                            </form>
+                        </>
+                    )}
                 </div>
 
                 <div className="text-center text-xs text-gray-500 mt-8">

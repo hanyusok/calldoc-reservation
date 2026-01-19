@@ -383,3 +383,98 @@ export async function sendMeetingLink(appointmentId: string, meetingLink: string
         return { error: "Failed to set meeting link" }
     }
 }
+
+// --- User Management Actions ---
+
+export async function getAdminUsers(page = 1, pageSize = 10, search = "") {
+    await checkAdmin()
+
+    const skip = (page - 1) * pageSize
+
+    const whereClause = search ? {
+        OR: [
+            { name: { contains: search, mode: 'insensitive' as const } },
+            { email: { contains: search, mode: 'insensitive' as const } }
+        ]
+    } : {}
+
+    const [users, total] = await Promise.all([
+        prisma.user.findMany({
+            where: whereClause,
+            include: {
+                _count: { select: { patients: true } }
+            },
+            skip,
+            take: pageSize,
+            orderBy: { createdAt: 'desc' }
+        }),
+        prisma.user.count({ where: whereClause })
+    ])
+
+    return { users, total, totalPages: Math.ceil(total / pageSize) }
+}
+
+export async function createAdminUser(data: {
+    name?: string
+    email: string
+    password?: string // In real app, hash this!
+    role?: Role
+}) {
+    await checkAdmin()
+
+    try {
+        // Verify email uniqueness
+        const existing = await prisma.user.findUnique({ where: { email: data.email } })
+        if (existing) return { error: "Email already exists" }
+
+        await prisma.user.create({
+            data: {
+                name: data.name,
+                email: data.email,
+                role: data.role || 'PATIENT',
+                // hashed password handling would go here next-auth usually handles this via adapter
+                // For this template, we might rely on Account linking or setup password credential specifically
+            }
+        })
+        revalidatePath('/admin/users')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to create user:", error)
+        return { error: "Failed to create user" }
+    }
+}
+
+export async function updateAdminUser(id: string, data: {
+    name?: string
+    email?: string
+    role?: Role
+}) {
+    await checkAdmin()
+
+    try {
+        await prisma.user.update({
+            where: { id },
+            data
+        })
+        revalidatePath('/admin/users')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to update user:", error)
+        return { error: "Failed to update user" }
+    }
+}
+
+export async function deleteAdminUser(id: string) {
+    await checkAdmin()
+
+    try {
+        await prisma.user.delete({
+            where: { id }
+        })
+        revalidatePath('/admin/users')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to delete user:", error)
+        return { error: "Failed to delete user" }
+    }
+}
