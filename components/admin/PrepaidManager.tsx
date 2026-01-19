@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { geAllUsers, addPrepaidCredit, deductPrepaidCredit } from "@/app/actions/admin";
+import { getAllUsers, addPrepaidCredit, deductPrepaidCredit } from "@/app/actions/admin";
 import { Search, Plus, Minus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -14,14 +14,14 @@ export default function PrepaidManager() {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [amount, setAmount] = useState(10000);
     const t = useTranslations('Admin.prepaid.manager');
-    const [description, setDescription] = useState("Admin Adjustment"); // Keep default or localize? Maybe empty is better
+    const [description, setDescription] = useState(t('adminAdjustment'));
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         const timer = setTimeout(async () => {
             if (search.length > 1) {
-                const users = await geAllUsers(search);
+                const users = await getAllUsers(search);
                 setResults(users);
             } else {
                 setResults([]);

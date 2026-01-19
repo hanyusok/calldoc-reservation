@@ -4,7 +4,8 @@
         "description": "원격진료 예약을 위한 최고의 선택",
         "nav": {
             "login": "로그인",
-            "myPage": "마이페이지"
+            "myPage": "마이페이지",
+            "logout": "로그아웃"
         },
         "hero": {
             "headlinePrefix": "당신의 주치의,",
@@ -195,6 +196,7 @@
         },
         "patients": {
             "title": "환자 관리",
+            "addPatient": "환자 추가",
             "table": {
                 "name": "환자명",
                 "relatedUser": "관련 계정",
@@ -205,6 +207,7 @@
         },
         "users": {
             "title": "사용자 관리",
+            "addUser": "사용자 추가",
             "table": {
                 "name": "이름",
                 "email": "이메일",
@@ -212,6 +215,10 @@
                 "patients": "환자 수",
                 "created": "가입일"
             }
+        },
+        "roleEnum": {
+            "ADMIN": "관리자",
+            "PATIENT": "환자"
         },
         "sidebar": {
             "title": "CallDoc 관리자",
@@ -302,6 +309,7 @@
             },
             "manager": {
                 "title": "크레딧 관리",
+                "adminAdjustment": "관리자 조정",
                 "searchUser": "사용자 검색 (이름 또는 이메일)",
                 "selectUser": "사용자 선택...",
                 "currentBalance": "현재 잔액: {balance} KRW",

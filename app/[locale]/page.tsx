@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Video, Calendar, ShieldCheck } from "lucide-react";
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -52,10 +53,13 @@ export default function Home() {
 
           {/* Hero Image / Illustration */}
           <div className="relative h-64 sm:h-96 w-full bg-blue-50 rounded-3xl overflow-hidden flex items-center justify-center">
-            {/* Placeholder logic or use an image if available */}
-            <div className="text-blue-200">
-              <Video className="w-32 h-32 opacity-20" />
-            </div>
+            <Image
+              src="/images/landing/doctor_video.png"
+              alt="Professional doctor conducting a video consultation"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
       </main>

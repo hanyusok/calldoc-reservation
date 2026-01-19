@@ -4,7 +4,8 @@
         "description": "The best choice for telemedicine reservation",
         "nav": {
             "login": "Log In",
-            "myPage": "My Page"
+            "myPage": "My Page",
+            "logout": "Log Out"
         },
         "hero": {
             "headlinePrefix": "Your Doctor,",
@@ -195,6 +196,7 @@
         },
         "patients": {
             "title": "Patients Management",
+            "addPatient": "Add Patient",
             "table": {
                 "name": "Patient Name",
                 "relatedUser": "Related User",
@@ -205,6 +207,7 @@
         },
         "users": {
             "title": "User Management",
+            "addUser": "Add User",
             "table": {
                 "name": "Name",
                 "email": "Email",
@@ -212,6 +215,10 @@
                 "patients": "Patients",
                 "created": "Created"
             }
+        },
+        "roleEnum": {
+            "ADMIN": "Admin",
+            "PATIENT": "Patient"
         },
         "sidebar": {
             "title": "CallDoc Admin",
@@ -302,6 +309,7 @@
             },
             "manager": {
                 "title": "Credit Manager",
+                "adminAdjustment": "Admin Adjustment",
                 "searchUser": "Search User (Name or Email)",
                 "selectUser": "Select a user...",
                 "currentBalance": "Current Balance: {balance} KRW",

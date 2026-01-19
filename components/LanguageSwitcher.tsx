@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
+import Image from 'next/image';
 import { usePathname, useRouter } from '@/lib/navigation';
 import { locales } from '@/lib/config';
 
@@ -17,10 +18,17 @@ export default function LanguageSwitcher() {
     return (
         <button
             onClick={toggleLocale}
-            className="px-3 py-1 rounded-md text-sm font-bold transition-colors hover:bg-gray-100 text-gray-700"
+            className="p-1 rounded-full transition-transform hover:scale-105"
             aria-label="Switch Language"
         >
-            {locale === 'ko' ? 'EN' : 'KR'}
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-200 shadow-sm">
+                <Image
+                    src={locale === 'en' ? '/images/flags/ko.png' : '/images/flags/en.png'}
+                    alt={locale === 'en' ? 'Switch to Korean' : 'Switch to English'}
+                    fill
+                    className="object-cover"
+                />
+            </div>
         </button>
     );
 }
