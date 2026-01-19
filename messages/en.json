@@ -57,6 +57,7 @@
         "familyMembers": "Family Members",
         "me": "Me",
         "delete": "Delete",
+        "edit": "Edit",
         "noPatients": "No patients added yet.",
         "addNew": "Add New Patient",
         "form": {
@@ -74,7 +75,8 @@
                 "family": "Family Member",
                 "self": "Myself"
             },
-            "save": "Save"
+            "save": "Save",
+            "cancel": "Cancel"
         }
     },
     "Booking": {

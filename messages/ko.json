@@ -57,6 +57,7 @@
         "familyMembers": "가족 구성원",
         "me": "나",
         "delete": "삭제",
+        "edit": "수정",
         "noPatients": "등록된 가족이 없습니다.",
         "addNew": "새 환자 추가",
         "form": {
@@ -74,7 +75,8 @@
                 "family": "가족",
                 "self": "본인"
             },
-            "save": "저장"
+            "save": "저장",
+            "cancel": "취소"
         }
     },
     "Booking": {

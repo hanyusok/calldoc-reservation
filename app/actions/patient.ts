@@ -41,6 +41,42 @@ export async function addPatient(formData: FormData) {
     }
 }
 
+export async function updatePatient(id: string, formData: FormData) {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) return { error: "Unauthorized" }
+
+    const name = formData.get("name") as string
+    const gender = formData.get("gender") as "MALE" | "FEMALE"
+    const relationship = formData.get("relationship") as "SELF" | "FAMILY"
+    const dobString = formData.get("dateOfBirth") as string
+    const residentNumber = formData.get("residentNumber") as string
+
+    try {
+        // Ownership check
+        const patient = await prisma.patient.findUnique({ where: { id } })
+        if (!patient || patient.userId !== session.user.id) {
+            return { error: "Unauthorized" }
+        }
+
+        await prisma.patient.update({
+            where: { id },
+            data: {
+                name,
+                gender,
+                relationship,
+                dateOfBirth: new Date(dobString),
+                residentNumber,
+            }
+        })
+
+        revalidatePath('/dashboard/profile')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to update patient", error)
+        return { error: "Failed to update patient" }
+    }
+}
+
 export async function deletePatient(patientId: string) {
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) return { error: "Unauthorized" }
