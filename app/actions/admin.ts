@@ -165,7 +165,7 @@ export async function deductPrepaidCredit(userId: string, amount: number, descri
     }
 }
 
-export async function geAllUsers(search = "") {
+export async function getAllUsers(search = "") {
     await checkAdmin()
 
     const whereClause = search ? {

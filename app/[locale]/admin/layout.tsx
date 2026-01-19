@@ -17,8 +17,8 @@ export default async function AdminLayout({
     const session = await getServerSession(authOptions);
     const t = await getTranslations('Admin.sidebar');
 
-    // @ts-ignore
-    if (!session?.user || session.user.role !== Role.ADMIN) {
+    // Check for admin role (assuming user object is extended via module augmentation or casting)
+    if (!session?.user || (session.user as any).role !== Role.ADMIN) {
         redirect(`/${locale}/auth/login`); // Or a specific 403 page
     }
 
