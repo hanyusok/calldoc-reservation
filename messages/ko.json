@@ -25,12 +25,18 @@
         "quickActions": {
             "family": {
                 "title": "가족 관리",
-                "desc": "프로필 관리"
+                "desc": "가족 프로필 관리"
             },
             "book": {
                 "title": "진료 예약",
-                "desc": "새로운 예약 잡기"
+                "desc": "새로운 상담 예약하기"
             }
+        },
+        "stepper": {
+            "request": "접수",
+            "payment": "수납대기",
+            "confirmed": "확정",
+            "completed": "완료"
         },
         "appointments": {
             "title": "나의 예약",

@@ -32,6 +32,12 @@
                 "desc": "Schedule a new visit"
             }
         },
+        "stepper": {
+            "request": "Request",
+            "payment": "Payment",
+            "confirmed": "Confirmed",
+            "completed": "Done"
+        },
         "appointments": {
             "title": "Your Appointments",
             "patient": "Patient",

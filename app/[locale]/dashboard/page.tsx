@@ -13,6 +13,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher"
 
 import { getUserProfile } from "@/app/actions/user";
 import PayButton from "@/components/dashboard/PayButton";
+import AppointmentStepper from "@/components/dashboard/AppointmentStepper";
 
 export default async function DashboardPage({ params: { locale } }: { params: { locale: string } }) {
     const session = await getServerSession(authOptions)
@@ -100,10 +101,11 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
                     {appointments.length > 0 ? (
                         <div className="space-y-4">
                             {appointments.map(appt => (
-                                <div key={appt.id} className="bg-white shadow rounded-lg p-5 border-l-4 border-blue-500">
+                                <div key={appt.id} className="bg-white shadow rounded-lg p-5 border-l-4 border-blue-500 space-y-4">
+                                    {/* Header: Date/Time and Status */}
                                     <div className="flex justify-between items-start">
                                         <div>
-                                            <h3 className="font-bold text-gray-900 flex items-center">
+                                            <h3 className="font-bold text-gray-900 flex items-center text-lg">
                                                 {format(new Date(appt.startDateTime), dateFormatStr, { locale: dateLocale })}
                                             </h3>
                                             <div className="text-gray-600 flex items-center mt-1">
@@ -113,31 +115,45 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
                                             <div className="text-sm text-gray-500 mt-2">
                                                 {t('appointments.patient')}: <strong>{appt.patient.name}</strong>
                                             </div>
-                                            {/* @ts-ignore */}
-                                            {appt.symptoms && (
-                                                <div className="mt-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-                                                    <span className="font-semibold">{t('appointments.symptomsLabel')}:</span> {appt.symptoms}
-                                                </div>
-                                            )}
-                                            {appt.meetingLink && (
-                                                <div className="mt-2">
-                                                    <a href={appt.meetingLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-sm font-medium">
-                                                        {t('appointments.joinCall')}
-                                                    </a>
-                                                </div>
-                                            )}
                                         </div>
-                                        <div className="text-right flex flex-col items-end">
+                                        <div className="flex flex-col items-end">
                                             <div className={`text-sm font-bold px-2 py-1 rounded inline-block ${appt.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                                                 {/* @ts-ignore */}
                                                 {t(`status.${appt.status}`) || appt.status}
                                             </div>
-                                            <div className={`text-xs mt-1 ${appt.payment?.status === 'COMPLETED' ? 'text-green-600' : 'text-red-500'}`}>
+                                        </div>
+                                    </div>
+
+                                    {/* Stepper Component */}
+                                    <AppointmentStepper
+                                        status={appt.status}
+                                        paymentStatus={appt.payment?.status}
+                                        paymentAmount={appt.payment?.amount}
+                                    />
+
+                                    {/* Details & Actions */}
+                                    <div className="flex justify-between items-end border-t pt-4">
+                                        <div className="flex-1">
+                                            {/* @ts-ignore */}
+                                            {appt.symptoms && (
+                                                <div className="text-sm text-gray-600 mb-2">
+                                                    <span className="font-semibold">{t('appointments.symptomsLabel')}:</span> {appt.symptoms}
+                                                </div>
+                                            )}
+                                            {appt.meetingLink && (
+                                                <a href={appt.meetingLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-sm font-medium flex items-center gap-1">
+                                                    {t('appointments.joinCall')}
+                                                    <ChevronRight className="w-4 h-4" />
+                                                </a>
+                                            )}
+                                        </div>
+
+                                        <div className="text-right">
+                                            <div className={`text-xs mb-2 ${appt.payment?.status === 'COMPLETED' ? 'text-green-600' : 'text-red-500'}`}>
                                                 {appt.payment?.status === 'PENDING'
                                                     ? (appt.payment.amount > 0 ? t('appointments.payment.required') : t('appointments.payment.waiting'))
                                                     : t('appointments.payment.paid')}
                                             </div>
-
                                             {appt.status === 'PENDING' && appt.payment?.status === 'PENDING' && appt.payment.amount > 0 && (
                                                 <PayButton appointmentId={appt.id} amount={appt.payment.amount} />
                                             )}
