@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import AddUserButton from "@/components/admin/AddUserButton";
 import UserActions from "@/components/admin/UserActions";
+import { getTranslations } from "next-intl/server";
 
 export default async function AdminUsersPage({
     searchParams
@@ -11,14 +12,16 @@ export default async function AdminUsersPage({
 }) {
     const page = Number(searchParams.page) || 1;
     const search = searchParams.search || "";
+    const t = await getTranslations('Admin');
+
     const { users, total, totalPages } = await getAdminUsers(page, 10, search);
 
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold">User Management</h1>
+                <h1 className="text-2xl font-bold">{t('users.title')}</h1>
                 <div className="flex items-center gap-4">
-                    <div className="text-sm text-gray-500">Total: {total}</div>
+                    <div className="text-sm text-gray-500">{t('common.total', { count: total })}</div>
                     <AddUserButton />
                 </div>
             </div>
@@ -30,25 +33,25 @@ export default async function AdminUsersPage({
                     <input
                         name="search"
                         defaultValue={search}
-                        placeholder="Search by name or email..."
+                        placeholder={t('common.searchPlaceholder')}
                         className="w-full pl-9 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700"
                     />
                 </div>
                 <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    Search
+                    {t('common.search')}
                 </button>
             </form>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto border border-gray-200 dark:border-gray-700">
                 <table className="w-full">
                     <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Patients</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Created</th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('users.table.name')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('users.table.email')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('users.table.role')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('users.table.patients')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('users.table.created')}</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('common.actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -77,7 +80,7 @@ export default async function AdminUsersPage({
                         {users.length === 0 && (
                             <tr>
                                 <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                                    No users found.
+                                    {t('common.noRecords')}
                                 </td>
                             </tr>
                         )}
@@ -91,14 +94,14 @@ export default async function AdminUsersPage({
                     href={`?page=${Math.max(1, page - 1)}&search=${search}`}
                     className={`px-3 py-1 rounded border ${page <= 1 ? 'pointer-events-none opacity-50' : ''}`}
                 >
-                    Previous
+                    {t('common.previous')}
                 </Link>
-                <span className="px-3 py-1">Page {page} of {totalPages || 1}</span>
+                <span className="px-3 py-1">{t('common.page', { current: page, total: totalPages || 1 })}</span>
                 <Link
                     href={`?page=${Math.min(totalPages, page + 1)}&search=${search}`}
                     className={`px-3 py-1 rounded border ${page >= totalPages ? 'pointer-events-none opacity-50' : ''}`}
                 >
-                    Next
+                    {t('common.next')}
                 </Link>
             </div>
         </div>

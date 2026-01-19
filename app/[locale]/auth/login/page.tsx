@@ -11,9 +11,14 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (status === 'authenticated') {
-            router.push('/dashboard');
+            // @ts-ignore
+            if (session?.user?.role === 'ADMIN') {
+                router.push('/admin');
+            } else {
+                router.push('/dashboard');
+            }
         }
-    }, [status, router]);
+    }, [status, router, session]);
 
     if (status === 'loading') {
         return (

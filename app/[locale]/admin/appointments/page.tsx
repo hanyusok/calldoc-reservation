@@ -4,34 +4,40 @@ import AppointmentStatusSelect from "@/components/admin/AppointmentStatusSelect"
 import { AppointmentStatus } from "@prisma/client";
 import Link from "next/link";
 import { format } from "date-fns";
+import { ko, enUS } from "date-fns/locale";
 import AddAppointmentButton from "@/components/admin/AddAppointmentButton";
 import AppointmentActions from "@/components/admin/AppointmentActions";
 import AppointmentFlowManager from "@/components/admin/AppointmentFlowManager";
+import { getTranslations } from "next-intl/server";
 
 export default async function AdminAppointmentsPage({
-    searchParams
+    searchParams,
+    params: { locale }
 }: {
-    searchParams: { page?: string, status?: string }
+    searchParams: { page?: string, status?: string };
+    params: { locale: string };
 }) {
     const page = Number(searchParams.page) || 1;
     const status = searchParams.status as AppointmentStatus | undefined;
+    const t = await getTranslations('Admin');
 
     const { appointments, total, totalPages } = await getAdminAppointments(page, 10, status);
+    const dateLocale = locale === 'ko' ? ko : enUS;
 
     const tabs = [
-        { label: "All", value: undefined },
-        { label: "Pending", value: "PENDING" },
-        { label: "Confirmed", value: "CONFIRMED" },
-        { label: "Completed", value: "COMPLETED" },
-        { label: "Cancelled", value: "CANCELLED" },
+        { label: t('appointments.tabs.all'), value: undefined },
+        { label: t('appointments.tabs.pending'), value: "PENDING" },
+        { label: t('appointments.tabs.confirmed'), value: "CONFIRMED" },
+        { label: t('appointments.tabs.completed'), value: "COMPLETED" },
+        { label: t('appointments.tabs.cancelled'), value: "CANCELLED" },
     ];
 
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold">Appointments</h1>
+                <h1 className="text-2xl font-bold">{t('appointments.title')}</h1>
                 <div className="flex items-center gap-4">
-                    {/* Show total count? */}
+                    <div className="text-sm text-gray-500">{t('common.total', { count: total })}</div>
                     <AddAppointmentButton />
                 </div>
             </div>
@@ -51,23 +57,23 @@ export default async function AdminAppointmentsPage({
                 ))}
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto border border-gray-200 dark:border-gray-700">
                 <table className="w-full">
                     <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date & Time</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Patient</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Payment</th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.dateTime')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.patient')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.status')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.payment')}</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('common.actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                         {appointments.map((appt) => (
                             <tr key={appt.id} className="hover:bg-gray-50 dark:hover:bg-gray-750">
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="font-medium">{format(appt.startDateTime, 'PPP')}</div>
-                                    <div className="text-sm text-gray-500">{format(appt.startDateTime, 'p')} - {format(appt.endDateTime, 'p')}</div>
+                                    <div className="font-medium">{format(appt.startDateTime, 'PPP', { locale: dateLocale })}</div>
+                                    <div className="text-sm text-gray-500">{format(appt.startDateTime, 'p', { locale: dateLocale })} - {format(appt.endDateTime, 'p', { locale: dateLocale })}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap font-medium">{appt.patient.name}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -76,11 +82,11 @@ export default async function AdminAppointmentsPage({
                                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                                     {appt.payment ? (
                                         <div className={`flex items-center gap-2 ${appt.payment.status === 'COMPLETED' ? 'text-green-600' : 'text-orange-600'}`}>
-                                            <span className="font-semibold">{appt.payment.status}</span>
+                                            <span className="font-semibold">{t(`statusEnum.${appt.payment.status}`)}</span>
                                             <span>({appt.payment.amount.toLocaleString()} KRW)</span>
                                         </div>
                                     ) : (
-                                        <span className="text-gray-400">No Record</span>
+                                        <span className="text-gray-400">{t('appointments.table.noRecord')}</span>
                                     )}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
@@ -96,7 +102,7 @@ export default async function AdminAppointmentsPage({
                         {appointments.length === 0 && (
                             <tr>
                                 <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                                    No appointments found.
+                                    {t('common.noRecords')}
                                 </td>
                             </tr>
                         )}
@@ -110,14 +116,14 @@ export default async function AdminAppointmentsPage({
                     href={`?page=${Math.max(1, page - 1)}${status ? `&status=${status}` : ''}`}
                     className={`px-3 py-1 rounded border ${page <= 1 ? 'pointer-events-none opacity-50' : ''}`}
                 >
-                    Previous
+                    {t('common.previous')}
                 </Link>
-                <span className="px-3 py-1">Page {page} of {totalPages || 1}</span>
+                <span className="px-3 py-1">{t('common.page', { current: page, total: totalPages || 1 })}</span>
                 <Link
                     href={`?page=${Math.min(totalPages, page + 1)}${status ? `&status=${status}` : ''}`}
                     className={`px-3 py-1 rounded border ${page >= totalPages ? 'pointer-events-none opacity-50' : ''}`}
                 >
-                    Next
+                    {t('common.next')}
                 </Link>
             </div>
         </div >

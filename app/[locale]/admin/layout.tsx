@@ -3,7 +3,9 @@ import { authOptions } from "@/lib/auth";
 import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import LogoutButton from "@/components/admin/LogoutButton";
 import { LayoutDashboard, Users, Calendar, CreditCard, LogOut, UserCog } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 export default async function AdminLayout({
     children,
@@ -13,6 +15,7 @@ export default async function AdminLayout({
     params: { locale: string };
 }) {
     const session = await getServerSession(authOptions);
+    const t = await getTranslations('Admin.sidebar');
 
     // @ts-ignore
     if (!session?.user || session.user.role !== Role.ADMIN) {
@@ -20,11 +23,11 @@ export default async function AdminLayout({
     }
 
     const navItems = [
-        { href: `/${locale}/admin`, label: "Dashboard", icon: LayoutDashboard },
-        { href: `/${locale}/admin/users`, label: "Users", icon: UserCog },
-        { href: `/${locale}/admin/patients`, label: "Patients", icon: Users },
-        { href: `/${locale}/admin/appointments`, label: "Appointments", icon: Calendar },
-        { href: `/${locale}/admin/prepaid`, label: "Prepaid / Credits", icon: CreditCard },
+        { href: `/${locale}/admin`, label: t('dashboard'), icon: LayoutDashboard },
+        { href: `/${locale}/admin/users`, label: t('users'), icon: UserCog },
+        { href: `/${locale}/admin/patients`, label: t('patients'), icon: Users },
+        { href: `/${locale}/admin/appointments`, label: t('appointments'), icon: Calendar },
+        { href: `/${locale}/admin/prepaid`, label: t('prepaid'), icon: CreditCard },
     ];
 
     return (
@@ -32,7 +35,7 @@ export default async function AdminLayout({
             {/* Sidebar */}
             <aside className="w-64 bg-white dark:bg-gray-800 shadow-md flex flex-col">
                 <div className="p-6 border-b dark:border-gray-700">
-                    <h1 className="text-2xl font-bold text-blue-600">CallDoc Admin</h1>
+                    <h1 className="text-2xl font-bold text-blue-600">{t('title')}</h1>
                 </div>
                 <nav className="flex-1 p-4 space-y-2">
                     {navItems.map((item) => (
@@ -50,10 +53,7 @@ export default async function AdminLayout({
                     <div className="flex items-center space-x-3 px-4 py-3 text-sm text-gray-500">
                         <span>{session.user.email}</span>
                     </div>
-                    <Link href={`/api/auth/signout`} className="flex items-center space-x-3 px-4 py-2 mt-2 text-red-500 hover:bg-red-50 rounded-lg">
-                        <LogOut className="w-5 h-5" />
-                        <span>Logout</span>
-                    </Link>
+                    <LogoutButton label={t('logout')} />
                 </div>
             </aside>
 

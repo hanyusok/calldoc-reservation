@@ -106,5 +106,132 @@
         "alerts": {
             "fail": "Failed to book appointment"
         }
+    },
+    "Admin": {
+        "common": {
+            "total": "Total: {count}",
+            "search": "Search",
+            "searchPlaceholder": "Search by name or email...",
+            "previous": "Previous",
+            "next": "Next",
+            "page": "Page {current} of {total}",
+            "actions": "Actions",
+            "noRecords": "No records found."
+        },
+        "appointments": {
+            "title": "Appointment Management",
+            "tabs": {
+                "all": "All",
+                "pending": "Pending",
+                "confirmed": "Confirmed",
+                "completed": "Completed",
+                "cancelled": "Cancelled"
+            },
+            "table": {
+                "dateTime": "Date & Time",
+                "patient": "Patient",
+                "status": "Status",
+                "payment": "Payment",
+                "noRecord": "No Record"
+            }
+        },
+        "patients": {
+            "title": "Patients Management",
+            "table": {
+                "name": "Patient Name",
+                "relatedUser": "Related User",
+                "gender": "Gender",
+                "dob": "Date of Birth",
+                "created": "Created"
+            }
+        },
+        "users": {
+            "title": "User Management",
+            "table": {
+                "name": "Name",
+                "email": "Email",
+                "role": "Role",
+                "patients": "Patients",
+                "created": "Created"
+            }
+        },
+        "sidebar": {
+            "title": "CallDoc Admin",
+            "dashboard": "Dashboard",
+            "users": "Users",
+            "patients": "Patients",
+            "appointments": "Appointments",
+            "prepaid": "Prepaid / Credits",
+            "logout": "Logout"
+        },
+        "dashboard": {
+            "title": "Dashboard Overview",
+            "stats": {
+                "patients": "Total Patients",
+                "appointments": "Total Appointments",
+                "pending": "Pending Appointments",
+                "revenue": "Revenue"
+            },
+            "welcome": "Welcome, Admin",
+            "instruction": "Select a category from the sidebar to manage the application."
+        },
+        "actions": {
+            "edit": "Edit",
+            "editDetails": "Edit Details",
+            "delete": "Delete"
+        },
+        "statusEnum": {
+            "PENDING": "Pending",
+            "CONFIRMED": "Confirmed",
+            "COMPLETED": "Completed",
+            "CANCELLED": "Cancelled",
+            "PAID": "Paid",
+            "REFUNDED": "Refunded",
+            "REJECTED": "Rejected"
+        },
+        "appointmentForm": {
+            "selectPatient": "Select Patient",
+            "change": "Change",
+            "searchPlaceholder": "Search patient by name or user email...",
+            "date": "Date",
+            "time": "Time",
+            "status": "Status",
+            "create": "Create Appointment",
+            "update": "Update Appointment",
+            "saving": "Saving...",
+            "selectPatientAlert": "Please select a patient",
+            "error": "Operation failed",
+            "buttonLabel": "New Appointment",
+            "modalTitle": "Create New Appointment"
+        },
+        "prepaid": {
+            "title": "Prepaid Credits Management",
+            "recentTransactions": "Recent Transactions",
+            "table": {
+                "date": "Date",
+                "user": "User",
+                "type": "Type",
+                "amount": "Amount",
+                "description": "Description",
+                "typeEnum": {
+                    "DEPOSIT": "Deposit",
+                    "DEDUCT": "Deduct"
+                }
+            },
+            "manager": {
+                "title": "Credit Manager",
+                "searchUser": "Search User (Name or Email)",
+                "selectUser": "Select a user...",
+                "currentBalance": "Current Balance: {balance} KRW",
+                "amount": "Amount (KRW)",
+                "description": "Description (Optional)",
+                "actions": {
+                    "add": "Add Credit",
+                    "deduct": "Deduct Credit"
+                },
+                "success": "Credit updated successfully.",
+                "error": "Failed to update credit."
+            }
+        }
     }
 }

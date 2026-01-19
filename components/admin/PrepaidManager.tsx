@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { geAllUsers, addPrepaidCredit, deductPrepaidCredit } from "@/app/actions/admin";
 import { Search, Plus, Minus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type User = { id: string; name: string | null; email: string | null; prepaidBalance: number };
 
@@ -12,7 +13,8 @@ export default function PrepaidManager() {
     const [results, setResults] = useState<User[]>([]);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [amount, setAmount] = useState(10000);
-    const [description, setDescription] = useState("Admin Adjustment");
+    const t = useTranslations('Admin.prepaid.manager');
+    const [description, setDescription] = useState("Admin Adjustment"); // Keep default or localize? Maybe empty is better
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -34,7 +36,9 @@ export default function PrepaidManager() {
             alert("Amount must be positive");
             return;
         }
-        if (!confirm(`Are you sure you want to ${type} ${amount} credits to ${selectedUser.email}?`)) return;
+
+        const actionText = type === 'ADD' ? t('actions.add') : t('actions.deduct');
+        if (!confirm(`${selectedUser.email}: ${amount} KRW - ${actionText}?`)) return;
 
         setLoading(true);
         let result;
@@ -46,31 +50,31 @@ export default function PrepaidManager() {
         setLoading(false);
 
         if (result.success) {
-            alert("Transaction successful");
+            alert(t('success'));
             setSelectedUser(null); // Reset
             setSearch("");
             setResults([]);
             router.refresh(); // Refresh server components (transaction list)
         } else {
-            alert(result.error || "Transaction failed");
+            alert(result.error || t('error'));
         }
     };
 
     return (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
-            <h2 className="text-lg font-bold">Manage Customer Credits</h2>
+            <h2 className="text-lg font-bold">{t('title')}</h2>
 
             {/* User Search / Selection */}
             {!selectedUser ? (
                 <div className="relative">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select User</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('searchUser')}</label>
                     <div className="relative">
                         <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                         <input
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Search by name or email..."
+                            placeholder={t('searchUser')}
                             className="w-full pl-9 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-900 dark:border-gray-600"
                         />
                     </div>
@@ -97,9 +101,9 @@ export default function PrepaidManager() {
             ) : (
                 <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg flex justify-between items-center">
                     <div>
-                        <div className="text-sm text-gray-500">Selected User</div>
+                        <div className="text-sm text-gray-500">{t('selectUser')}</div>
                         <div className="font-bold">{selectedUser.name} ({selectedUser.email})</div>
-                        <div className="text-sm text-blue-600">Current Balance: {selectedUser.prepaidBalance?.toLocaleString() ?? 0} KRW</div>
+                        <div className="text-sm text-blue-600">{t('currentBalance', { balance: selectedUser.prepaidBalance?.toLocaleString() ?? 0 })}</div>
                     </div>
                     <button onClick={() => setSelectedUser(null)} className="text-gray-400 hover:text-gray-600">
                         <X className="w-5 h-5" />
@@ -110,7 +114,7 @@ export default function PrepaidManager() {
             {/* Transaction Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount (KRW)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('amount')}</label>
                     <input
                         type="number"
                         value={amount}
@@ -119,7 +123,7 @@ export default function PrepaidManager() {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('description')}</label>
                     <input
                         type="text"
                         value={description}
@@ -136,7 +140,7 @@ export default function PrepaidManager() {
                     className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Plus className="w-4 h-4" />
-                    <span>Add Credit</span>
+                    <span>{t('actions.add')}</span>
                 </button>
                 <button
                     disabled={!selectedUser || loading}
@@ -144,7 +148,7 @@ export default function PrepaidManager() {
                     className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Minus className="w-4 h-4" />
-                    <span>Deduct Credit</span>
+                    <span>{t('actions.deduct')}</span>
                 </button>
             </div>
         </div>

@@ -5,6 +5,7 @@ import { createAppointmentAdmin, updateAppointmentAdmin, searchPatients } from "
 import { AppointmentStatus } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { useTranslations } from "next-intl";
 
 type AppointmentData = {
     id: string;
@@ -23,6 +24,8 @@ type Props = {
 export default function AppointmentForm({ initialData, onSuccess }: Props) {
     const isEdit = !!initialData;
     const router = useRouter();
+    const t = useTranslations('Admin.appointmentForm');
+    const tStatus = useTranslations('Admin.statusEnum');
 
     const [patientId, setPatientId] = useState(initialData?.patientId || "");
     const [date, setDate] = useState(
@@ -76,7 +79,7 @@ export default function AppointmentForm({ initialData, onSuccess }: Props) {
             result = await updateAppointmentAdmin(initialData.id, payload);
         } else {
             if (!patientId) {
-                alert("Please select a patient");
+                alert(t('selectPatientAlert'));
                 setLoading(false);
                 return;
             }
@@ -92,7 +95,7 @@ export default function AppointmentForm({ initialData, onSuccess }: Props) {
             router.refresh();
             onSuccess();
         } else {
-            alert(result.error || "Operation failed");
+            alert(result.error || t('error'));
         }
     };
 
@@ -100,17 +103,17 @@ export default function AppointmentForm({ initialData, onSuccess }: Props) {
         <form onSubmit={handleSubmit} className="space-y-4">
             {!isEdit && (
                 <div className="relative">
-                    <label className="block text-sm font-medium mb-1">Select Patient</label>
+                    <label className="block text-sm font-medium mb-1">{t('selectPatient')}</label>
                     {patientId ? (
                         <div className="flex justify-between items-center p-2 bg-gray-100 rounded">
                             <span>{selectedPatientName}</span>
-                            <button type="button" onClick={() => { setPatientId(""); setSelectedPatientName(""); }} className="text-red-500 text-sm">Change</button>
+                            <button type="button" onClick={() => { setPatientId(""); setSelectedPatientName(""); }} className="text-red-500 text-sm">{t('change')}</button>
                         </div>
                     ) : (
                         <>
                             <input
                                 type="text"
-                                placeholder="Search patient by name or user email..."
+                                placeholder={t('searchPlaceholder')}
                                 value={patientSearch}
                                 onChange={e => setPatientSearch(e.target.value)}
                                 className="w-full border rounded p-2"
@@ -134,7 +137,7 @@ export default function AppointmentForm({ initialData, onSuccess }: Props) {
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium mb-1">Date</label>
+                    <label className="block text-sm font-medium mb-1">{t('date')}</label>
                     <input
                         type="date"
                         required
@@ -144,7 +147,7 @@ export default function AppointmentForm({ initialData, onSuccess }: Props) {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium mb-1">Time</label>
+                    <label className="block text-sm font-medium mb-1">{t('time')}</label>
                     <input
                         type="time"
                         required
@@ -156,17 +159,17 @@ export default function AppointmentForm({ initialData, onSuccess }: Props) {
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Status</label>
+                <label className="block text-sm font-medium mb-1">{t('status')}</label>
                 <select
                     value={status}
                     onChange={e => setStatus(e.target.value as AppointmentStatus)}
                     className="w-full border rounded p-2 bg-transparent"
                 >
-                    <option value="PENDING">PENDING</option>
-                    <option value="CONFIRMED">CONFIRMED</option>
-                    <option value="COMPLETED">COMPLETED</option>
-                    <option value="CANCELLED">CANCELLED</option>
-                    <option value="REJECTED">REJECTED</option>
+                    <option value="PENDING">{tStatus('PENDING')}</option>
+                    <option value="CONFIRMED">{tStatus('CONFIRMED')}</option>
+                    <option value="COMPLETED">{tStatus('COMPLETED')}</option>
+                    <option value="CANCELLED">{tStatus('CANCELLED')}</option>
+                    <option value="REJECTED">{tStatus('REJECTED')}</option>
                 </select>
             </div>
 
@@ -175,7 +178,7 @@ export default function AppointmentForm({ initialData, onSuccess }: Props) {
                 disabled={loading}
                 className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
             >
-                {loading ? "Saving..." : (isEdit ? "Update Appointment" : "Create Appointment")}
+                {loading ? t('saving') : (isEdit ? t('update') : t('create'))}
             </button>
         </form>
     );
