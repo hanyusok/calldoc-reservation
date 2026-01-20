@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+import { createMeeting } from "./meet";
+
 export async function confirmPayment(paymentKey: string, orderId: string, amount: number) {
     // 1. Verify with Toss API
     const widgetSecretKey = process.env.TOSS_SECRET_KEY;
@@ -32,13 +34,28 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
         }
 
         // 2. Update Database
-        // Find payment
+        // Find payment to get appointmentId
         const payment = await prisma.payment.findUnique({
             where: { id: orderId },
             include: { appointment: true }
         });
 
         if (!payment) return { success: false, error: "Payment record not found" };
+
+        // 3. (Optional) Create Google Meet
+        // We attempt this before DB update. If it fails, we still proceed with payment confirmation
+        // but without a link.
+
+        let meetingLink = null;
+        try {
+            meetingLink = await createMeeting({
+                appointmentId: payment.appointmentId,
+                startDateTime: payment.appointment.startDateTime,
+                endDateTime: payment.appointment.endDateTime
+            });
+        } catch (e) {
+            console.error("Meet creation failed", e);
+        }
 
         // Update Payment and Appointment
         await prisma.$transaction([
@@ -48,16 +65,20 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
                     status: 'COMPLETED',
                     confirmedAt: new Date(),
                     method: 'TOSS',
-                    paymentKey: paymentKey // Save the paymentKey
+                    paymentKey: paymentKey
                 }
             }),
             prisma.appointment.update({
                 where: { id: payment.appointmentId },
-                data: { status: 'CONFIRMED' }
+                data: {
+                    status: 'CONFIRMED',
+                    ...(meetingLink ? { meetingLink } : {})
+                }
             })
         ]);
 
         revalidatePath('/dashboard');
+        revalidatePath('/[locale]/admin/appointments');
         return { success: true };
 
     } catch (err) {
