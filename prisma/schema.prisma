@@ -129,6 +129,7 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   REFUNDED
+  CANCELED
 }
 
 model Appointment {
@@ -152,12 +153,15 @@ model Appointment {
 
 enum PaymentMethod {
   BANK_TRANSFER
+  TOSS
 }
 
 model Payment {
   id            String        @id @default(cuid())
   appointmentId String        @unique
   appointment   Appointment   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  
+  paymentKey    String?       // Toss Payments Key
   
   amount        Int
   method        PaymentMethod @default(BANK_TRANSFER)

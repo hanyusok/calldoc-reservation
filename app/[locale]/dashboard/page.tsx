@@ -155,7 +155,12 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
                                                     : t('appointments.payment.paid')}
                                             </div>
                                             {appt.status === 'PENDING' && appt.payment?.status === 'PENDING' && appt.payment.amount > 0 && (
-                                                <PayButton appointmentId={appt.id} amount={appt.payment.amount} />
+                                                <PayButton
+                                                    appointmentId={appt.id}
+                                                    paymentId={appt.payment.id}
+                                                    amount={appt.payment.amount}
+                                                    customerName={appt.patient.name}
+                                                />
                                             )}
                                         </div>
                                     </div>
