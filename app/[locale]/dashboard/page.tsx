@@ -141,9 +141,14 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
                                                 </div>
                                             )}
                                             {appt.meetingLink && (
-                                                <a href={appt.meetingLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-sm font-medium flex items-center gap-1">
+                                                <a
+                                                    href={appt.meetingLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center px-4 py-2 mt-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                                                >
                                                     {t('appointments.joinCall')}
-                                                    <ChevronRight className="w-4 h-4" />
+                                                    <ChevronRight className="ml-1 w-4 h-4" />
                                                 </a>
                                             )}
                                         </div>
