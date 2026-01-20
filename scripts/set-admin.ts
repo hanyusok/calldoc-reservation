@@ -1,4 +1,5 @@
-const { PrismaClient } = require('@prisma/client')
+
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -11,7 +12,7 @@ async function main() {
             data: { role: 'ADMIN' }
         })
         console.log(`Success! User ${user.name} (${user.email}) is now an ${user.role}.`)
-    } catch (error) {
+    } catch (error: any) {
         if (error.code === 'P2025') {
             console.error(`User with email ${email} not found.`)
         } else {

@@ -1,4 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
+
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const TARGET_EMAIL = 'jiwonhan1548@gmail.com';
@@ -36,8 +37,7 @@ async function main() {
         console.log(`Created patient: ${name}`);
     }
 
-    // Include the user's "SELF" patient profile if it exists, or create one?
-    // Usually a user has a "SELF" profile. Let's find existing patients too.
+    // Include the user's "SELF" patient profile if it exists
     const allPatients = await prisma.patient.findMany({
         where: { userId: user.id }
     });
@@ -45,7 +45,7 @@ async function main() {
     console.log(`Total patients managing: ${allPatients.length}`);
 
     // 2. Create 20 Appointments
-    const statuses = ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'];
+    const statuses = ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'] as const;
 
     for (let i = 0; i < 20; i++) {
         // Pick random patient

@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma"
 import { getServerSession } from "next-auth"
+import { revalidatePath } from "next/cache"
 import { authOptions } from "@/lib/auth"
 import { addDays, format, isSameDay, parseISO, setHours, setMinutes } from "date-fns"
 
