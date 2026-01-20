@@ -237,10 +237,8 @@ export default function BookingPage() {
                 <CheckCircle className="h-12 w-12" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">{t('steps.success.title')}</h2>
-            <p className="text-gray-500">
-                {t.rich('steps.success.message', {
-                    br: () => <br />
-                })}
+            <p className="text-gray-500 whitespace-pre-line">
+                {t('steps.success.message')}
             </p>
             <div className="pt-8 space-y-3">
                 <button onClick={() => router.push('/dashboard')} className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium">{t('steps.success.dashboardBtn')}</button>
