@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Users, Calendar, CreditCard, ChevronRight, Clock } from "lucide-react"
+import { Users, Calendar, ChevronRight, Clock } from "lucide-react"
 import { getUserAppointments } from "@/app/actions/appointment"
 import { format } from "date-fns"
 import { ko, enUS } from 'date-fns/locale'
@@ -11,7 +11,7 @@ import { getTranslations } from 'next-intl/server'; // Server Component
 import LogoutButton from "@/components/LogoutButton"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
 
-import { getUserProfile } from "@/app/actions/user";
+
 import PayButton from "@/components/dashboard/PayButton";
 import AppointmentStepper from "@/components/dashboard/AppointmentStepper";
 
@@ -22,10 +22,7 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
         redirect('/auth/login')
     }
 
-    const [appointments, userProfile] = await Promise.all([
-        getUserAppointments(),
-        getUserProfile()
-    ]);
+    const appointments = await getUserAppointments();
 
     const t = await getTranslations('Dashboard');
 
@@ -48,16 +45,7 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
 
             <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-6">
 
-                {/* Prepaid Balance Card */}
-                <section className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-lg p-6 text-white flex justify-between items-center">
-                    <div>
-                        <h2 className="text-lg font-semibold opacity-90">{t('prepaidBalance')}</h2>
-                        <p className="text-3xl font-bold mt-1">
-                            {new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(userProfile?.prepaidBalance || 0)}
-                        </p>
-                    </div>
-                    <CreditCard className="w-12 h-12 opacity-80" />
-                </section>
+
 
                 {/* Quick Actions / Status Cards */}
                 <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
