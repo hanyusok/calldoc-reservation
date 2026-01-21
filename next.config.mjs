@@ -5,9 +5,7 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     webpack: (config) => {
-        config.ignoreWarnings = [
-            { module: /next-intl\/dist\/esm\/production\/extractor\/format\/index\.js/ }
-        ];
+        config.infrastructureLogging = { level: 'error' };
         return config;
     }
 };
