@@ -16,7 +16,8 @@
             "easyScheduling": "Easy Scheduling"
         },
         "footer": {
-            "copyright": "All rights reserved."
+            "copyright": "All rights reserved.",
+            "refundPolicy": "Refund Policy"
         }
     },
     "Dashboard": {

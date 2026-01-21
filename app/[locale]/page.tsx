@@ -66,7 +66,13 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-gray-50 mt-12 py-8 text-center text-sm text-gray-400">
-        &copy; {new Date().getFullYear()} CallDoc Telemedicine. {t('footer.copyright')}
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4">
+          <p>&copy; {new Date().getFullYear()} CallDoc Telemedicine. {t('footer.copyright')}</p>
+          <div className="hidden sm:block w-px h-3 bg-gray-300"></div>
+          <Link href="/policy" className="hover:text-gray-600 underline">
+            {t('footer.refundPolicy')}
+          </Link>
+        </div>
       </footer>
     </div>
   );

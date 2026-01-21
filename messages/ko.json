@@ -10,13 +10,14 @@
         "hero": {
             "headlinePrefix": "당신의 주치의,",
             "headlineSuffix": "언제 어디서나.",
-            "subtitle": "신뢰할 수 있는 가정의학과 전문의와 화상 상담하세요. 하나의 대시보드에서 본인과 가족의 진료 예약을 간편하게 관리할 수 있습니다.",
+            "subtitle": "신뢰할 수 있는 전문의와 화상 상담하세요. 하나의 대시보드에서 본인과 가족의 진료 예약을 간편하게 관리할 수 있습니다.",
             "bookBtn": "예약하기",
             "verifiedDoctor": "검증된 전문의",
             "easyScheduling": "간편한 예약"
         },
         "footer": {
-            "copyright": "All rights reserved."
+            "copyright": "All rights reserved.",
+            "refundPolicy": "환불 규정"
         }
     },
     "Dashboard": {
