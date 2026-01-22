@@ -13,7 +13,13 @@
             "subtitle": "Book a video consultation with trusted family physicians. Manage appointments for yourself and your loved ones from one clean dashboard.",
             "bookBtn": "Book Appointment",
             "verifiedDoctor": "Verified Doctor",
-            "easyScheduling": "Easy Scheduling"
+            "easyScheduling": "Easy Scheduling",
+            "usage": {
+                "title": "Simple Usage Guide",
+                "step1": "1. Login / Signup",
+                "step2": "2. Select Doctor by Dept",
+                "step3": "3. Make Video Call"
+            }
         },
         "footer": {
             "copyright": "All rights reserved.",

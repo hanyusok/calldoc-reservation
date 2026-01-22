@@ -13,7 +13,13 @@
             "subtitle": "신뢰할 수 있는 전문의와 화상 상담하세요. 하나의 대시보드에서 본인과 가족의 진료 예약을 간편하게 관리할 수 있습니다.",
             "bookBtn": "예약하기",
             "verifiedDoctor": "검증된 전문의",
-            "easyScheduling": "간편한 예약"
+            "easyScheduling": "간편한 예약",
+            "usage": {
+                "title": "간편 사용법",
+                "step1": "1. 로그인/회원가입",
+                "step2": "2. 과목별 의사 선택",
+                "step3": "3. 화상 진료 하기"
+            }
         },
         "footer": {
             "copyright": "All rights reserved.",

@@ -60,6 +60,16 @@ export default function Home() {
               className="object-cover"
               priority
             />
+
+            {/* Usage Overlay */}
+            <div className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-sm p-4 sm:p-6 text-white text-left transition-opacity hover:opacity-100">
+              <h3 className="font-bold text-lg mb-2 text-blue-200">{t('hero.usage.title')}</h3>
+              <ul className="text-sm space-y-1">
+                <li>{t('hero.usage.step1')}</li>
+                <li>{t('hero.usage.step2')}</li>
+                <li>{t('hero.usage.step3')}</li>
+              </ul>
+            </div>
           </div>
         </div>
       </main>
