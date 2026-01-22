@@ -17,8 +17,8 @@
             "usage": {
                 "title": "간편 사용법",
                 "step1": "1. 로그인/회원가입",
-                "step2": "2. 과목별 의사 선택",
-                "step3": "3. 화상 진료 하기"
+                "step2": "2. 가족(추가) 관리",
+                "step3": "3. 진료 예약하기"
             }
         },
         "footer": {
@@ -335,6 +335,37 @@
                 "success": "크레딧이 성공적으로 업데이트되었습니다.",
                 "error": "업데이트 실패"
             }
+        }
+    },
+    "Auth": {
+        "login": {
+            "title": "환영합니다",
+            "subtitle": "진료 예약을 위해 로그인해주세요",
+            "emailLabel": "이메일 주소",
+            "passwordLabel": "비밀번호",
+            "signInBtn": "로그인",
+            "orContinue": "또는 소셜 로그인",
+            "google": "Google로 로그인",
+            "kakao": "Kakao로 로그인",
+            "naver": "Naver로 로그인",
+            "agreement": "로그인 시 이용약관 및 개인정보처리방침에 동의하게 됩니다.",
+            "noAccount": "계정이 없으신가요?",
+            "signUpLink": "회원가입",
+            "continueWithEmail": "이메일로 계속하기"
+        },
+        "register": {
+            "title": "계정 생성",
+            "subtitle": "서비스 이용을 위해 회원가입해주세요",
+            "nameLabel": "이름",
+            "emailLabel": "이메일 주소",
+            "passwordLabel": "비밀번호",
+            "confirmPasswordLabel": "비밀번호 확인",
+            "signUpBtn": "회원가입",
+            "processing": "계정 생성 중...",
+            "hasAccount": "이미 계정이 있으신가요?",
+            "loginLink": "로그인",
+            "passwordMismatch": "비밀번호가 일치하지 않습니다.",
+            "error": "오류가 발생했습니다."
         }
     }
 }

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 import { Plus, Trash2, User as UserIcon, Pencil } from "lucide-react"
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import PatientForm from './PatientForm';
 
 export default async function ProfilePage({
     searchParams
@@ -18,7 +19,13 @@ export default async function ProfilePage({
     const t = await getTranslations('Profile');
 
     const editId = searchParams.edit;
-    const editingPatient = editId ? patients.find(p => p.id === editId) : null;
+    const rawPatient = editId ? patients.find(p => p.id === editId) : null;
+    const editingPatient = rawPatient ? {
+        ...rawPatient,
+        dateOfBirth: rawPatient.dateOfBirth.toISOString(),
+        createdAt: rawPatient.createdAt.toISOString(),
+        updatedAt: rawPatient.updatedAt.toISOString(),
+    } : null;
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
@@ -88,86 +95,7 @@ export default async function ProfilePage({
                         )}
                     </h2>
 
-                    {/* @ts-ignore */}
-                    <form action={editingPatient ? updatePatient.bind(null, editingPatient.id) : addPatient} className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">{t('form.name')}</label>
-                            <input
-                                type="text"
-                                name="name"
-                                required
-                                defaultValue={editingPatient?.name || ''}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">{t('form.residentNumber')}</label>
-                            <input
-                                type="text"
-                                name="residentNumber"
-                                required
-                                defaultValue={editingPatient?.residentNumber || ''}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
-                                placeholder={t('form.residentNumberPlaceholder')}
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">{t('form.dob')}</label>
-                                <input
-                                    type="date"
-                                    name="dateOfBirth"
-                                    required
-                                    defaultValue={editingPatient?.dateOfBirth ? new Date(editingPatient.dateOfBirth).toISOString().split('T')[0] : ''}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">{t('form.gender.label')}</label>
-                                <select
-                                    name="gender"
-                                    defaultValue={editingPatient?.gender || 'MALE'}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
-                                >
-                                    <option value="MALE">{t('form.gender.male')}</option>
-                                    <option value="FEMALE">{t('form.gender.female')}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">{t('form.relationship.label')}</label>
-                            <select
-                                name="relationship"
-                                defaultValue={editingPatient?.relationship || 'FAMILY'}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
-                            >
-                                <option value="FAMILY">{t('form.relationship.family')}</option>
-                                <option value="SELF">{t('form.relationship.self')}</option>
-                            </select>
-                        </div>
-
-                        <div className="flex space-x-3">
-                            {editingPatient ? (
-                                <Link
-                                    href="/dashboard/profile"
-                                    className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                                >
-                                    {t('form.cancel')}
-                                </Link>
-                            ) : (
-                                <button type="reset" className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                    {t('form.cancel')}
-                                </button>
-                            )}
-
-                            <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                {t('form.save')}
-                            </button>
-                        </div>
-                    </form>
+                    <PatientForm editingPatient={editingPatient} />
                 </section>
 
             </main>

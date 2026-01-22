@@ -17,8 +17,8 @@
             "usage": {
                 "title": "Simple Usage Guide",
                 "step1": "1. Login / Signup",
-                "step2": "2. Select Doctor by Dept",
-                "step3": "3. Make Video Call"
+                "step2": "2. Manage Family Members",
+                "step3": "3. Book an Appointment"
             }
         },
         "footer": {
@@ -335,6 +335,37 @@
                 "success": "Credit updated successfully.",
                 "error": "Failed to update credit."
             }
+        }
+    },
+    "Auth": {
+        "login": {
+            "title": "Welcome Back",
+            "subtitle": "Sign in to book your consultation",
+            "emailLabel": "Email address",
+            "passwordLabel": "Password",
+            "signInBtn": "Sign in",
+            "orContinue": "Or continue with",
+            "google": "Sign in with Google",
+            "kakao": "Sign in with Kakao",
+            "naver": "Sign in with Naver",
+            "agreement": "By signing in, you agree to our Terms of Service and Privacy Policy.",
+            "noAccount": "Don't have an account?",
+            "signUpLink": "Sign up",
+            "continueWithEmail": "Continue with Email"
+        },
+        "register": {
+            "title": "Create an Account",
+            "subtitle": "Sign up to get started",
+            "nameLabel": "Full Name",
+            "emailLabel": "Email address",
+            "passwordLabel": "Password",
+            "confirmPasswordLabel": "Confirm Password",
+            "signUpBtn": "Sign Up",
+            "processing": "Creating account...",
+            "hasAccount": "Already have an account?",
+            "loginLink": "Log in",
+            "passwordMismatch": "Passwords do not match",
+            "error": "Something went wrong"
         }
     }
 }
