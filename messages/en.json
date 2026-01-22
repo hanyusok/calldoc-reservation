@@ -159,7 +159,7 @@
                 "symptomsPlaceholder": "Please describe your symptoms briefly...",
                 "processInfoTitle": "Process Info",
                 "processInfo1": "Submit request with symptoms.",
-                "processInfo2": "Admin will verify and set the consultation fee.",
+                "processInfo2": "(Reception desk) will check insurance eligibility and set the consultation fee.",
                 "processInfo3": "Pay via Dashboard to confirm appointment.",
                 "processing": "Processing...",
                 "requestButton": "Request Consultation"

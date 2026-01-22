@@ -159,7 +159,7 @@
                 "symptomsPlaceholder": "증상을 간단히 설명해주세요...",
                 "processInfoTitle": "진료 안내",
                 "processInfo1": "증상을 작성하여 예약을 요청합니다.",
-                "processInfo2": "관리자가 확인 후 진료비를 책정합니다.",
+                "processInfo2": "(접수 데스크에서) 건강보험 자격을 확인후 진료비를 책정합니다.",
                 "processInfo3": "대시보드에서 결제하면 예약이 확정됩니다.",
                 "processing": "요청 중...",
                 "requestButton": "진료 요청하기"
