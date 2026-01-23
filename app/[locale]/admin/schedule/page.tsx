@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, startOfDay } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { useTranslations } from 'next-intl';
 import { getGlobalSchedule, updateWeeklySchedule, setDayOverride, clearDayOverride, getSchedule } from '@/app/actions/schedule';
 import { ChevronLeft, ChevronRight, Save, Clock, Calendar as CalendarIcon, X } from 'lucide-react';
