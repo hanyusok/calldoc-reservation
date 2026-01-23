@@ -4,15 +4,15 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-    const email = 'tester@calldoc.co.kr'
-    const password = 'Test1234!'
+    const email = 'test@calldoc.co.kr'
+    const password = 'test'
     const hashedPassword = await bcrypt.hash(password, 10)
 
     const user = await prisma.user.upsert({
         where: { email },
         update: {
             password: hashedPassword,
-            name: 'Tester',
+            name: '홍길동',
             role: 'PATIENT' // Default role
         },
         create: {
