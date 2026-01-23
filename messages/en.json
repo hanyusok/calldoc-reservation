@@ -240,6 +240,7 @@
             "patients": "Patients",
             "appointments": "Appointments",
             "prepaid": "Prepaid / Credits",
+            "schedule": "Schedule Settings",
             "logout": "Logout"
         },
         "dashboard": {
@@ -334,6 +335,33 @@
                 },
                 "success": "Credit updated successfully.",
                 "error": "Failed to update credit."
+            }
+        },
+        "schedule": {
+            "title": "Schedule Management",
+            "weeklyTitle": "Weekly Schedule (Recurring)",
+            "saveWeekly": "Save Weekly",
+            "start": "Start",
+            "end": "End",
+            "working": "Working",
+            "offDuty": "Off Duty",
+            "specificDateTitle": "Specific Date Management",
+            "status": "Status",
+            "overrideActive": "Override Active",
+            "standardSchedule": "Standard Schedule",
+            "markAsOff": "Mark as Off Duty",
+            "markAsWorking": "Mark as Working",
+            "reset": "Reset to Weekly Schedule",
+            "selectDate": "Select a date to manage availability",
+            "saved": "Weekly schedule saved!",
+            "days": {
+                "sun": "Sun",
+                "mon": "Mon",
+                "tue": "Tue",
+                "wed": "Wed",
+                "thu": "Thu",
+                "fri": "Fri",
+                "sat": "Sat"
             }
         }
     },

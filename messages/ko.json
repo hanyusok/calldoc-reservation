@@ -240,6 +240,7 @@
             "patients": "환자",
             "appointments": "예약",
             "prepaid": "선불/크레딧",
+            "schedule": "예약 설정",
             "logout": "로그아웃"
         },
         "dashboard": {
@@ -334,6 +335,33 @@
                 },
                 "success": "크레딧이 성공적으로 업데이트되었습니다.",
                 "error": "업데이트 실패"
+            }
+        },
+        "schedule": {
+            "title": "예약 설정",
+            "weeklyTitle": "주간 일정 (반복)",
+            "saveWeekly": "주간 일정 저장",
+            "start": "시작",
+            "end": "종료",
+            "working": "근무",
+            "offDuty": "휴무",
+            "specificDateTitle": "특정 날짜 관리",
+            "status": "상태",
+            "overrideActive": "예외 설정됨",
+            "standardSchedule": "기본 일정",
+            "markAsOff": "휴무로 설정",
+            "markAsWorking": "근무로 설정",
+            "reset": "주간 일정으로 초기화",
+            "selectDate": "일정을 관리할 날짜를 선택하세요.",
+            "saved": "주간 일정이 저장되었습니다!",
+            "days": {
+                "sun": "일",
+                "mon": "월",
+                "tue": "화",
+                "wed": "수",
+                "thu": "목",
+                "fri": "금",
+                "sat": "토"
             }
         }
     },

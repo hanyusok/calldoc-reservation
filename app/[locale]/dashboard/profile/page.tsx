@@ -1,4 +1,4 @@
-import { getPatients, addPatient, deletePatient, updatePatient } from "@/app/actions/patient"
+import { getPatients, deletePatient } from "@/app/actions/patient"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
@@ -6,11 +6,15 @@ import { Plus, Trash2, User as UserIcon, Pencil } from "lucide-react"
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import PatientForm from './PatientForm';
+import { format } from "date-fns"
+import { ko, enUS } from 'date-fns/locale'
 
 export default async function ProfilePage({
-    searchParams
+    searchParams,
+    params: { locale }
 }: {
-    searchParams: { edit?: string }
+    searchParams: { edit?: string },
+    params: { locale: string }
 }) {
     const session = await getServerSession(authOptions)
     if (!session) redirect('/auth/login')
@@ -26,6 +30,10 @@ export default async function ProfilePage({
         createdAt: rawPatient.createdAt.toISOString(),
         updatedAt: rawPatient.updatedAt.toISOString(),
     } : null;
+
+    // Date formatting helper
+    const dateLocale = locale === 'ko' ? ko : enUS;
+    const dateFormatStr = locale === 'ko' ? 'yyyy. MM. dd.' : 'MMM d, yyyy';
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
@@ -52,7 +60,7 @@ export default async function ProfilePage({
                                     </div>
                                     <div>
                                         <div className="font-medium text-gray-900">{patient.name} {patient.relationship === 'SELF' && <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full ml-1">{t('me')}</span>}</div>
-                                        <div className="text-sm text-gray-500">{new Date(patient.dateOfBirth).toLocaleDateString()} • {patient.gender === 'MALE' ? t('form.gender.male') : t('form.gender.female')}</div>
+                                        <div className="text-sm text-gray-500">{format(new Date(patient.dateOfBirth), dateFormatStr, { locale: dateLocale })} • {patient.gender === 'MALE' ? t('form.gender.male') : t('form.gender.female')}</div>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-1">

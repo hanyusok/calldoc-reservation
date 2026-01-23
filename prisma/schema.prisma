@@ -192,3 +192,12 @@ model PrepaidTransaction {
   
   createdAt     DateTime    @default(now())
 }
+
+model DoctorSchedule {
+  id             String   @id @default(cuid())
+  date           DateTime @unique
+  isDayOff       Boolean  @default(false)
+  availableSlots Json?    // Array of time strings.
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

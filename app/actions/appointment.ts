@@ -4,62 +4,110 @@ import { prisma } from "@/lib/prisma"
 import { getServerSession } from "next-auth"
 import { revalidatePath } from "next/cache"
 import { authOptions } from "@/lib/auth"
-import { addDays, format, isSameDay, parseISO, setHours, setMinutes } from "date-fns"
+import { addDays, format, isSameDay, parseISO, setHours, setMinutes, startOfDay } from "date-fns"
 
 export async function getDoctorProfile() {
     return await prisma.doctorProfile.findFirst()
 }
 
 export async function getAvailableSlots(dateString: string) {
-    // Simple slot generation logic (09:00 - 18:00, 30 min intervals)
-    // In a real app, checking against existing appointments is needed.
-
     const date = parseISO(dateString)
-    const startHour = 9
-    const endHour = 18
-    const interval = 30 // minutes
+    const dayOfWeek = format(date, 'E').toLowerCase() // 'mon', 'tue', ...
 
-    const slots = []
-    let currentTime = setMinutes(setHours(date, startHour), 0)
-    const endTime = setMinutes(setHours(date, endHour), 0)
+    // 1. Check Specific Override (DoctorSchedule)
+    const override = await prisma.doctorSchedule.findUnique({
+        where: { date: startOfDay(date) }
+    })
 
-    // Fetch existing appointments for this date
+    if (override) {
+        if (override.isDayOff) return []
+        if (override.availableSlots) {
+            // If creating specific slots, we must still filter out booked ones? 
+            // Ideally yes, but let's assume availableSlots means "Initial Capacity".
+            // We will filter taken ones later.
+            const forcedSlots = JSON.parse(override.availableSlots as string) as string[]
+            // Filter Logic below...
+            return await filterBookedSlots(date, forcedSlots)
+        }
+        // If override exists but no specific slots, fall through to default generation?
+        // Or should it reset to default? Let's assume if availableSlots is null, we use default generation logic
+        // but respect the override existence (e.g. maybe just toggled isDayOff=false).
+    }
+
+    // 2. Check Weekly Schedule (DoctorProfile)
     const doctor = await prisma.doctorProfile.findFirst()
-    if (!doctor) return []
+    if (!doctor) return [] // No profile, no booking.
 
-    // Get appointments for the selected day
+    const workingHours = doctor.workingHours as any
+    // Default: Mon-Fri 10-18, if no config. 
+    // BUT user said: Tue/Wed OFF. 
+    // If workingHours is null, we might want a hardcoded default or empty.
+    // Let's assume if NO workingHours set yet, we allow standard dates for safety, 
+    // or better, return empty to force setup. 
+    // Given the request "Add auto off function", let's treat "no config" as "standard 10-18".
+
+    let start = "10:00"
+    let end = "18:00"
+    let breakTimes = ["12:00", "12:30"] // 12:00 - 13:00 effectively (12:00 slot and 12:30 slot)
+
+    if (workingHours) {
+        const dayConfig = workingHours[dayOfWeek]
+        if (!dayConfig) {
+            // If explicit NULL for this day in JSON, it's OFF.
+            // But we need to distinguish "undefined" (not set) vs "null" (off).
+            // Let's assume workingHours has keys for days.
+            // If key exists and is null -> OFF.
+            // If key doesn't exist -> Default? Or Off?
+            // Let's go safe: Check if key exists.
+            if (dayOfWeek in workingHours && workingHours[dayOfWeek] === null) return []
+        }
+
+        if (dayConfig) {
+            start = dayConfig.start || "10:00"
+            end = dayConfig.end || "18:00"
+            if (dayConfig.break) breakTimes = dayConfig.break
+        }
+    } else {
+        // No config yet. Hardcode Tue/Wed OFF as requested?
+        // User said: "Every Tue/Wed is off duty. Add auto off function". 
+        // Implementation: We will seed this into DB later or defaulting here.
+        if (dayOfWeek === 'tue' || dayOfWeek === 'wed') return []
+    }
+
+    // Generate Slots
+    // ... (Generation logic)
+    const interval = 30
+    const [startH, startM] = start.split(':').map(Number)
+    const [endH, endM] = end.split(':').map(Number)
+
+    let current = setMinutes(setHours(date, startH), startM)
+    const endT = setMinutes(setHours(date, endH), endM)
+
+    const candidates = []
+    while (current < endT) {
+        const timeStr = format(current, 'HH:mm')
+        // Check break
+        if (!breakTimes.includes(timeStr)) {
+            candidates.push(timeStr)
+        }
+        current = new Date(current.getTime() + interval * 60000)
+    }
+
+    return await filterBookedSlots(date, candidates)
+}
+
+async function filterBookedSlots(date: Date, candidates: string[]) {
     const nextDay = addDays(date, 1)
-
     const existingAppointments = await prisma.appointment.findMany({
         where: {
-            startDateTime: {
-                gte: date,
-                lt: nextDay
-            },
-            status: {
-                not: 'CANCELLED' // Ignore cancelled
-            }
+            startDateTime: { gte: date, lt: nextDay },
+            status: { not: 'CANCELLED' }
         }
     })
 
-    while (currentTime < endTime) {
-        const timeString = format(currentTime, 'HH:mm')
-
-        // Check if this slot is taken
-        const isTaken = existingAppointments.some(appt => {
-            const apptStart = appt.startDateTime
-            // innovative check: if appointment starts at the same time
-            return format(apptStart, 'HH:mm') === timeString
-        })
-
-        if (!isTaken) {
-            slots.push(timeString)
-        }
-
-        currentTime = new Date(currentTime.getTime() + interval * 60000)
-    }
-
-    return slots
+    return candidates.filter(time => {
+        return !existingAppointments.some(appt => format(appt.startDateTime, 'HH:mm') === time)
+    })
 }
 
 export async function getUserAppointments() {
