@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth"
 import { revalidatePath } from "next/cache"
 import { authOptions } from "@/lib/auth"
 import { addDays, format, isSameDay, parseISO, setHours, setMinutes, startOfDay } from "date-fns"
+import { createNotification } from "@/lib/notifications"
+
 
 export async function getDoctorProfile() {
     return await prisma.doctorProfile.findFirst()
@@ -171,7 +173,20 @@ export async function createAppointment(data: {
             }
         })
 
+        // Notify Admins
+        const admins = await prisma.user.findMany({ where: { role: 'ADMIN' } })
+        for (const admin of admins) {
+            await createNotification({
+                userId: admin.id,
+                title: "Notifications.bookingRequestTitle",
+                message: "Notifications.bookingRequestMsg",
+                type: "BOOKING",
+                link: "/admin/appointments?tab=pending"
+            })
+        }
+
         return { success: true, appointmentId: appointment.id }
+
     } catch (error) {
         console.error(error)
         return { error: "Failed to create appointment" }

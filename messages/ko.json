@@ -400,5 +400,15 @@
             "passwordMismatch": "비밀번호가 일치하지 않습니다.",
             "error": "오류가 발생했습니다."
         }
+    },
+    "Notifications": {
+        "bookingRequestTitle": "새로운 예약 요청",
+        "bookingRequestMsg": "새로운 예약이 접수되었습니다. 확인해주세요.",
+        "statusChangeTitle": "예약 상태 변경",
+        "statusChangeMsg": "예약 상태가 변경되었습니다.",
+        "paymentTitle": "진료비 책정 완료",
+        "paymentMsg": "진료비가 책정되었습니다. 결제를 진행해주세요.",
+        "meetingTitle": "화상 진료 입장",
+        "meetingMsg": "진료실이 개설되었습니다. 지금 입장하세요."
     }
 }

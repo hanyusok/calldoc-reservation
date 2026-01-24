@@ -60,6 +60,20 @@ model User {
 
   prepaidBalance Int      @default(0)
   prepaidTransactions PrepaidTransaction[]
+  notifications Notification[]
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  type      String   // e.g., "BOOKING", "PAYMENT"
+  link      String?  // Action link
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

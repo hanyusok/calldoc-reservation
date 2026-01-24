@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
@@ -6,7 +6,7 @@ async function main() {
     if (doctor) {
         await prisma.doctorProfile.update({
             where: { id: doctor.id },
-            data: { workingHours: null } // Reset to null
+            data: { workingHours: Prisma.DbNull } // Reset to null
         })
         console.log('Reset workingHours to null')
     }

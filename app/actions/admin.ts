@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { Role, AppointmentStatus, PrepaidType } from "@prisma/client"
 import { revalidatePath } from "next/cache"
+import { createNotification } from "@/lib/notifications"
+
 
 async function checkAdmin() {
     const session = await getServerSession(authOptions)
@@ -102,11 +104,25 @@ export async function updateAppointmentStatus(appointmentId: string, status: App
     await checkAdmin()
 
     try {
-        await prisma.appointment.update({
+        const updatedAppointment = await prisma.appointment.update({
             where: { id: appointmentId },
-            data: { status }
+            data: { status },
+            include: { patient: true }
         })
+
+        // Notify User
+        if (updatedAppointment && updatedAppointment.patient) {
+            await createNotification({
+                userId: updatedAppointment.patient.userId,
+                title: "Notifications.statusChangeTitle",
+                message: "Notifications.statusChangeMsg",
+                type: "INFO",
+                link: "/dashboard/appointments"
+            })
+        }
+
         revalidatePath('/admin/appointments')
+
         return { success: true }
     } catch (error) {
         console.error("Failed to update status:", error)
@@ -368,6 +384,22 @@ export async function setAppointmentPayment(appointmentId: string, amount: numbe
             where: { appointmentId },
             data: { amount }
         })
+
+        // Notify User about Payment
+        const apptForPayment = await prisma.appointment.findUnique({
+            where: { id: appointmentId },
+            include: { patient: true }
+        })
+        if (apptForPayment && apptForPayment.patient) {
+            await createNotification({
+                userId: apptForPayment.patient.userId,
+                title: "Notifications.paymentTitle",
+                message: "Notifications.paymentMsg",
+                type: "PAYMENT",
+                link: "/dashboard/appointments"
+            })
+        }
+
         // Could optional verify insurance here update other flags
         revalidatePath('/admin/appointments')
         return { success: true }
@@ -384,6 +416,23 @@ export async function sendMeetingLink(appointmentId: string, meetingLink: string
             where: { id: appointmentId },
             data: { meetingLink }
         })
+
+        // Notify User about Meeting Link
+        const apptForLink = await prisma.appointment.findUnique({
+            where: { id: appointmentId },
+            include: { patient: true }
+        })
+
+        if (apptForLink && apptForLink.patient) {
+            await createNotification({
+                userId: apptForLink.patient.userId,
+                title: "Notifications.meetingTitle",
+                message: "Notifications.meetingMsg",
+                type: "BOOKING",
+                link: "/dashboard/appointments"
+            })
+        }
+
         revalidatePath('/admin/appointments')
         return { success: true }
     } catch (error) {

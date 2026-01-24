@@ -400,5 +400,15 @@
             "passwordMismatch": "Passwords do not match",
             "error": "Something went wrong"
         }
+    },
+    "Notifications": {
+        "bookingRequestTitle": "New Booking Request",
+        "bookingRequestMsg": "A new appointment request has been received.",
+        "statusChangeTitle": "Status Updated",
+        "statusChangeMsg": "Your appointment status has been updated.",
+        "paymentTitle": "Payment Request",
+        "paymentMsg": "Consultation fee set. Please proceed to payment.",
+        "meetingTitle": "Meeting Ready",
+        "meetingMsg": "Doctor is ready. Please join the meeting."
     }
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { AuthProvider } from "../providers";
+import NotificationManager from "@/components/NotificationManager";
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
@@ -27,6 +28,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
+            <NotificationManager />
             {children}
           </AuthProvider>
         </NextIntlClientProvider>
