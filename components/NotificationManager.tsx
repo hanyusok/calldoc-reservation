@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { useState, useEffect, useRef } from "react";
 import { X, Bell } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 type Notification = {
     id: string;
@@ -19,8 +20,9 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function NotificationManager() {
     const t = useTranslations();
+    const router = useRouter(); // Initialize router
     const { data, mutate } = useSWR<Notification[]>("/api/notifications", fetcher, {
-        refreshInterval: 5000, // Poll every 5 seconds
+        refreshInterval: 5000,
     });
 
     const [toasts, setToasts] = useState<Notification[]>([]);
@@ -36,9 +38,20 @@ export default function NotificationManager() {
             if (newNotifications.length > 0) {
                 newNotifications.forEach((n) => processedIdsProp.current.add(n.id));
                 setToasts((prev) => [...prev, ...newNotifications]);
+
+                // Play Sound
+                try {
+                    const audio = new Audio('/notification.mp3');
+                    audio.play().catch(e => console.log('Audio play failed', e));
+                } catch (e) {
+                    console.log('Audio not supported', e);
+                }
+
+                // Auto-refresh the current page data
+                router.refresh();
             }
         }
-    }, [data]);
+    }, [data, router]);
 
     const markAsRead = async (id?: string) => {
         try {

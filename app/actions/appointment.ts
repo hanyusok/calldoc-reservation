@@ -185,6 +185,8 @@ export async function createAppointment(data: {
             })
         }
 
+
+        revalidatePath('/dashboard')
         return { success: true, appointmentId: appointment.id }
 
     } catch (error) {
