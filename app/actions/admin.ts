@@ -25,10 +25,18 @@ export async function getAdminStats() {
         prisma.user.count()
     ])
 
-    // Calculate basic revenue (sum of confirmed payments)
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    // Calculate daily revenue (sum of confirmed payments today)
     const revenueAgg = await prisma.payment.aggregate({
         _sum: { amount: true },
-        where: { status: 'COMPLETED' }
+        where: {
+            status: 'COMPLETED',
+            updatedAt: {
+                gte: startOfToday
+            }
+        }
     })
 
     return {

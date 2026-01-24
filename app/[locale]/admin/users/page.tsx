@@ -4,6 +4,11 @@ import { Search } from "lucide-react";
 import AddUserButton from "@/components/admin/AddUserButton";
 import UserActions from "@/components/admin/UserActions";
 import { getTranslations } from "next-intl/server";
+import { User, Role } from "@prisma/client";
+
+type UserWithCount = User & {
+    _count: { patients: number }
+};
 
 export default async function AdminUsersPage({
     searchParams
@@ -14,7 +19,9 @@ export default async function AdminUsersPage({
     const search = searchParams.search || "";
     const t = await getTranslations('Admin');
 
-    const { users, total, totalPages } = await getAdminUsers(page, 10, search);
+    const result = await getAdminUsers(page, 10, search);
+    const users = result.users as unknown as UserWithCount[];
+    const { total, totalPages } = result;
 
     return (
         <div className="space-y-6">
@@ -66,7 +73,6 @@ export default async function AdminUsersPage({
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {/* @ts-ignore - _count is added in query */}
                                     {user._count?.patients || 0}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">

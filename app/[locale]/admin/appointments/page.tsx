@@ -91,9 +91,7 @@ export default async function AdminAppointmentsPage({
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
                                     <div className="flex items-center justify-end gap-2">
-                                        {/* @ts-ignore */}
                                         <AppointmentFlowManager appointment={appt} />
-                                        {/* @ts-ignore */}
                                         <AppointmentActions appointment={appt} />
                                     </div>
                                 </td>
