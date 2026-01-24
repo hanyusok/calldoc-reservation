@@ -61,7 +61,9 @@
                 "paid": "결제 완료"
             },
             "empty": "예정된 예약이 없습니다.",
-            "bookNow": "예약하기"
+            "bookNow": "예약하기",
+            "showHistory": "지난 예약 보기 ({count})",
+            "hideHistory": "지난 예약 숨기기"
         },
         "status": {
             "PENDING": "대기중",

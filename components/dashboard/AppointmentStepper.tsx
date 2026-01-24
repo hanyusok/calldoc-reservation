@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Check } from 'lucide-react';
+import { Check, ClipboardPlus, CircleDollarSign, Goal, Stethoscope } from 'lucide-react';
 
 interface AppointmentStepperProps {
     status: string;
@@ -28,10 +28,10 @@ export default function AppointmentStepper({ status, paymentStatus, paymentAmoun
     }
 
     const steps = [
-        { key: 'request', label: t('request') },
-        { key: 'payment', label: t('payment') },
-        { key: 'confirmed', label: t('confirmed') },
-        { key: 'completed', label: t('completed') },
+        { key: 'request', label: t('request'), icon: ClipboardPlus },
+        { key: 'payment', label: t('payment'), icon: CircleDollarSign },
+        { key: 'confirmed', label: t('confirmed'), icon: Goal },
+        { key: 'completed', label: t('completed'), icon: Stethoscope },
     ];
 
     return (
@@ -47,25 +47,22 @@ export default function AppointmentStepper({ status, paymentStatus, paymentAmoun
                 {steps.map((step, index) => {
                     const isCompleted = index < currentStep;
                     const isCurrent = index === currentStep;
-                    const isUpcoming = index > currentStep;
+                    const Icon = step.icon;
 
                     return (
                         <div key={step.key} className="flex flex-col items-center">
                             <div
-                                className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 bg-white
-                                    ${isCompleted || isCurrent ? 'border-blue-600' : 'border-gray-300'}
-                                    ${isCompleted ? 'bg-blue-600' : ''}
+                                className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 z-10
+                                    ${isCompleted ? 'bg-blue-600 border-blue-600 text-white' : ''}
+                                    ${isCurrent ? 'bg-white border-blue-600 text-blue-600 ring-2 ring-blue-100' : ''}
+                                    ${!isCompleted && !isCurrent ? 'bg-white border-gray-300 text-gray-400' : ''}
                                 `}
                             >
-                                {isCompleted ? (
-                                    <Check className="w-5 h-5 text-white" />
-                                ) : (
-                                    <div className={`w-3 h-3 rounded-full ${isCurrent ? 'bg-blue-600' : 'bg-gray-300'}`} />
-                                )}
+                                <Icon className="w-5 h-5" />
                             </div>
                             <span
                                 className={`mt-2 text-xs font-medium transition-colors duration-300
-                                    ${isCurrent ? 'text-blue-600' : 'text-gray-500'}
+                                    ${isCurrent ? 'text-blue-600 font-bold' : 'text-gray-500'}
                                 `}
                             >
                                 {step.label}

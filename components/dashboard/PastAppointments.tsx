@@ -19,8 +19,10 @@ export default function PastAppointments({ appointments }: { appointments: any[]
             >
                 <History className="w-5 h-5 mr-2" />
                 <span className="font-medium text-sm">
-                    {/* Hardcoded fallback or need translation key */}
-                    {isExpanded ? 'Hide Past History' : `Show Past History (${appointments.length})`}
+                    {isExpanded
+                        ? t('appointments.hideHistory')
+                        : t('appointments.showHistory', { count: appointments.length })
+                    }
                 </span>
                 <div className="ml-auto">
                     {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
