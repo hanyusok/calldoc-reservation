@@ -117,7 +117,7 @@ export async function updateAppointmentStatus(appointmentId: string, status: App
                 title: "Notifications.statusChangeTitle",
                 message: "Notifications.statusChangeMsg",
                 type: "INFO",
-                link: "/dashboard/appointments"
+                link: "/dashboard"
             })
         }
 
@@ -396,7 +396,7 @@ export async function setAppointmentPayment(appointmentId: string, amount: numbe
                 title: "Notifications.paymentTitle",
                 message: "Notifications.paymentMsg",
                 type: "PAYMENT",
-                link: "/dashboard/appointments"
+                link: "/dashboard"
             })
         }
 
@@ -429,7 +429,7 @@ export async function sendMeetingLink(appointmentId: string, meetingLink: string
                 title: "Notifications.meetingTitle",
                 message: "Notifications.meetingMsg",
                 type: "BOOKING",
-                link: "/dashboard/appointments"
+                link: "/dashboard"
             })
         }
 
