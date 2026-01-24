@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { setAppointmentPayment, sendMeetingLink } from "@/app/actions/admin";
 import { DollarSign, Video, FileText, Check } from "lucide-react";
 import SimpleModal from "./SimpleModal";
@@ -26,7 +26,14 @@ export default function AppointmentFlowManager({ appointment }: { appointment: A
     const [isLinkOpen, setIsLinkOpen] = useState(false);
 
     const [price, setPrice] = useState(15000);
-    const [link, setLink] = useState(appointment.meetingLink || "https://meet.google.com/new"); // ease of use default
+    const [link, setLink] = useState(appointment.meetingLink || "");
+
+    useEffect(() => {
+        if (!appointment.meetingLink) {
+            const savedDefault = localStorage.getItem('calldoc_default_meet_link');
+            setLink(savedDefault || "https://meet.google.com/new");
+        }
+    }, [appointment.meetingLink]);
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
