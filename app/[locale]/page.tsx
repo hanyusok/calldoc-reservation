@@ -83,6 +83,15 @@ export default function Home() {
             {t('footer.refundPolicy')}
           </Link>
         </div>
+        <div className="mt-4 text-xs text-gray-400 flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 flex-wrap">
+          <span>{t('footer.companyName')}</span>
+          <span className="hidden sm:inline">|</span>
+          <span>{t('footer.representative')}</span>
+          <span className="hidden sm:inline">|</span>
+          <span>{t('footer.contact')}</span>
+          <span className="hidden sm:inline">|</span>
+          <span>{t('footer.address')}</span>
+        </div>
       </footer>
     </div>
   );
