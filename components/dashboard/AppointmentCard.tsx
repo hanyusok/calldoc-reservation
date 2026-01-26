@@ -7,6 +7,7 @@ import { Clock, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import AppointmentStepper from "./AppointmentStepper";
 import PayButton from "./PayButton";
+import PharmacySelector from "./PharmacySelector";
 
 export default function AppointmentCard({ appointment, isPast = false }: { appointment: any, isPast?: boolean }) {
     const t = useTranslations('Dashboard');
@@ -46,7 +47,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                 </div>
             </div>
 
-            {/* Stepper Component (Hide for past/cancelled to save space? Or keep? existing logic keeps it) */}
+            {/* Stepper Component */}
             <AppointmentStepper
                 status={appointment.status}
                 paymentStatus={appointment.payment?.status}
@@ -91,6 +92,26 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                     )}
                 </div>
             </div>
+
+            {/* Prescription Transfer Section */}
+            {appointment.status === 'COMPLETED' && (
+                <div className="border-t pt-4">
+                    {appointment.prescription ? (
+                        <div className="bg-gray-50 p-3 rounded-lg flex items-center justify-between">
+                            <div className="text-sm">
+                                <div className="font-semibold text-gray-700">{t('pharmacy.title')}</div>
+                                <div className="text-gray-500">{appointment.prescription.pharmacyName}</div>
+                            </div>
+                            <div className={`px-2 py-1 text-xs font-bold rounded ${appointment.prescription.status === 'ISSUED' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+                                }`}>
+                                {appointment.prescription.status}
+                            </div>
+                        </div>
+                    ) : (
+                        <PharmacySelector appointmentId={appointment.id} onSuccess={() => window.location.reload()} />
+                    )}
+                </div>
+            )}
         </div>
     );
 }

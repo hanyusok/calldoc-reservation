@@ -241,6 +241,30 @@
                 "created": "Created"
             }
         },
+        "flowManager": {
+            "viewSymptoms": "View Symptoms",
+            "viewSymptomsTitle": "Symptoms",
+            "close": "Close",
+            "setPriceTitle": "Set Consultation Fee",
+            "setPriceDesc": "Please set the consultation fee.",
+            "amountLabel": "Amount (KRW)",
+            "saveButton": "Saving...",
+            "setPriceButton": "Set Fee",
+            "sendLinkTitle": "Send Meeting Link",
+            "sendLinkDesc": "Send Google Meet link to patient.",
+            "meetingUrlLabel": "Meeting URL",
+            "sendingButton": "Sending...",
+            "sendLinkButton": "Send Link",
+            "issuePrescriptionTitle": "Issue Prescription",
+            "viewPrescriptionTitle": "Prescription Status",
+            "pharmacy": "Pharmacy",
+            "fax": "Fax",
+            "status": "Status",
+            "fileUrlLabel": "Prescription File URL",
+            "issueButton": "Issue",
+            "issuingButton": "Issuing...",
+            "issued": "Issued"
+        },
         "roleEnum": {
             "ADMIN": "Admin",
             "PATIENT": "Patient"
@@ -303,21 +327,6 @@
             "buttonLabel": "New Appointment",
             "changeStatusConfirm": "Are you sure you want to change status to '{status}'?",
             "modalTitle": "Create New Appointment"
-        },
-        "flowManager": {
-            "viewSymptoms": "View Symptoms",
-            "viewSymptomsTitle": "Patient Symptoms",
-            "close": "Close",
-            "setPriceTitle": "Set Consultation Fee",
-            "setPriceDesc": "Review insurance (mock) and set the patient's fee.",
-            "amountLabel": "Amount (KRW)",
-            "saveButton": "Saving...",
-            "setPriceButton": "Set Price & Notify",
-            "sendLinkTitle": "Send Meeting Link",
-            "sendLinkDesc": "Send the video call link to the patient dashboard.",
-            "meetingUrlLabel": "Meeting URL",
-            "sendingButton": "Sending...",
-            "sendLinkButton": "Send Link"
         },
         "prepaid": {
             "title": "Prepaid Credits Management",

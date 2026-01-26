@@ -130,7 +130,8 @@ export async function getUserAppointments() {
         },
         include: {
             patient: true,
-            payment: true
+            payment: true,
+            prescription: true
         },
         orderBy: {
             startDateTime: 'asc'

@@ -142,6 +142,95 @@ export default function AppointmentFlowManager({ appointment }: { appointment: A
                     </SimpleModal>
                 </>
             )}
+
+            {/* 4. Issue Prescription - If Completed and Requested */}
+            {/* @ts-ignore - appointment type expansion */}
+            {appointment.prescription && (
+                <>
+                    <PrescriptionManager appointment={appointment} t={t} />
+                </>
+            )}
         </div>
     );
+}
+
+import { issuePrescription } from "@/app/actions/prescription";
+
+function PrescriptionManager({ appointment, t }: { appointment: any, t: any }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [fileUrl, setFileUrl] = useState(appointment.prescription.fileUrl || "");
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const handleIssue = async () => {
+        setLoading(true);
+        await issuePrescription(appointment.prescription.id, fileUrl);
+        setLoading(false);
+        setIsOpen(false);
+        router.refresh();
+    };
+
+    // Status Badge Color
+    const isIssued = appointment.prescription.status === 'ISSUED';
+    const btnColor = isIssued ? 'text-green-600 bg-green-50' : (appointment.prescription.status === 'REQUESTED' ? 'text-red-600 bg-red-50 animate-pulse' : 'text-gray-400 bg-gray-100');
+
+    return (
+        <>
+            <button
+                onClick={() => setIsOpen(true)}
+                className={`p-2 rounded ${btnColor}`}
+                title={isIssued ? t('viewPrescriptionTitle') : t('issuePrescriptionTitle')}
+            >
+                <FileText className="w-5 h-5" />
+            </button>
+            <SimpleModal isOpen={isOpen} onClose={() => setIsOpen(false)} title={isIssued ? t('viewPrescriptionTitle') : t('issuePrescriptionTitle')}>
+                <div className="space-y-4">
+                    <div className="bg-gray-50 p-3 rounded">
+                        <div className="text-sm font-bold text-gray-700 mb-1">{t('pharmacy')}</div>
+                        <div className="text-gray-900">{appointment.prescription.pharmacyName}</div>
+                        <div className="text-xs text-gray-500 mt-1">
+                            {t('fax')}: {appointment.prescription.pharmacyFax || '-'}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm font-medium">{t('status')}</span>
+                            <span className={`text-xs font-bold px-2 py-1 rounded ${isIssued ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                {appointment.prescription.status}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium">{t('fileUrlLabel')}</label>
+                        <input
+                            type="text"
+                            value={fileUrl}
+                            onChange={e => setFileUrl(e.target.value)}
+                            placeholder="https://..."
+                            className="w-full border p-2 rounded"
+                            disabled={isIssued}
+                        />
+                    </div>
+
+                    {!isIssued && (
+                        <button
+                            onClick={handleIssue}
+                            disabled={loading}
+                            className="w-full bg-blue-600 text-white py-2 rounded"
+                        >
+                            {loading ? t('issuingButton') : t('issueButton')}
+                        </button>
+                    )}
+
+                    {isIssued && (
+                        <div className="text-center text-sm text-green-600 font-medium py-2">
+                            ✓ {t('issued')}
+                        </div>
+                    )}
+                </div>
+            </SimpleModal>
+        </>
+    )
 }

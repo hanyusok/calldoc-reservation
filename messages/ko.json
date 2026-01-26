@@ -241,6 +241,30 @@
                 "created": "가입일"
             }
         },
+        "flowManager": {
+            "viewSymptoms": "증상 확인",
+            "viewSymptomsTitle": "증상 내역",
+            "close": "닫기",
+            "setPriceTitle": "진료비 책정",
+            "setPriceDesc": "진료비를 입력해주세요.",
+            "amountLabel": "금액 (원)",
+            "saveButton": "저장 중...",
+            "setPriceButton": "금액 설정",
+            "sendLinkTitle": "화상 회의 링크 전송",
+            "sendLinkDesc": "환자에게 Google Meet 링크를 전송합니다.",
+            "meetingUrlLabel": "회의 주소 (URL)",
+            "sendingButton": "전송 중...",
+            "sendLinkButton": "링크 전송",
+            "issuePrescriptionTitle": "처방전 발급",
+            "viewPrescriptionTitle": "처방전 상태",
+            "pharmacy": "약국",
+            "fax": "팩스",
+            "status": "상태",
+            "fileUrlLabel": "처방전 파일 URL",
+            "issueButton": "발급하기",
+            "issuingButton": "발급 중...",
+            "issued": "발급됨"
+        },
         "roleEnum": {
             "ADMIN": "관리자",
             "PATIENT": "환자"
@@ -303,21 +327,6 @@
             "buttonLabel": "새 예약",
             "changeStatusConfirm": "상태를 '{status}'(으)로 변경하시겠습니까?",
             "modalTitle": "새 예약 생성"
-        },
-        "flowManager": {
-            "viewSymptoms": "증상 확인",
-            "viewSymptomsTitle": "환자 증상",
-            "close": "닫기",
-            "setPriceTitle": "진료비 설정",
-            "setPriceDesc": "보험 적용 여부를 확인하고 진료비를 설정하세요.",
-            "amountLabel": "금액 (KRW)",
-            "saveButton": "저장 중...",
-            "setPriceButton": "금액 설정 및 알림",
-            "sendLinkTitle": "화상 회의 링크 전송",
-            "sendLinkDesc": "환자 대시보드로 화상 회의 링크를 전송합니다.",
-            "meetingUrlLabel": "회의 URL",
-            "sendingButton": "전송 중...",
-            "sendLinkButton": "링크 전송"
         },
         "prepaid": {
             "title": "선불 및 크레딧 관리",
