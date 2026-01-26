@@ -101,6 +101,22 @@ export async function getAdminAppointments(page = 1, pageSize = 10, status?: App
     return { appointments, total, totalPages: Math.ceil(total / pageSize) }
 }
 
+export async function getRecentPrescriptions(limit = 5) {
+    await checkAdmin()
+
+    return await prisma.prescription.findMany({
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+            appointment: {
+                include: {
+                    patient: true
+                }
+            }
+        }
+    })
+}
+
 export async function updateAppointmentStatus(appointmentId: string, status: AppointmentStatus) {
     await checkAdmin()
 

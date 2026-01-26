@@ -312,7 +312,16 @@
                 "revenue": "Revenue"
             },
             "welcome": "Welcome, Admin",
-            "instruction": "Select a category from the sidebar to manage the application."
+            "instruction": "Select a category from the sidebar to manage the application.",
+            "prescriptions": {
+                "title": "Recent Prescriptions",
+                "date": "Date",
+                "patient": "Patient",
+                "pharmacy": "Pharmacy",
+                "status": "Status",
+                "empty": "No recent prescriptions.",
+                "viewAll": "View All"
+            }
         },
         "actions": {
             "edit": "Edit",

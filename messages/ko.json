@@ -312,7 +312,16 @@
                 "revenue": "매출"
             },
             "welcome": "관리자님 환영합니다",
-            "instruction": "왼쪽 사이드바에서 메뉴를 선택하여 관리하세요."
+            "instruction": "왼쪽 사이드바에서 메뉴를 선택하여 관리하세요.",
+            "prescriptions": {
+                "title": "최근 처방전",
+                "date": "일시",
+                "patient": "환자",
+                "pharmacy": "약국",
+                "status": "상태",
+                "empty": "최근 처방전 내역이 없습니다.",
+                "viewAll": "전체 보기"
+            }
         },
         "actions": {
             "edit": "수정",

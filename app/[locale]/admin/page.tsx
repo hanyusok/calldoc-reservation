@@ -1,9 +1,11 @@
-import { getAdminStats } from "@/app/actions/admin";
+import { getAdminStats, getRecentPrescriptions } from "@/app/actions/admin";
+import PrescriptionListCard from "@/components/admin/PrescriptionListCard";
 import { Users, Calendar, Clock, DollarSign } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 export default async function AdminDashboardPage() {
     const stats = await getAdminStats();
+    const recentPrescriptions = await getRecentPrescriptions();
     const t = await getTranslations('Admin.dashboard');
 
     // Helper for formatting currency (KRW)
@@ -36,12 +38,20 @@ export default async function AdminDashboardPage() {
                 ))}
             </div>
 
-            {/* Todo: Recent Activity Table or Charts could go here */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-                <h2 className="text-xl font-bold mb-4">{t('welcome')}</h2>
-                <p className="text-gray-600 dark:text-gray-300">
-                    {t('instruction')}
-                </p>
+            {/* Lower Section: Recent Activity & Info */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Left: Recent Prescriptions */}
+                <div className="h-full">
+                    <PrescriptionListCard prescriptions={recentPrescriptions} />
+                </div>
+
+                {/* Right: Existing Welcome/Instruction */}
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 h-full">
+                    <h2 className="text-xl font-bold mb-4">{t('welcome')}</h2>
+                    <p className="text-gray-600 dark:text-gray-300">
+                        {t('instruction')}
+                    </p>
+                </div>
             </div>
         </div>
     );
