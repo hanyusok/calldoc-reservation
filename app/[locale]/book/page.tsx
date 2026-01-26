@@ -217,6 +217,7 @@ export default function BookingPage() {
                         <li>{t('steps.confirm.processInfo1')}</li>
                         <li>{t('steps.confirm.processInfo2')}</li>
                         <li>{t('steps.confirm.processInfo3')}</li>
+                        <li className="text-red-600 font-medium">{t('steps.confirm.warning')}</li>
                     </ul>
                 </div>
 

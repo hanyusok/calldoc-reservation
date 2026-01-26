@@ -16,6 +16,7 @@ export async function addPatient(formData: FormData) {
     const relationship = formData.get("relationship") as "SELF" | "FAMILY"
     const dobString = formData.get("dateOfBirth") as string
     const residentNumber = formData.get("residentNumber") as string
+    const phoneNumber = formData.get("phoneNumber") as string | null
 
     if (!name || !dobString || !residentNumber) {
         return { error: "Missing required fields" }
@@ -30,6 +31,7 @@ export async function addPatient(formData: FormData) {
                 relationship,
                 dateOfBirth: new Date(dobString),
                 residentNumber, // In production, encrypt this!
+                phoneNumber,
             }
         })
 
@@ -50,6 +52,7 @@ export async function updatePatient(id: string, formData: FormData) {
     const relationship = formData.get("relationship") as "SELF" | "FAMILY"
     const dobString = formData.get("dateOfBirth") as string
     const residentNumber = formData.get("residentNumber") as string
+    const phoneNumber = formData.get("phoneNumber") as string | null
 
     try {
         // Ownership check
@@ -66,6 +69,7 @@ export async function updatePatient(id: string, formData: FormData) {
                 relationship,
                 dateOfBirth: new Date(dobString),
                 residentNumber,
+                phoneNumber,
             }
         })
 

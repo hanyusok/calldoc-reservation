@@ -84,6 +84,7 @@
         "addNew": "새 환자 추가",
         "form": {
             "name": "이름",
+            "phoneNumber": "휴대폰 번호",
             "residentNumber": "주민등록번호 (예: 800101-1234567)",
             "residentNumberPlaceholder": "YYMMDD-XXXXXXX",
             "dob": "생년월일",
@@ -169,6 +170,7 @@
                 "processInfo1": "증상을 작성하여 예약을 요청합니다.",
                 "processInfo2": "(접수 데스크에서) 건강보험 자격을 확인후 진료비를 책정합니다.",
                 "processInfo3": "대시보드에서 결제하면 예약이 확정됩니다.",
+                "warning": "처방불가: 마약류, 오·남용우려의약품, 사후피임약, 비만치료제",
                 "processing": "요청 중...",
                 "requestButton": "진료 요청하기"
             },
@@ -220,6 +222,8 @@
             "addPatient": "환자 추가",
             "table": {
                 "name": "환자명",
+                "phoneNumber": "휴대폰 번호",
+                "residentNumber": "주민등록번호",
                 "relatedUser": "관련 계정",
                 "gender": "성별",
                 "dob": "생년월일",

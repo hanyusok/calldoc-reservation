@@ -13,6 +13,7 @@ interface Patient {
     dateOfBirth: string; // ISO string
     gender: 'MALE' | 'FEMALE';
     relationship: 'FAMILY' | 'SELF';
+    phoneNumber: string | null;
 }
 
 interface PatientFormProps {
@@ -25,6 +26,25 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
 
     // State for controlled inputs
     const [residentNumber, setResidentNumber] = useState(editingPatient?.residentNumber || '');
+    const [phoneNumber, setPhoneNumber] = useState(editingPatient?.phoneNumber || '');
+
+    // Handle Phone Number Change
+    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+
+        if (value.length > 3 && value.length <= 7) {
+            value = `${value.slice(0, 3)}-${value.slice(3)}`;
+        } else if (value.length > 7) {
+            value = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7)}`;
+        }
+
+        if (value.length > 13) {
+            value = value.slice(0, 13);
+        }
+
+        setPhoneNumber(value);
+    };
+
     // Handle date format from server (Date object or string)
     const initialDob = editingPatient?.dateOfBirth
         ? editingPatient.dateOfBirth.split('T')[0]
@@ -88,6 +108,8 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
+        // Ensure manual overrides are respected in FormData if they differ from default
+        formData.set('phoneNumber', phoneNumber);
 
         try {
             const result = editingPatient
@@ -119,6 +141,18 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
                     required
                     defaultValue={editingPatient?.name || ''}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                />
+            </div>
+
+            <div>
+                <label className="block text-sm font-medium text-gray-700">{t('form.phoneNumber')}</label>
+                <input
+                    type="text"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                    placeholder="010-1234-5678"
                 />
             </div>
 

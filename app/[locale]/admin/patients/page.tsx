@@ -47,6 +47,8 @@ export default async function AdminPatientsPage({
                     <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('patients.table.name')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('patients.table.phoneNumber')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('patients.table.residentNumber')}</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('patients.table.relatedUser')}</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('patients.table.gender')}</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('patients.table.dob')}</th>
@@ -58,6 +60,8 @@ export default async function AdminPatientsPage({
                         {patients.map((patient) => (
                             <tr key={patient.id} className="hover:bg-gray-50 dark:hover:bg-gray-750">
                                 <td className="px-6 py-4 whitespace-nowrap font-medium">{patient.name}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{patient.phoneNumber || '-'}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{patient.residentNumber || '-'}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="flex flex-col">
                                         <span>{patient.user.name || "N/A"}</span>

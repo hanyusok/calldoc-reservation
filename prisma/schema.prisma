@@ -106,6 +106,7 @@ model Patient {
   gender          Gender
   relationship    Relationship @default(SELF)
   residentNumber  String? // Encrypted or partial
+  phoneNumber     String?
   
   appointments    Appointment[]
   

@@ -84,6 +84,7 @@
         "addNew": "Add New Patient",
         "form": {
             "name": "Full Name",
+            "phoneNumber": "Phone Number (010-XXXX-XXXX)",
             "residentNumber": "Resident Number (Example: 800101-1234567)",
             "residentNumberPlaceholder": "YYMMDD-XXXXXXX",
             "dob": "Date of Birth",
@@ -169,6 +170,7 @@
                 "processInfo1": "Submit request with symptoms.",
                 "processInfo2": "(Reception desk) will check insurance eligibility and set the consultation fee.",
                 "processInfo3": "Pay via Dashboard to confirm appointment.",
+                "warning": "Cannot prescribe: Narcotics, potential abuse drugs, emergency contraceptives, weight loss drugs.",
                 "processing": "Processing...",
                 "requestButton": "Request Consultation"
             },
@@ -220,6 +222,8 @@
             "addPatient": "Add Patient",
             "table": {
                 "name": "Patient Name",
+                "phoneNumber": "Phone Number",
+                "residentNumber": "Resident No.",
                 "relatedUser": "Related User",
                 "gender": "Gender",
                 "dob": "Date of Birth",
