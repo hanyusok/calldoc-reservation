@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { setAppointmentPayment, sendMeetingLink } from "@/app/actions/admin";
-import { DollarSign, Video, FileText, Check } from "lucide-react";
+import { DollarSign, Video, FileText, Check, PillBottle } from "lucide-react";
+
+// ... (existing code)
+
+
 import SimpleModal from "./SimpleModal";
 import { useRouter } from "next/navigation";
 import { AppointmentStatus, PaymentStatus } from "@prisma/client";
@@ -181,7 +185,7 @@ function PrescriptionManager({ appointment, t }: { appointment: any, t: any }) {
                 className={`p-2 rounded ${btnColor}`}
                 title={isIssued ? t('viewPrescriptionTitle') : t('issuePrescriptionTitle')}
             >
-                <FileText className="w-5 h-5" />
+                <PillBottle className="w-5 h-5" />
             </button>
             <SimpleModal isOpen={isOpen} onClose={() => setIsOpen(false)} title={isIssued ? t('viewPrescriptionTitle') : t('issuePrescriptionTitle')}>
                 <div className="space-y-4">

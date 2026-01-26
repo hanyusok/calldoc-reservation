@@ -63,7 +63,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                             <span className="font-semibold">{t('appointments.symptomsLabel')}:</span> {appointment.symptoms}
                         </div>
                     )}
-                    {appointment.meetingLink && !isPast && (
+                    {appointment.meetingLink && !isPast && appointment.status !== 'COMPLETED' && (
                         <a
                             href={appointment.meetingLink}
                             target="_blank"

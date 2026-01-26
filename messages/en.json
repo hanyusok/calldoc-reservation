@@ -65,6 +65,19 @@
             "showHistory": "Show Past History ({count})",
             "hideHistory": "Hide Past History"
         },
+        "pharmacy": {
+            "title": "Select Pharmacy",
+            "description": "Please enter the pharmacy info to transfer the prescription.",
+            "nameLabel": "Pharmacy Name",
+            "namePlaceholder": "e.g. Happy Pharmacy",
+            "faxLabel": "Fax Number",
+            "faxPlaceholder": "e.g. 02-1234-5678",
+            "phoneLabel": "Phone Number",
+            "phonePlaceholder": "e.g. 02-1234-5678",
+            "addressLabel": "Address",
+            "addressPlaceholder": "Pharmacy Address (Optional)",
+            "submitForTransfer": "Request Transfer"
+        },
         "status": {
             "PENDING": "Pending",
             "CONFIRMED": "Confirmed",
@@ -264,6 +277,17 @@
             "issueButton": "Issue",
             "issuingButton": "Issuing...",
             "issued": "Issued"
+        },
+        "meetSettings": {
+            "title": "Meeting Settings",
+            "defaultLinkLabel": "Default Meeting Link",
+            "defaultLinkHelp": "Enter the default Google Meet URL to be used when creating a new appointment.",
+            "save": "Save Settings",
+            "checklistTitle": "Pre-meeting Checklist",
+            "checkMic": "Check Microphone",
+            "checkCamera": "Check Camera",
+            "checkAdmission": "Admit participants from waiting room",
+            "openGoogleMeet": "Open Google Meet"
         },
         "roleEnum": {
             "ADMIN": "Admin",

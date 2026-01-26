@@ -88,7 +88,8 @@ export async function getAdminAppointments(page = 1, pageSize = 10, status?: App
             where: whereClause,
             include: {
                 patient: true,
-                payment: true
+                payment: true,
+                prescription: true
             },
             skip,
             take: pageSize,

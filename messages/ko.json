@@ -65,6 +65,19 @@
             "showHistory": "지난 예약 보기 ({count})",
             "hideHistory": "지난 예약 숨기기"
         },
+        "pharmacy": {
+            "title": "약국 선택",
+            "description": "처방전을 전송할 약국 정보를 입력해주세요.",
+            "nameLabel": "약국명",
+            "namePlaceholder": "예: 행복약국",
+            "faxLabel": "팩스 번호",
+            "faxPlaceholder": "예: 02-1234-5678",
+            "phoneLabel": "전화번호",
+            "phonePlaceholder": "예: 02-1234-5678",
+            "addressLabel": "주소",
+            "addressPlaceholder": "약국 주소 (선택사항)",
+            "submitForTransfer": "처방전 전송 요청"
+        },
         "status": {
             "PENDING": "대기중",
             "CONFIRMED": "확정됨",
@@ -264,6 +277,17 @@
             "issueButton": "발급하기",
             "issuingButton": "발급 중...",
             "issued": "발급됨"
+        },
+        "meetSettings": {
+            "title": "화상 회의 설정",
+            "defaultLinkLabel": "기본 회의 주소",
+            "defaultLinkHelp": "새 예약 생성 시 기본으로 사용될 Google Meet 주소를 입력하세요.",
+            "save": "설정 저장",
+            "checklistTitle": "회의 시작 전 체크리스트",
+            "checkMic": "마이크 작동 확인",
+            "checkCamera": "카메라 작동 확인",
+            "checkAdmission": "대기실 참여자 수락",
+            "openGoogleMeet": "Google Meet 열기"
         },
         "roleEnum": {
             "ADMIN": "관리자",

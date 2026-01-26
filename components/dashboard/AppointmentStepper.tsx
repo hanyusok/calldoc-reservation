@@ -16,7 +16,7 @@ export default function AppointmentStepper({ status, paymentStatus, paymentAmoun
     let currentStep = 0;
 
     if (status === 'COMPLETED') {
-        currentStep = 3;
+        currentStep = 4; // Past the last step to mark it as completed (filled)
     } else if (status === 'CONFIRMED') {
         currentStep = 2;
     } else if (status === 'PENDING') {
@@ -41,7 +41,7 @@ export default function AppointmentStepper({ status, paymentStatus, paymentAmoun
                 <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 -z-10" />
                 <div
                     className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-blue-600 -z-10 transition-all duration-500"
-                    style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}
+                    style={{ width: `${Math.min((currentStep / (steps.length - 1)) * 100, 100)}%` }}
                 />
 
                 {steps.map((step, index) => {

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, startOfDay } from 'date-fns';
-import { ko } from 'date-fns/locale';
-import { useTranslations } from 'next-intl';
+import { ko, enUS } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 import { getGlobalSchedule, updateWeeklySchedule, setDayOverride, clearDayOverride, getSchedule } from '@/app/actions/schedule';
 import { ChevronLeft, ChevronRight, Save, Clock, Calendar as CalendarIcon, X } from 'lucide-react';
 import MeetSettingsCard from '@/components/admin/MeetSettingsCard';
@@ -12,6 +12,8 @@ const DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
 export default function AdminSchedulePage() {
     const t = useTranslations('Admin.schedule');
+    const locale = useLocale();
+    const dateLocale = locale === 'ko' ? ko : enUS;
     const [loading, setLoading] = useState(true);
     const [weeklySchedule, setWeeklySchedule] = useState<any>({});
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -125,7 +127,7 @@ export default function AdminSchedulePage() {
                         return (
                             <div key={day} className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 p-3 border rounded-lg hover:bg-gray-50">
                                 <div className="flex items-center justify-between w-full sm:w-auto">
-                                    <div className="w-24 font-medium uppercase">{day}</div>
+                                    <div className="w-24 font-medium uppercase">{t(`days.${day}`)}</div>
                                     <label className="flex items-center space-x-2 sm:hidden">
                                         <input
                                             type="checkbox"
@@ -133,7 +135,7 @@ export default function AdminSchedulePage() {
                                             onChange={(e) => handleWeeklyChange(day, 'enabled', e.target.checked)}
                                             className="rounded text-blue-600 w-5 h-5"
                                         />
-                                        <span className="text-sm text-gray-600">{isEnabled ? 'Working' : 'Off Duty'}</span>
+                                        <span className="text-sm text-gray-600">{isEnabled ? t('working') : t('offDuty')}</span>
                                     </label>
                                 </div>
 
@@ -144,13 +146,13 @@ export default function AdminSchedulePage() {
                                         onChange={(e) => handleWeeklyChange(day, 'enabled', e.target.checked)}
                                         className="rounded text-blue-600 w-5 h-5"
                                     />
-                                    <span className="text-sm text-gray-600 min-w-[70px]">{isEnabled ? 'Working' : 'Off Duty'}</span>
+                                    <span className="text-sm text-gray-600 min-w-[70px]">{isEnabled ? t('working') : t('offDuty')}</span>
                                 </label>
 
                                 {isEnabled && (
                                     <div className="flex flex-wrap items-center gap-3 sm:ml-4">
                                         <div className="flex items-center space-x-2">
-                                            <span className="text-xs text-gray-500">Start</span>
+                                            <span className="text-xs text-gray-500">{t('start')}</span>
                                             <input
                                                 type="time"
                                                 value={config.start}
@@ -159,7 +161,7 @@ export default function AdminSchedulePage() {
                                             />
                                         </div>
                                         <div className="flex items-center space-x-2">
-                                            <span className="text-xs text-gray-500">End</span>
+                                            <span className="text-xs text-gray-500">{t('end')}</span>
                                             <input
                                                 type="time"
                                                 value={config.end}
@@ -188,7 +190,7 @@ export default function AdminSchedulePage() {
                         <div>
                             <div className="flex justify-between items-center mb-4">
                                 <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}><ChevronLeft /></button>
-                                <span className="font-bold text-lg">{format(currentMonth, 'yyyy MMMM')}</span>
+                                <span className="font-bold text-lg">{format(currentMonth, 'yyyy MMMM', { locale: dateLocale })}</span>
                                 <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}><ChevronRight /></button>
                             </div>
                             <div className="grid grid-cols-7 gap-1 text-center text-sm mb-2">
@@ -219,16 +221,16 @@ export default function AdminSchedulePage() {
                         <div className="border-l pl-8">
                             {selectedDate ? (
                                 <div className="space-y-6">
-                                    <h3 className="text-xl font-bold">{format(selectedDate, 'PPP', { locale: ko })}</h3>
+                                    <h3 className="text-xl font-bold">{format(selectedDate, 'PPP', { locale: dateLocale })}</h3>
 
                                     <div className="space-y-4">
                                         <div className="p-4 bg-gray-50 rounded-lg border">
                                             <div className="flex justify-between items-center mb-2">
-                                                <span className="font-medium">Status</span>
+                                                <span className="font-medium">{t('status')}</span>
                                                 {daySchedule ? (
-                                                    <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full font-bold">Override Active</span>
+                                                    <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full font-bold">{t('overrideActive')}</span>
                                                 ) : (
-                                                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-bold">Standard Schedule</span>
+                                                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-bold">{t('standardSchedule')}</span>
                                                 )}
                                             </div>
 
@@ -237,13 +239,13 @@ export default function AdminSchedulePage() {
                                                     onClick={() => saveDayOverride(true)}
                                                     className={`flex-1 py-2 rounded-lg border font-medium transition-colors ${daySchedule?.isDayOff ? 'bg-red-600 text-white border-red-600' : 'bg-white text-gray-700 hover:bg-red-50'}`}
                                                 >
-                                                    Mark as Off Duty
+                                                    {t('markAsOff')}
                                                 </button>
                                                 <button
                                                     onClick={() => saveDayOverride(false)}
                                                     className={`flex-1 py-2 rounded-lg border font-medium transition-colors ${daySchedule && !daySchedule.isDayOff ? 'bg-green-600 text-white border-green-600' : 'bg-white text-gray-700 hover:bg-green-50'}`}
                                                 >
-                                                    Mark as Working
+                                                    {t('markAsWorking')}
                                                 </button>
                                             </div>
                                         </div>
@@ -254,7 +256,7 @@ export default function AdminSchedulePage() {
                                                 className="w-full py-2 text-gray-500 hover:text-red-500 text-sm flex items-center justify-center border border-dashed border-gray-300 rounded-lg hover:bg-gray-50"
                                             >
                                                 <X className="w-4 h-4 mr-2" />
-                                                Reset to Weekly Schedule
+                                                {t('reset')}
                                             </button>
                                         )}
                                     </div>
@@ -262,7 +264,7 @@ export default function AdminSchedulePage() {
                             ) : (
                                 <div className="h-full flex flex-col items-center justify-center text-gray-400">
                                     <CalendarIcon className="w-12 h-12 mb-4 opacity-20" />
-                                    <p>Select a date to manage availability</p>
+                                    <p>{t('selectDate')}</p>
                                 </div>
                             )}
                         </div>
