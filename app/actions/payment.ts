@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 import { createMeeting } from "./meet";
+import { createNotification } from "@/lib/notifications";
 
 export async function confirmPayment(paymentKey: string, orderId: string, amount: number) {
     // 1. Verify with Toss API
@@ -77,8 +78,25 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
             })
         ]);
 
+        // 5. Notify Admin
+        const admins = await prisma.user.findMany({
+            where: { role: 'ADMIN' },
+            select: { id: true }
+        });
+
+        const notificationPromises = admins.map(admin => createNotification({
+            userId: admin.id,
+            title: "Notifications.paymentTitle", // "Payment Confirmed"
+            message: `Payment of ${amount} KRW confirmed for appointment ${orderId}.`,
+            type: 'PAYMENT',
+            link: '/admin/appointments'
+        }));
+
+        await Promise.all(notificationPromises);
+
         revalidatePath('/dashboard');
         revalidatePath('/[locale]/admin/appointments');
+        revalidatePath('/[locale]/admin/payments'); // Also revalidate payments if exists
         return { success: true };
 
     } catch (err) {

@@ -104,7 +104,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                                 {appointment.prescription.pharmacyAddress && (
                                     <div className="text-gray-600">{appointment.prescription.pharmacyAddress}</div>
                                 )}
-                                <div className="flex gap-3 text-xs text-gray-500">
+                                <div className="flex flex-col gap-1 text-xs text-gray-500">
                                     {appointment.prescription.pharmacyPhone && (
                                         <span>Tel: {appointment.prescription.pharmacyPhone}</span>
                                     )}

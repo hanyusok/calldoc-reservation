@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { setAppointmentPayment, sendMeetingLink } from "@/app/actions/admin";
-import { DollarSign, Video, FileText, Check, PillBottle } from "lucide-react";
+import { DollarSign, Video, ZoomIn, Check, PrinterCheck } from "lucide-react";
 
 // ... (existing code)
 
@@ -69,7 +69,7 @@ export default function AppointmentFlowManager({ appointment }: { appointment: A
                         className="p-2 text-gray-600 hover:bg-gray-100 rounded tooltip"
                         title={t('viewSymptoms')}
                     >
-                        <FileText className="w-5 h-5" />
+                        <ZoomIn className="w-5 h-5" />
                     </button>
                     <SimpleModal isOpen={viewSymptoms} onClose={() => setViewSymptoms(false)} title={t('viewSymptomsTitle')}>
                         <div className="p-4 bg-gray-50 rounded mb-4 whitespace-pre-wrap">
@@ -160,22 +160,43 @@ export default function AppointmentFlowManager({ appointment }: { appointment: A
 }
 
 import { issuePrescription } from "@/app/actions/prescription";
+import { sendFax } from "@/app/actions/fax";
 
 function PrescriptionManager({ appointment, t, tAdmin }: { appointment: any, t: any, tAdmin: any }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [fileUrl, setFileUrl] = useState(appointment.prescription.fileUrl || "");
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleIssue = async () => {
+    const handleSendFax = async () => {
+        if (!selectedFile) return;
         setLoading(true);
-        await issuePrescription(appointment.prescription.id, fileUrl);
+
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        formData.append("prescriptionId", appointment.prescription.id);
+
+        const result = await sendFax(formData);
+
+        if (result?.error) {
+            alert(t('faxFail') + ": " + result.error);
+        } else {
+            alert(t('faxSuccess'));
+            setIsOpen(false);
+            router.refresh();
+        }
+        setLoading(false);
+    };
+
+    const handleManualIssue = async () => {
+        setLoading(true);
+        // Fallback or just set status
+        await issuePrescription(appointment.prescription.id, "");
         setLoading(false);
         setIsOpen(false);
         router.refresh();
     };
 
-    // Status Badge Color
     const isIssued = appointment.prescription.status === 'ISSUED';
     const btnColor = isIssued ? 'text-green-600 bg-green-50' : (appointment.prescription.status === 'REQUESTED' ? 'text-red-600 bg-red-50 animate-pulse' : 'text-gray-400 bg-gray-100');
 
@@ -184,11 +205,11 @@ function PrescriptionManager({ appointment, t, tAdmin }: { appointment: any, t: 
             <button
                 onClick={() => setIsOpen(true)}
                 className={`p-2 rounded ${btnColor}`}
-                title={isIssued ? t('viewPrescriptionTitle') : t('issuePrescriptionTitle')}
+                title={isIssued ? t('viewPrescriptionTitle') : t('sendFaxTitle')}
             >
-                <PillBottle className="w-5 h-5" />
+                <PrinterCheck className="w-5 h-5" />
             </button>
-            <SimpleModal isOpen={isOpen} onClose={() => setIsOpen(false)} title={isIssued ? t('viewPrescriptionTitle') : t('issuePrescriptionTitle')}>
+            <SimpleModal isOpen={isOpen} onClose={() => setIsOpen(false)} title={isIssued ? t('viewPrescriptionTitle') : t('sendFaxTitle')}>
                 <div className="space-y-4">
                     <div className="bg-gray-50 p-3 rounded">
                         <div className="text-sm font-bold text-gray-700 mb-1">{t('pharmacy')}</div>
@@ -208,25 +229,43 @@ function PrescriptionManager({ appointment, t, tAdmin }: { appointment: any, t: 
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium">{t('fileUrlLabel')}</label>
+                        <label className="block text-sm font-medium">{t('fileUrlLabel') || "처방전 파일 (PDF)"}</label>
                         <input
-                            type="text"
-                            value={fileUrl}
-                            onChange={e => setFileUrl(e.target.value)}
-                            placeholder="https://..."
-                            className="w-full border p-2 rounded"
+                            type="file"
+                            accept=".pdf"
+                            onChange={e => {
+                                if (e.target.files && e.target.files[0]) {
+                                    setSelectedFile(e.target.files[0]);
+                                }
+                            }}
+                            className="w-full border p-2 rounded text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                             disabled={isIssued}
                         />
+                        <p className="text-xs text-gray-500 mt-1">
+                            선택한 PDF 파일이 팩스로 전송됩니다.
+                        </p>
                     </div>
 
                     {!isIssued && (
-                        <button
-                            onClick={handleIssue}
-                            disabled={loading}
-                            className="w-full bg-blue-600 text-white py-2 rounded"
-                        >
-                            {loading ? t('issuingButton') : t('issueButton')}
-                        </button>
+                        <div className="flex flex-col gap-2">
+                            {selectedFile && (
+                                <button
+                                    onClick={handleSendFax}
+                                    disabled={loading || !selectedFile || !appointment.prescription.pharmacyFax}
+                                    className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {loading ? t('faxSending') : t('sendFaxButton')}
+                                </button>
+                            )}
+
+                            <button
+                                onClick={handleManualIssue}
+                                disabled={loading}
+                                className="w-full bg-gray-200 text-gray-700 py-2 rounded text-sm hover:bg-gray-300"
+                            >
+                                {t('issueButton')} (단순 상태 변경)
+                            </button>
+                        </div>
                     )}
 
                     {isIssued && (

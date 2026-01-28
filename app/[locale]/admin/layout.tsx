@@ -27,7 +27,6 @@ export default async function AdminLayout({
         { href: `/${locale}/admin/users`, label: t('users'), icon: UserCog },
         { href: `/${locale}/admin/patients`, label: t('patients'), icon: Users },
         { href: `/${locale}/admin/appointments`, label: t('appointments'), icon: Calendar },
-        { href: `/${locale}/admin/pharmacies`, label: t('pharmacies'), icon: Building2 },
     ];
 
     return (
@@ -50,6 +49,13 @@ export default async function AdminLayout({
                     ))}
                 </nav>
                 <div className="p-4 border-t dark:border-gray-700">
+                    <Link
+                        href={`/${locale}/admin/pharmacies`}
+                        className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mb-2 text-gray-700"
+                    >
+                        <Building2 className="w-5 h-5" />
+                        <span className="font-medium">{t('pharmacies')}</span>
+                    </Link>
                     <Link
                         href={`/${locale}/admin/schedule`}
                         className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mb-2 text-gray-700"

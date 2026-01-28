@@ -300,7 +300,12 @@
             "fileUrlLabel": "처방전 파일 URL",
             "issueButton": "발급하기",
             "issuingButton": "발급 중...",
-            "issued": "발급됨"
+            "issued": "발급됨",
+            "sendFaxTitle": "처방전 팩스 전송",
+            "sendFaxButton": "팩스 전송",
+            "faxSending": "전송 중...",
+            "faxSuccess": "팩스 전송 성공",
+            "faxFail": "팩스 전송 실패"
         },
         "meetSettings": {
             "title": "화상 회의 설정",
