@@ -79,7 +79,21 @@
             "phonePlaceholder": "예: 02-1234-5678",
             "addressLabel": "주소",
             "addressPlaceholder": "약국 주소 (선택사항)",
-            "submitForTransfer": "처방전 전송 요청"
+            "submitForTransfer": "처방전 전송 요청",
+            "searchMode": "약국 검색",
+            "createMode": "직접 입력",
+            "descriptionSelect": "목록에서 약국을 검색하여 선택해주세요.",
+            "descriptionCreate": "약국 정보를 직접 입력하여 처방전을 전송합니다.",
+            "searchLabel": "약국 검색",
+            "noResults": "검색 결과가 없습니다.",
+            "createNewLink": "새 약국 추가하기",
+            "createAndSubmit": "약국 추가 및 전송",
+            "errorSelect": "약국을 선택해주세요.",
+            "errorCreate": "약국 생성에 실패했습니다.",
+            "searchPlaceholder": "약국 이름, 주소 등으로 검색...",
+            "change": "변경",
+            "success": "처방전 전송 요청이 완료되었습니다.",
+            "processing": "처리 중..."
         },
         "status": {
             "PENDING": "대기중",

@@ -97,10 +97,21 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
             {appointment.status === 'COMPLETED' && (
                 <div className="border-t pt-4">
                     {appointment.prescription ? (
-                        <div className="bg-gray-50 p-3 rounded-lg flex items-center justify-between">
-                            <div className="text-sm">
-                                <div className="font-semibold text-gray-700">{t('pharmacy.title')}</div>
-                                <div className="text-gray-500">{appointment.prescription.pharmacyName}</div>
+                        <div className="bg-gray-50 p-4 rounded-lg flex items-start justify-between">
+                            <div className="text-sm space-y-1">
+                                <div className="font-semibold text-gray-700 mb-2">{t('pharmacy.title')}</div>
+                                <div className="font-bold text-gray-900 text-base">{appointment.prescription.pharmacyName}</div>
+                                {appointment.prescription.pharmacyAddress && (
+                                    <div className="text-gray-600">{appointment.prescription.pharmacyAddress}</div>
+                                )}
+                                <div className="flex gap-3 text-xs text-gray-500">
+                                    {appointment.prescription.pharmacyPhone && (
+                                        <span>Tel: {appointment.prescription.pharmacyPhone}</span>
+                                    )}
+                                    {appointment.prescription.pharmacyFax && (
+                                        <span>Fax: {appointment.prescription.pharmacyFax}</span>
+                                    )}
+                                </div>
                             </div>
                             <div className={`px-2 py-1 text-xs font-bold rounded ${appointment.prescription.status === 'ISSUED' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
                                 }`}>

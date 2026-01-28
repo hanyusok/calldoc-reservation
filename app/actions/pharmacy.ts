@@ -15,7 +15,7 @@ const pharmacySchema = z.object({
 
 export async function getPharmacies() {
     const session = await getServerSession(authOptions)
-    if (!session || session.user.role !== 'ADMIN') return []
+    if (!session) return []
 
     return await prisma.pharmacy.findMany({
         orderBy: { createdAt: 'desc' }
@@ -24,7 +24,7 @@ export async function getPharmacies() {
 
 export async function createPharmacy(data: z.infer<typeof pharmacySchema>) {
     const session = await getServerSession(authOptions)
-    if (!session || session.user.role !== 'ADMIN') return { error: "Unauthorized" }
+    if (!session) return { error: "Unauthorized" }
 
     const validated = pharmacySchema.safeParse(data)
     if (!validated.success) return { error: "Invalid data" }

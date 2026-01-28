@@ -35,7 +35,7 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
-            <header className="bg-white shadow-sm sticky top-0 z-10">
+            <header className="bg-white shadow-sm sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
                     <h1 className="text-xl font-bold text-gray-900">{t('title')}</h1>
                     <div className="flex items-center space-x-2 sm:space-x-4">

@@ -79,7 +79,21 @@
             "phonePlaceholder": "e.g. 02-1234-5678",
             "addressLabel": "Address",
             "addressPlaceholder": "Pharmacy Address (Optional)",
-            "submitForTransfer": "Request Transfer"
+            "submitForTransfer": "Request Transfer",
+            "searchMode": "Search Pharmacy",
+            "createMode": "Manual Input",
+            "descriptionSelect": "Search and select a pharmacy from the list.",
+            "descriptionCreate": "Enter pharmacy details manually to request transfer.",
+            "searchLabel": "Search Pharmacy",
+            "noResults": "No results found.",
+            "createNewLink": "Add New Pharmacy",
+            "createAndSubmit": "Add & Send",
+            "errorSelect": "Please select a pharmacy.",
+            "errorCreate": "Failed to create pharmacy.",
+            "searchPlaceholder": "Search by pharmacy name or address...",
+            "change": "Change",
+            "success": "Prescription transfer request completed.",
+            "processing": "Processing..."
         },
         "status": {
             "PENDING": "Pending",
