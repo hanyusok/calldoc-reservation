@@ -19,7 +19,7 @@ async function probe() {
                 console.log("!!! FOUND UploadFile in " + url + " !!!");
             }
         } catch (e) {
-            console.log(`Failed ${url}: ${e.message.split('\n')[0]}`);
+            console.log(`Failed ${url}: ${(e as Error).message.split('\n')[0]}`);
         }
     }
 }
