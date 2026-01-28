@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache"
 import * as soap from "soap"
 import { Client as FtpClient } from "basic-ftp"
 import { createNotification } from "@/lib/notifications"
+import { Readable } from "stream"
 
 const BAROBILL_CERT_KEY = process.env.BAROBILL_CERT_KEY!;
 const BAROBILL_WSDL = process.env.BAROBILL_WSDL!;
@@ -58,9 +59,7 @@ export async function sendFax(formData: FormData) {
             });
 
             // Upload to root
-            const source = new require('stream').Readable();
-            source.push(buffer);
-            source.push(null);
+            const source = Readable.from(buffer);
 
             await ftp.uploadFrom(source, fileName);
             console.log("FTP Upload Successful");
