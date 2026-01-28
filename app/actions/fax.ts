@@ -53,6 +53,7 @@ export async function sendFax(formData: FormData) {
                 host: FTP_HOST,
                 user: FTP_USER,
                 password: FTP_PASSWORD,
+                port: parseInt(process.env.BAROBILL_FTP_PORT || "9031"),
                 secure: false // BaroBill Test FTP might be plain FTP? Check docs or assume plain first.
             });
 
