@@ -14,7 +14,8 @@ interface Pharmacy {
 }
 
 export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] }) {
-    const t = useTranslations('Admin'); // Assuming we will add translations later
+    const t = useTranslations('Admin.pharmacies');
+    const tCommon = useTranslations('Admin.common');
     const [searchTerm, setSearchTerm] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -81,7 +82,7 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                     <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <input
                         type="text"
-                        placeholder="Search pharmacies..."
+                        placeholder={t('searchPlaceholder')}
                         className="pl-10 w-full border rounded-lg p-2.5 text-sm"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -92,7 +93,7 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium hover:bg-blue-700"
                 >
                     <Plus size={16} />
-                    Add Pharmacy
+                    {t('addPharmacy')}
                 </button>
             </div>
 
@@ -100,18 +101,18 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fax</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('table.name')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('table.phone')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('table.fax')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('table.address')}</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{tCommon('actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                         {filtered.length === 0 ? (
                             <tr>
                                 <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
-                                    No pharmacies found.
+                                    {t('noPharmacies')}
                                 </td>
                             </tr>
                         ) : (
@@ -146,10 +147,10 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
                     <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
-                        <h3 className="text-lg font-bold mb-4">{editingId ? 'Edit Pharmacy' : 'Add Pharmacy'}</h3>
+                        <h3 className="text-lg font-bold mb-4">{editingId ? t('editPharmacy') : t('addPharmacy')}</h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Pharmacy Name</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.name')}</label>
                                 <input
                                     type="text"
                                     required
@@ -160,7 +161,7 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.phone')}</label>
                                     <input
                                         type="text"
                                         className="w-full border rounded p-2 text-sm"
@@ -169,7 +170,7 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Fax</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.fax')}</label>
                                     <input
                                         type="text"
                                         className="w-full border rounded p-2 text-sm"
@@ -179,7 +180,7 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.address')}</label>
                                 <input
                                     type="text"
                                     className="w-full border rounded p-2 text-sm"
@@ -193,14 +194,14 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                                     onClick={() => setIsModalOpen(false)}
                                     className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded text-sm"
                                 >
-                                    Cancel
+                                    {tCommon('cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading}
                                     className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
                                 >
-                                    {loading ? 'Saving...' : 'Save'}
+                                    {loading ? tCommon('saving') : tCommon('save')}
                                 </button>
                             </div>
                         </form>

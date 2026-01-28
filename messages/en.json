@@ -218,7 +218,10 @@
             "next": "Next",
             "page": "Page {current} of {total}",
             "actions": "Actions",
-            "noRecords": "No records found."
+            "noRecords": "No records found.",
+            "save": "Save",
+            "cancel": "Cancel",
+            "saving": "Saving..."
         },
         "appointments": {
             "title": "Appointment Management",
@@ -310,6 +313,26 @@
             "schedule": "Schedule Settings",
             "pharmacies": "Pharmacies",
             "logout": "Logout"
+        },
+        "pharmacies": {
+            "title": "Pharmacy Management",
+            "description": "Manage the list of pharmacies available for prescriptions.",
+            "addPharmacy": "Add Pharmacy",
+            "editPharmacy": "Edit Pharmacy",
+            "noPharmacies": "No pharmacies found.",
+            "searchPlaceholder": "Search pharmacies...",
+            "table": {
+                "name": "Name",
+                "phone": "Phone",
+                "fax": "Fax",
+                "address": "Address"
+            },
+            "form": {
+                "name": "Pharmacy Name",
+                "phone": "Phone",
+                "fax": "Fax",
+                "address": "Address"
+            }
         },
         "dashboard": {
             "title": "Dashboard Overview",
