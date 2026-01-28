@@ -241,3 +241,13 @@ model DoctorSchedule {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
+
+model Pharmacy {
+  id        String   @id @default(cuid())
+  name      String
+  fax       String?
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

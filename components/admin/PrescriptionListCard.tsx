@@ -9,14 +9,16 @@ export default function PrescriptionListCard({ prescriptions }: { prescriptions:
     const locale = useLocale();
     const dateLocale = locale === 'ko' ? ko : enUS;
 
+    const tEnum = useTranslations('Admin.prescriptionStatusEnum');
+
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'ISSUED':
-                return <span className="flex items-center text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-bold"><CheckCircle className="w-3 h-3 mr-1" /> {status}</span>;
+                return <span className="flex items-center text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-bold"><CheckCircle className="w-3 h-3 mr-1" /> {tEnum('ISSUED')}</span>;
             case 'PENDING':
                 return <span className="flex items-center text-yellow-600 bg-yellow-50 px-2 py-1 rounded text-xs font-bold"><Clock className="w-3 h-3 mr-1" /> {status}</span>;
             case 'REQUESTED':
-                return <span className="flex items-center text-orange-600 bg-orange-50 px-2 py-1 rounded text-xs font-bold"><AlertCircle className="w-3 h-3 mr-1" /> {status}</span>;
+                return <span className="flex items-center text-orange-600 bg-orange-50 px-2 py-1 rounded text-xs font-bold"><AlertCircle className="w-3 h-3 mr-1" /> {tEnum('REQUESTED')}</span>;
             default:
                 return <span className="text-gray-500 bg-gray-100 px-2 py-1 rounded text-xs">{status}</span>;
         }

@@ -106,7 +106,7 @@ export default function NotificationManager() {
                             </p>
                             {toast.link && (
                                 <a href={toast.link} className="text-blue-500 text-xs mt-2 block hover:underline">
-                                    View Details
+                                    {getTranslatedText("Notifications.viewDetails")}
                                 </a>
                             )}
                         </div>
@@ -118,7 +118,8 @@ export default function NotificationManager() {
                         <X size={18} />
                     </button>
                 </div>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     );
 }

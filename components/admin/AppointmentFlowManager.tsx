@@ -25,6 +25,7 @@ type Appointment = {
 
 export default function AppointmentFlowManager({ appointment }: { appointment: Appointment }) {
     const t = useTranslations('Admin.flowManager');
+    const tAdmin = useTranslations('Admin');
     const [viewSymptoms, setViewSymptoms] = useState(false);
     const [isPriceOpen, setIsPriceOpen] = useState(false);
     const [isLinkOpen, setIsLinkOpen] = useState(false);
@@ -151,7 +152,7 @@ export default function AppointmentFlowManager({ appointment }: { appointment: A
             {/* @ts-ignore - appointment type expansion */}
             {appointment.prescription && (
                 <>
-                    <PrescriptionManager appointment={appointment} t={t} />
+                    <PrescriptionManager appointment={appointment} t={t} tAdmin={tAdmin} />
                 </>
             )}
         </div>
@@ -160,7 +161,7 @@ export default function AppointmentFlowManager({ appointment }: { appointment: A
 
 import { issuePrescription } from "@/app/actions/prescription";
 
-function PrescriptionManager({ appointment, t }: { appointment: any, t: any }) {
+function PrescriptionManager({ appointment, t, tAdmin }: { appointment: any, t: any, tAdmin: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const [fileUrl, setFileUrl] = useState(appointment.prescription.fileUrl || "");
     const [loading, setLoading] = useState(false);
@@ -201,7 +202,7 @@ function PrescriptionManager({ appointment, t }: { appointment: any, t: any }) {
                         <div className="flex justify-between items-center mb-1">
                             <span className="text-sm font-medium">{t('status')}</span>
                             <span className={`text-xs font-bold px-2 py-1 rounded ${isIssued ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                {appointment.prescription.status}
+                                {tAdmin(`prescriptionStatusEnum.${appointment.prescription.status}`)}
                             </span>
                         </div>
                     </div>

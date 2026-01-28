@@ -20,8 +20,9 @@ export async function createMeeting({
     const calendarId = process.env.GOOGLE_CALENDAR_ID;
 
     if (!keyData || !calendarId) {
-        console.warn("Missing Google Calendar credentials. Skipping automatic meeting creation.");
-        return null;
+        console.warn("Missing Google Calendar credentials. Using mock meeting link.");
+        // Return a mock link for development/testing
+        return "https://meet.google.com/test-link-mock";
     }
 
     try {

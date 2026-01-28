@@ -1,7 +1,8 @@
 import { getAdminUsers } from "@/app/actions/admin";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import AddUserButton from "@/components/admin/AddUserButton";
+import AddEntityButton from "@/components/admin/AddEntityButton";
+import UserForm from "@/components/admin/UserForm";
 import UserActions from "@/components/admin/UserActions";
 import { getTranslations } from "next-intl/server";
 import { User, Role } from "@prisma/client";
@@ -28,8 +29,12 @@ export default async function AdminUsersPage({
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">{t('users.title')}</h1>
                 <div className="flex items-center gap-4">
-                    <div className="text-sm text-gray-500">{t('common.total', { count: total })}</div>
-                    <AddUserButton />
+                    <div className="text-sm text-gray-500">Total: {total}</div>
+                    <AddEntityButton
+                        buttonLabel="Add User"
+                        modalTitle="Add New User"
+                        FormComponent={UserForm}
+                    />
                 </div>
             </div>
 

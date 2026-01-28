@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
 
+import { createNotification } from "@/lib/notifications"
+
 // Patient requests a prescription transfer
 export async function requestPrescription(
     appointmentId: string,
@@ -51,6 +53,18 @@ export async function requestPrescription(
             }
         })
 
+        // Notify Admins
+        const admins = await prisma.user.findMany({ where: { role: 'ADMIN' } })
+        for (const admin of admins) {
+            await createNotification({
+                userId: admin.id,
+                title: "Notifications.pharmacyRequestTitle",
+                message: "Notifications.pharmacyRequestMsg",
+                type: "INFO",
+                link: `/admin/appointments`
+            })
+        }
+
         revalidatePath(`/dashboard/appointments/${appointmentId}`)
         return { success: true }
     } catch (error) {
@@ -65,20 +79,33 @@ export async function issuePrescription(
     fileUrl: string
 ) {
     const session = await getServerSession(authOptions)
-    // Check for Admin role if we had one, for now just check existence
     if (!session?.user?.email) return { error: "Unauthorized" }
-    // TODO: Add stricter Admin check here
 
     try {
-        await prisma.prescription.update({
+        const updatedPrescription = await prisma.prescription.update({
             where: { id: prescriptionId },
             data: {
                 status: 'ISSUED',
                 fileUrl
+            },
+            include: {
+                appointment: {
+                    include: { patient: true }
+                }
             }
         })
 
-        // Revalidate both admin and patient views (path might need adjustment based on actual routes)
+        // Notify Patient (User)
+        if (updatedPrescription.appointment && updatedPrescription.appointment.patient) {
+            await createNotification({
+                userId: updatedPrescription.appointment.patient.userId,
+                title: "Notifications.prescriptionIssuedTitle",
+                message: "Notifications.prescriptionIssuedMsg",
+                type: "INFO",
+                link: `/dashboard/appointments/${updatedPrescription.appointmentId}`
+            })
+        }
+
         revalidatePath('/admin/appointments')
         return { success: true }
     } catch (error) {

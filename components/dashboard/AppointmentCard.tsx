@@ -104,7 +104,8 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                             </div>
                             <div className={`px-2 py-1 text-xs font-bold rounded ${appointment.prescription.status === 'ISSUED' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
                                 }`}>
-                                {appointment.prescription.status}
+                                {/* @ts-ignore */}
+                                {t(`prescriptionStatus.${appointment.prescription.status}`)}
                             </div>
                         </div>
                     ) : (

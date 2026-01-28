@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
 import { CreditCard } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function PayButton({ appointmentId, paymentId, amount, customerName }: { appointmentId: string, paymentId: string, amount: number, customerName: string }) {
     const [loading, setLoading] = useState(false);
 
+    const t = useTranslations('Dashboard.appointments.payment');
+    const locale = useLocale();
     const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY!;
 
     const handlePayClick = async () => {
@@ -18,8 +21,8 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
                 amount: amount,
                 orderId: paymentId,
                 orderName: `마트의원_진료비_${amount}_${paymentId}`,
-                successUrl: `${window.location.origin}/ko/payment/success`,
-                failUrl: `${window.location.origin}/ko/payment/fail`,
+                successUrl: `${window.location.origin}/${locale}/payment/success`,
+                failUrl: `${window.location.origin}/${locale}/payment/fail`,
                 customerName: customerName,
             });
         } catch (error: any) {
@@ -41,7 +44,7 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
             className="mt-2 bg-blue-600 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-blue-700 disabled:opacity-50"
         >
             <CreditCard className="w-4 h-4" />
-            {loading ? 'Processing...' : `Pay ${amount.toLocaleString()} KRW`}
+            {loading ? t('processing') : t('payButton', { amount: amount.toLocaleString() })}
         </button>
     );
 }

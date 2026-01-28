@@ -58,12 +58,15 @@
             "payment": {
                 "required": "결제 필요",
                 "waiting": "진료비 책정 대기 중",
-                "paid": "결제 완료"
+                "paid": "결제 완료",
+                "payButton": "{amount}원 결제하기",
+                "processing": "처리 중..."
             },
             "empty": "예정된 예약이 없습니다.",
             "bookNow": "예약하기",
             "showHistory": "지난 예약 보기 ({count})",
-            "hideHistory": "지난 예약 숨기기"
+            "hideHistory": "지난 예약 숨기기",
+            "details": "예약 상세"
         },
         "pharmacy": {
             "title": "약국 선택",
@@ -84,6 +87,10 @@
             "COMPLETED": "완료됨",
             "CANCELLED": "취소됨",
             "REJECTED": "거절됨"
+        },
+        "prescriptionStatus": {
+            "REQUESTED": "요청됨",
+            "ISSUED": "발급됨"
         }
     },
     "Profile": {
@@ -301,6 +308,7 @@
             "appointments": "예약",
             "prepaid": "선불/크레딧",
             "schedule": "예약 설정",
+            "pharmacies": "약국 관리",
             "logout": "로그아웃"
         },
         "dashboard": {
@@ -336,6 +344,10 @@
             "PAID": "결제됨",
             "REFUNDED": "환불됨",
             "REJECTED": "거절됨"
+        },
+        "prescriptionStatusEnum": {
+            "REQUESTED": "요청됨",
+            "ISSUED": "발급됨"
         },
         "genderEnum": {
             "MALE": "남성",
@@ -458,6 +470,22 @@
         "paymentTitle": "진료비 책정 완료",
         "paymentMsg": "진료비가 책정되었습니다. 결제를 진행해주세요.",
         "meetingTitle": "화상 진료 입장",
-        "meetingMsg": "진료실이 개설되었습니다. 지금 입장하세요."
+        "meetingMsg": "진료실이 개설되었습니다. 지금 입장하세요.",
+        "pharmacyRequestTitle": "처방전 전송 요청",
+        "pharmacyRequestMsg": "환자가 처방전 전송을 요청했습니다.",
+        "prescriptionIssuedTitle": "처방전 발급 완료",
+        "prescriptionIssuedMsg": "처방전이 발급되었습니다. 확인해주세요.",
+        "viewDetails": "자세히 보기"
+    },
+    "Payment": {
+        "success": {
+            "title": "결제가 완료되었습니다!",
+            "description": "{amount}원이 정상적으로 결제되었습니다.",
+            "returnToDashboard": "대시보드로 돌아가기"
+        },
+        "fail": {
+            "title": "결제 검증 실패",
+            "returnToDashboard": "대시보드로 돌아가기"
+        }
     }
 }

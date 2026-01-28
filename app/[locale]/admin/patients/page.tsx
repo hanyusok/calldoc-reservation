@@ -1,7 +1,8 @@
 import { getAdminPatients } from "@/app/actions/admin";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import AddPatientButton from "@/components/admin/AddPatientButton";
+import AddEntityButton from "@/components/admin/AddEntityButton";
+import PatientForm from "@/components/admin/PatientForm";
 import PatientActions from "@/components/admin/PatientActions";
 import { getTranslations } from "next-intl/server";
 
@@ -21,8 +22,12 @@ export default async function AdminPatientsPage({
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">{t('patients.title')}</h1>
                 <div className="flex items-center gap-4">
-                    <div className="text-sm text-gray-500">{t('common.total', { count: total })}</div>
-                    <AddPatientButton />
+                    <div className="text-sm text-gray-500">Total: {total}</div>
+                    <AddEntityButton
+                        buttonLabel={t('patients.addPatient')}
+                        modalTitle={t('patients.addPatient')}
+                        FormComponent={PatientForm}
+                    />
                 </div>
             </div>
 

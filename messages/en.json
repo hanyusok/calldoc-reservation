@@ -58,12 +58,15 @@
             "payment": {
                 "required": "Payment Required",
                 "waiting": "Waiting for Price",
-                "paid": "Paid"
+                "paid": "Paid",
+                "payButton": "Pay {amount} KRW",
+                "processing": "Processing..."
             },
             "empty": "No upcoming appointments.",
             "bookNow": "Book Now",
             "showHistory": "Show Past History ({count})",
-            "hideHistory": "Hide Past History"
+            "hideHistory": "Hide Past History",
+            "details": "Appointment Details"
         },
         "pharmacy": {
             "title": "Select Pharmacy",
@@ -84,6 +87,10 @@
             "COMPLETED": "Completed",
             "CANCELLED": "Cancelled",
             "REJECTED": "Rejected"
+        },
+        "prescriptionStatus": {
+            "REQUESTED": "Requested",
+            "ISSUED": "Issued"
         }
     },
     "Profile": {
@@ -301,6 +308,7 @@
             "appointments": "Appointments",
             "prepaid": "Prepaid / Credits",
             "schedule": "Schedule Settings",
+            "pharmacies": "Pharmacies",
             "logout": "Logout"
         },
         "dashboard": {
@@ -336,6 +344,10 @@
             "PAID": "Paid",
             "REFUNDED": "Refunded",
             "REJECTED": "Rejected"
+        },
+        "prescriptionStatusEnum": {
+            "REQUESTED": "Requested",
+            "ISSUED": "Issued"
         },
         "genderEnum": {
             "MALE": "Male",
@@ -458,6 +470,22 @@
         "paymentTitle": "Payment Request",
         "paymentMsg": "Consultation fee set. Please proceed to payment.",
         "meetingTitle": "Meeting Ready",
-        "meetingMsg": "Doctor is ready. Please join the meeting."
+        "meetingMsg": "Doctor is ready. Please join the meeting.",
+        "pharmacyRequestTitle": "Prescription Transfer Request",
+        "pharmacyRequestMsg": "Patient requested prescription transfer.",
+        "prescriptionIssuedTitle": "Prescription Issued",
+        "prescriptionIssuedMsg": "Prescription has been issued. Please check it.",
+        "viewDetails": "View Details"
+    },
+    "Payment": {
+        "success": {
+            "title": "Payment Successful!",
+            "description": "Your payment of {amount} KRW has been confirmed.",
+            "returnToDashboard": "Return to Dashboard"
+        },
+        "fail": {
+            "title": "Payment Verification Failed",
+            "returnToDashboard": "Return to Dashboard"
+        }
     }
 }
