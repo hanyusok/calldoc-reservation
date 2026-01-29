@@ -6,9 +6,14 @@ import { getTranslations } from "next-intl/server";
 
 interface Props {
     searchParams: {
-        paymentKey: string;
-        orderId: string;
-        amount: string;
+        paymentKey?: string;
+        orderId?: string;
+        amount?: string;
+        // Kiwoom Pay params
+        AuthNo?: string;
+        OrdNo?: string;
+        Price?: string;
+        [key: string]: string | undefined;
     };
     params: {
         locale: string;
@@ -16,10 +21,15 @@ interface Props {
 }
 
 export default async function PaymentSuccessPage({ searchParams, params: { locale } }: Props) {
-    const { paymentKey, orderId, amount } = searchParams;
+    // Resolve params checking both standard and Kiwoom keys
+    const paymentKey = searchParams.paymentKey || searchParams.AuthNo || "";
+    const orderId = searchParams.orderId || searchParams.OrdNo || "";
+    const amountStr = searchParams.amount || searchParams.Price || "0";
+    const amount = parseInt(amountStr);
+
     const t = await getTranslations('Payment');
 
-    const result = await confirmPayment(paymentKey, orderId, parseInt(amount));
+    const result = await confirmPayment(paymentKey, orderId, amount);
 
     if (!result.success) {
         return (
@@ -39,7 +49,7 @@ export default async function PaymentSuccessPage({ searchParams, params: { local
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('success.title')}</h1>
                 <p className="text-gray-600 mb-6">
-                    {t('success.description', { amount: parseInt(amount).toLocaleString() })}
+                    {t('success.description', { amount: amount.toLocaleString() })}
                 </p>
                 <a
                     href={`/${locale}/dashboard`}

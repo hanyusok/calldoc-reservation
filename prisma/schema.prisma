@@ -196,6 +196,7 @@ model Prescription {
 enum PaymentMethod {
   BANK_TRANSFER
   TOSS
+  KIWOOM
 }
 
 model Payment {

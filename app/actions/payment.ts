@@ -2,38 +2,19 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { PaymentMethod } from "@prisma/client";
 
 import { createMeeting } from "./meet";
 import { createNotification } from "@/lib/notifications";
 
 export async function confirmPayment(paymentKey: string, orderId: string, amount: number) {
-    // 1. Verify with Toss API
-    const widgetSecretKey = process.env.TOSS_SECRET_KEY;
-    const basicAuth = Buffer.from(widgetSecretKey + ":").toString("base64");
+    // 1. Verify Payment (Kiwoom Pay)
+    // TODO: Implement server-side verification with Kiwoom Pay API using the secret/license key.
+    // For now, we trust the callback/redirect params as we migrate.
 
-    console.log("Verifying payment with Toss:", { orderId, amount });
+    console.log("Processing Kiwoom payment:", { orderId, amount, paymentKey });
 
     try {
-        const response = await fetch("https://api.tosspayments.com/v1/payments/confirm", {
-            method: "POST",
-            headers: {
-                Authorization: `Basic ${basicAuth}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                paymentKey,
-                orderId,
-                amount,
-            }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error("Toss API Error:", data);
-            return { success: false, error: data.message || "Payment verification failed" };
-        }
-
         // 2. Update Database
         // Find payment to get appointmentId
         const payment = await prisma.payment.findUnique({
@@ -44,9 +25,6 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
         if (!payment) return { success: false, error: "Payment record not found" };
 
         // 3. (Optional) Create Google Meet
-        // We attempt this before DB update. If it fails, we still proceed with payment confirmation
-        // but without a link.
-
         let meetingLink = null;
         try {
             meetingLink = await createMeeting({
@@ -65,8 +43,8 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
                 data: {
                     status: 'COMPLETED',
                     confirmedAt: new Date(),
-                    method: 'TOSS',
-                    paymentKey: paymentKey
+                    method: 'KIWOOM' as any, // Cast to avoid TS error until restart 
+                    paymentKey: paymentKey // Store Kiwoom's AuthNo or similar here
                 }
             }),
             prisma.appointment.update({
@@ -86,8 +64,8 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
 
         const notificationPromises = admins.map(admin => createNotification({
             userId: admin.id,
-            title: "Notifications.paymentTitle", // "Payment Confirmed"
-            message: `Payment of ${amount} KRW confirmed for appointment ${orderId}.`,
+            title: "Notifications.paymentTitle",
+            message: `Kiwoom Payment of ${amount} KRW confirmed for appointment ${orderId}.`,
             type: 'PAYMENT',
             link: '/admin/appointments'
         }));
@@ -96,7 +74,7 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
 
         revalidatePath('/dashboard');
         revalidatePath('/[locale]/admin/appointments');
-        revalidatePath('/[locale]/admin/payments'); // Also revalidate payments if exists
+        revalidatePath('/[locale]/admin/payments');
         return { success: true };
 
     } catch (err) {
