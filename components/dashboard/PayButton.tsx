@@ -17,30 +17,22 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
 
     const t = useTranslations('Dashboard.appointments.payment');
     const locale = useLocale();
-    // Using the provided Test MID
-    const mid = "CTS11027";
+    // Using env variable or fallback to test store
+    const mid = process.env.NEXT_PUBLIC_KIWOOM_MID || "CTS11027";
 
     const handlePayClick = async () => {
         setLoading(true);
         try {
+            // 0. Detect Mobile
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const payType = isMobile ? "M" : "P"; // M: Mobile (Self), P: Popup
+
             // 1. Get Hash from Server
             const hashParams = {
                 CPID: mid,
                 PAYMETHOD: "CARD",
                 ORDERNO: paymentId,
-                TYPE: "P", // "P" for Popup, usually. Or "CARD" based on JSP sample key usage?
-                // JSP uses: jsonObj.put("TYPE", TYPE); where TYPE is from param.
-                // HTML sample: var PayType = pf.TYPE.value; <input type="hidden" name="TYPE" value="P"> (in some samples)
-                // Let's check the JSP sample logic again. JSP: input `TYPE`, put `TYPE`.
-                // HTML sample: `pf.TYPE.value`
-                // Error message said "TYPE" was required.
-                // Re-reading JSP: `String TYPE = request.getParameter("TYPE");`
-                // Let's assume TYPE="P" (Popup) or "W" (Web) based on sample.
-                // Wait, previous error said `TYPE, CPID...`.
-                // Let's try TYPE="CARD" if the error message implied Payment Type, OR "P" if it implies UI Mode.
-                // The HTML Sample usually has <input name="TYPE" value="P"> for Popup.
-                // AND <input name="PAYMETHOD" value="CARD">.
-                // So I will send TYPE="P" and PAYMETHOD="CARD".
+                TYPE: payType,
                 AMOUNT: amount.toString()
             };
 
@@ -53,8 +45,15 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
             // 2. Submit Form
             const form = document.createElement("form");
             form.method = "POST";
-            form.action = "https://apitest.kiwoompay.co.kr/pay/linkEnc"; // Test Environment
-            form.target = "KiwoomPayPopup"; // Open in popup
+            form.action = process.env.NEXT_PUBLIC_KIWOOM_PAY_ACTION_URL || "https://apitest.kiwoompay.co.kr/pay/linkEnc";
+
+            if (isMobile) {
+                form.target = "_self";
+            } else {
+                form.target = "KiwoomPayPopup";
+                // Open Popup window for desktop
+                window.open("", "KiwoomPayPopup", "width=468,height=750");
+            }
 
             const addField = (name: string, value: string) => {
                 const input = document.createElement("input");
@@ -77,18 +76,15 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
             addField("PRODUCTTYPE", "2"); // 1: Real, 2: Digital/Service
             addField("USERID", customerName);
 
-            // Add Return URLs? The JSP/HTML sample implies they might be configured in the hash or separately?
-            // HTML Sample didn't show ReturnURL in the ajax data, but it might be in the form submit if the endpoint supports it.
-            // The previous SDK attempt used ReturnUrl. Link Integration usually relies on the Notification URL configured in the Merchant Admin,
-            // OR checks the result in the popup opener.
-            // However, typical Link Integration (like Naver Pay) accepts return urls.
-            // Let's verify if I should include them.
-            // For now, I'll stick to the required fields from the error + hash fields.
+            // Add return URLs for Mobile (important for redirect flow)
+            // Even if JSP sample didn't emphasize them, standard mobile flow needs them to return to app
+            if (isMobile) {
+                const baseUrl = window.location.origin;
+                addField("ReturnUrl", `${baseUrl}/${locale}/payment/success`);
+                addField("StopUrl", `${baseUrl}/${locale}/payment/fail`);
+            }
 
             document.body.appendChild(form);
-
-            // Open Popup window
-            window.open("", "KiwoomPayPopup", "width=468,height=750");
 
             form.submit();
 

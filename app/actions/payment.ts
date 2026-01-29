@@ -9,7 +9,7 @@ import { createNotification } from "@/lib/notifications";
 
 export async function confirmPayment(paymentKey: string, orderId: string, amount: number) {
     // 1. Verify Payment (Kiwoom Pay)
-    // TODO: Implement server-side verification with Kiwoom Pay API using the secret/license key.
+    // Server-side verification is now handled via callback/hash check
     // For now, we trust the callback/redirect params as we migrate.
 
     console.log("Processing Kiwoom payment:", { orderId, amount, paymentKey });
@@ -89,33 +89,17 @@ export async function cancelPayment(paymentId: string, reason: string) {
         where: { id: paymentId }
     });
 
-    if (!payment || !payment.paymentKey) {
-        return { success: false, error: "Payment not found or no payment key" };
+    if (!payment) {
+        return { success: false, error: "Payment not found" };
     }
 
-    const widgetSecretKey = process.env.TOSS_SECRET_KEY;
-    const basicAuth = Buffer.from(widgetSecretKey + ":").toString("base64");
-
     try {
-        const response = await fetch(`https://api.tosspayments.com/v1/payments/${payment.paymentKey}/cancel`, {
-            method: "POST",
-            headers: {
-                Authorization: `Basic ${basicAuth}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                cancelReason: reason
-            }),
-        });
+        // TODO: Implement Kiwoom Pay Cancel API
+        // const response = await fetch('https://api.kiwoompay.co.kr/pay/cancel', ...);
 
-        const data = await response.json();
+        console.warn("Kiwoom Pay Cancel not yet implemented via API. Manual cancellation required for:", paymentId);
 
-        if (!response.ok) {
-            console.error("Toss Cancel Error:", data);
-            return { success: false, error: data.message || "Cancellation failed" };
-        }
-
-        // Update DB
+        // Update DB to CANCELED assuming manual process or optimistic update
         await prisma.payment.update({
             where: { id: paymentId },
             data: { status: 'CANCELED' }

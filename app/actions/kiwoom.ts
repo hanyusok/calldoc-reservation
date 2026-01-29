@@ -10,7 +10,7 @@ export async function getKiwoomHash(params: {
     AMOUNT: string;
 }) {
     // Replicate logic from getKiwoomENC.jsp
-    const url = "https://apitest.kiwoompay.co.kr/pay/hash";
+    const url = process.env.KIWOOM_HASH_API_URL || "https://apitest.kiwoompay.co.kr/pay/hash";
 
     console.log("Requesting Kiwoom Hash for:", params);
 
