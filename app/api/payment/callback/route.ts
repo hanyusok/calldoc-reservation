@@ -21,8 +21,8 @@ export async function POST(req: NextRequest) {
         console.log("Kiwoom Payment Callback Received:", data);
 
         // Required fields from Kiwoom Callback (based on standard PG patterns, specific fields valid from docs)
-        // Usually: RES_CD (0000), RES_MSG, ORDERNO, AMOUNT, AUTHNO, etc.
-        const { RES_CD, ORDERNO, AUTHNO, AMOUNT } = data;
+        // Usually: RES_CD (0000), RES_MSG, ORDERNO, AMOUNT, AUTHNO, DAOUTRX etc.
+        const { RES_CD, ORDERNO, AUTHNO, AMOUNT, DAOUTRX } = data;
 
         if (RES_CD === '0000') {
             // Success
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
                                 status: 'COMPLETED',
                                 confirmedAt: new Date(),
                                 method: PaymentMethod.KIWOOM,
-                                paymentKey: AUTHNO // Save Auth No
+                                paymentKey: DAOUTRX || AUTHNO // Save DAOUTRX (TRXID) for cancellation, fallback to AuthNo
                             }
                         }),
                         prisma.appointment.update({

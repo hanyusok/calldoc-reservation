@@ -486,6 +486,10 @@
             "actions": {
                 "cancel": "취소",
                 "cancelConfirm": "정말 이 결제를 취소하시겠습니까? 상태가 '취소됨'으로 변경됩니다."
+            },
+            "paymentMethodEnum": {
+                "BANK_TRANSFER": "무통장 입금",
+                "KIWOOM": "키움페이"
             }
         }
     },

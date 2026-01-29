@@ -63,7 +63,7 @@ export default async function AdminPaymentsPage({
                                     {payment.amount.toLocaleString()} KRW
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {payment.method}
+                                    {t(`paymentMethodEnum.${payment.method}`)}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <span className={`px-2 py-1 text-xs font-bold rounded-full 
@@ -73,7 +73,7 @@ export default async function AdminPaymentsPage({
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    {payment.status === 'COMPLETED' && (
+                                    {['COMPLETED', 'PENDING'].includes(payment.status) && (
                                         <CancelPaymentButton
                                             paymentId={payment.id}
                                             amount={payment.amount}
