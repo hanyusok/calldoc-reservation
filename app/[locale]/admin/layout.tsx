@@ -4,7 +4,7 @@ import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import LogoutButton from "@/components/admin/LogoutButton";
-import { LayoutDashboard, Users, Calendar, LogOut, UserCog, Clock, Building2 } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, LogOut, UserCog, Clock, Building2, Banknote } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 export default async function AdminLayout({
@@ -27,6 +27,7 @@ export default async function AdminLayout({
         { href: `/${locale}/admin/users`, label: t('users'), icon: UserCog },
         { href: `/${locale}/admin/patients`, label: t('patients'), icon: Users },
         { href: `/${locale}/admin/appointments`, label: t('appointments'), icon: Calendar },
+        { href: `/${locale}/admin/payments`, label: t('payments'), icon: Banknote },
     ];
 
     return (

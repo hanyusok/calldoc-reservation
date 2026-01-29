@@ -326,6 +326,7 @@
             "prepaid": "Prepaid / Credits",
             "schedule": "Schedule Settings",
             "pharmacies": "Pharmacies",
+            "payments": "Payments",
             "logout": "Logout"
         },
         "pharmacies": {
@@ -466,7 +467,29 @@
                 "fri": "Fri",
                 "sat": "Sat"
             }
+        },
+        "payments": {
+            "title": "Payment Management",
+            "dailyTotal": "Daily Revenue (Today)",
+            "table": {
+                "date": "Date",
+                "patient": "Patient",
+                "amount": "Amount",
+                "method": "Method",
+                "status": "Status"
+            },
+            "actions": {
+                "cancel": "Cancel",
+                "cancelConfirm": "Are you sure you want to cancel this payment? This will update the status to CANCELED."
+            }
         }
+    },
+    "Common": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {current} of {total}",
+        "actions": "Actions",
+        "noRecords": "No records found."
     },
     "Auth": {
         "login": {

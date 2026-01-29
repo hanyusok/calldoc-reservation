@@ -552,3 +552,59 @@ export async function deleteAdminUser(id: string) {
         return { error: "Failed to delete user" }
     }
 }
+
+// --- Payment Management Actions ---
+
+export async function getAdminPayments(page = 1, pageSize = 10, status?: string) {
+    await checkAdmin()
+
+    const skip = (page - 1) * pageSize
+    const whereClause: any = {}
+
+    if (status) {
+        whereClause.status = status;
+    }
+
+    const [payments, total] = await Promise.all([
+        prisma.payment.findMany({
+            where: whereClause,
+            include: {
+                appointment: {
+                    include: {
+                        patient: true
+                    }
+                }
+            },
+            skip,
+            take: pageSize,
+            orderBy: { createdAt: 'desc' }
+        }),
+        prisma.payment.count({ where: whereClause })
+    ])
+
+    return { payments, total, totalPages: Math.ceil(total / pageSize) }
+}
+
+export async function getPaymentStats() {
+    await checkAdmin()
+
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const endOfToday = new Date(startOfToday);
+    endOfToday.setDate(startOfToday.getDate() + 1);
+
+    const revenueAgg = await prisma.payment.aggregate({
+        _sum: { amount: true },
+        where: {
+            status: 'COMPLETED',
+            confirmedAt: {
+                gte: startOfToday,
+                lt: endOfToday
+            }
+        }
+    })
+
+    return {
+        dailyRevenue: revenueAgg._sum.amount || 0
+    }
+}

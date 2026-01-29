@@ -331,6 +331,7 @@
             "prepaid": "선불/크레딧",
             "schedule": "예약 설정",
             "pharmacies": "약국 관리",
+            "payments": "결제 관리",
             "logout": "로그아웃"
         },
         "pharmacies": {
@@ -471,7 +472,29 @@
                 "fri": "금",
                 "sat": "토"
             }
+        },
+        "payments": {
+            "title": "결제 관리",
+            "dailyTotal": "일일 매출 합계 (오늘)",
+            "table": {
+                "date": "일시",
+                "patient": "환자",
+                "amount": "금액",
+                "method": "결제수단",
+                "status": "상태"
+            },
+            "actions": {
+                "cancel": "취소",
+                "cancelConfirm": "정말 이 결제를 취소하시겠습니까? 상태가 '취소됨'으로 변경됩니다."
+            }
         }
+    },
+    "Common": {
+        "previous": "이전",
+        "next": "다음",
+        "page": "{current} / {total} 페이지",
+        "actions": "관리",
+        "noRecords": "데이터가 없습니다."
     },
     "Auth": {
         "login": {
