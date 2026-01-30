@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import { Role } from "@prisma/client";
 import LoginForm from "./LoginForm";
 
-export default async function LoginPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
     const session = await getServerSession(authOptions);
 
     if (session?.user) {

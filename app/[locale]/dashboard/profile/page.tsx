@@ -11,18 +11,19 @@ import { ko, enUS } from 'date-fns/locale'
 
 export default async function ProfilePage({
     searchParams,
-    params: { locale }
+    params
 }: {
-    searchParams: { edit?: string },
-    params: { locale: string }
+    searchParams: Promise<{ edit?: string }>,
+    params: Promise<{ locale: string }>
 }) {
+    const { edit: editId } = await searchParams;
+    const { locale } = await params;
     const session = await getServerSession(authOptions)
     if (!session) redirect('/auth/login')
 
     const patients = await getPatients()
     const t = await getTranslations('Profile');
 
-    const editId = searchParams.edit;
     const rawPatient = editId ? patients.find(p => p.id === editId) : null;
     const editingPatient = rawPatient ? {
         ...rawPatient,

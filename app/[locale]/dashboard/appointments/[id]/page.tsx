@@ -9,10 +9,11 @@ import PharmacyContentCard from "@/components/dashboard/PharmacyContentCard"
 import { startOfToday } from "date-fns"
 
 export default async function AppointmentDetailsPage({
-    params: { locale, id }
+    params
 }: {
-    params: { locale: string, id: string }
+    params: Promise<{ locale: string, id: string }>
 }) {
+    const { locale, id } = await params;
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) redirect('/auth/login')
 

@@ -9,10 +9,11 @@ import { getTranslations } from "next-intl/server";
 export default async function AdminPatientsPage({
     searchParams
 }: {
-    searchParams: { page?: string, search?: string }
+    searchParams: Promise<{ page?: string, search?: string }>
 }) {
-    const page = Number(searchParams.page) || 1;
-    const search = searchParams.search || "";
+    const { page: pageParam, search: searchParam } = await searchParams;
+    const page = Number(pageParam) || 1;
+    const search = searchParam || "";
     const t = await getTranslations('Admin');
 
     const { patients, total, totalPages } = await getAdminPatients(page, 10, search);

@@ -14,10 +14,11 @@ type UserWithCount = User & {
 export default async function AdminUsersPage({
     searchParams
 }: {
-    searchParams: { page?: string, search?: string }
+    searchParams: Promise<{ page?: string, search?: string }>
 }) {
-    const page = Number(searchParams.page) || 1;
-    const search = searchParams.search || "";
+    const { page: pageParam, search: searchParam } = await searchParams;
+    const page = Number(pageParam) || 1;
+    const search = searchParam || "";
     const t = await getTranslations('Admin');
 
     const result = await getAdminUsers(page, 10, search);

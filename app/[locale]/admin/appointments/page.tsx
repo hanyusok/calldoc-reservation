@@ -12,13 +12,15 @@ import { getTranslations } from "next-intl/server";
 
 export default async function AdminAppointmentsPage({
     searchParams,
-    params: { locale }
+    params
 }: {
-    searchParams: { page?: string, status?: string };
-    params: { locale: string };
+    searchParams: Promise<{ page?: string, status?: string }>;
+    params: Promise<{ locale: string }>;
 }) {
-    const page = Number(searchParams.page) || 1;
-    const status = searchParams.status as AppointmentStatus | undefined;
+    const { page: pageParam, status: statusParam } = await searchParams;
+    const { locale } = await params;
+    const page = Number(pageParam) || 1;
+    const status = statusParam as AppointmentStatus | undefined;
     const t = await getTranslations('Admin');
 
     const { appointments, total, totalPages } = await getAdminAppointments(page, 10, status);

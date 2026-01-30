@@ -9,12 +9,14 @@ import { getTranslations } from "next-intl/server";
 
 export default async function AdminPrepaidPage({
     searchParams,
-    params: { locale }
+    params
 }: {
-    searchParams: { page?: string };
-    params: { locale: string };
+    searchParams: Promise<{ page?: string }>;
+    params: Promise<{ locale: string }>;
 }) {
-    const page = Number(searchParams.page) || 1;
+    const { page: pageParam } = await searchParams;
+    const { locale } = await params;
+    const page = Number(pageParam) || 1;
     const { transactions, total, totalPages } = await getPrepaidTransactions(page, 20);
     const t = await getTranslations('Admin');
     const tPrepaid = await getTranslations('Admin.prepaid');

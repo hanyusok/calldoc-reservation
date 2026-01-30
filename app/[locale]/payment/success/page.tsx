@@ -4,27 +4,28 @@ import Link from "next/link";
 import { CheckCircle } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-interface Props {
-    searchParams: {
+
+
+export default async function PaymentSuccessPage({ searchParams, params }: {
+    searchParams: Promise<{
         paymentKey?: string;
         orderId?: string;
         amount?: string;
-        // Kiwoom Pay params
         AuthNo?: string;
         OrdNo?: string;
         Price?: string;
         [key: string]: string | undefined;
-    };
-    params: {
+    }>;
+    params: Promise<{
         locale: string;
-    };
-}
-
-export default async function PaymentSuccessPage({ searchParams, params: { locale } }: Props) {
+    }>;
+}) {
+    const { locale } = await params;
+    const resolvedSearchParams = await searchParams;
     // Resolve params checking both standard and Kiwoom keys
-    const paymentKey = searchParams.paymentKey || searchParams.AuthNo || "";
-    const orderId = searchParams.orderId || searchParams.OrdNo || "";
-    const amountStr = searchParams.amount || searchParams.Price || "0";
+    const paymentKey = resolvedSearchParams.paymentKey || resolvedSearchParams.AuthNo || "";
+    const orderId = resolvedSearchParams.orderId || resolvedSearchParams.OrdNo || "";
+    const amountStr = resolvedSearchParams.amount || resolvedSearchParams.Price || "0";
     const amount = parseInt(amountStr);
 
     const t = await getTranslations('Payment');

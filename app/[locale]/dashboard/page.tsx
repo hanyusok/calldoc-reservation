@@ -13,7 +13,8 @@ import PastAppointments from "@/components/dashboard/PastAppointments"
 import LogoutButton from "@/components/LogoutButton"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
 
-export default async function DashboardPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
     const session = await getServerSession(authOptions)
 
     if (!session) {

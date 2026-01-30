@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import { Role } from "@prisma/client";
 import RegisterForm from "./RegisterForm";
 
-export default async function RegisterPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function RegisterPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
     const session = await getServerSession(authOptions);
 
     if (session?.user) {

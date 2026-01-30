@@ -8,13 +8,15 @@ import CancelPaymentButton from "@/components/admin/CancelPaymentButton";
 
 export default async function AdminPaymentsPage({
     searchParams,
-    params: { locale }
+    params
 }: {
-    searchParams: { page?: string, status?: string };
-    params: { locale: string };
+    searchParams: Promise<{ page?: string, status?: string }>;
+    params: Promise<{ locale: string }>;
 }) {
-    const page = Number(searchParams.page) || 1;
-    const status = searchParams.status || undefined;
+    const { page: pageParam, status: statusParam } = await searchParams;
+    const { locale } = await params;
+    const page = Number(pageParam) || 1;
+    const status = statusParam || undefined;
     const t = await getTranslations('Admin');
     const tCommon = await getTranslations('Common');
 
