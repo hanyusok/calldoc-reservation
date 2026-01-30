@@ -101,7 +101,7 @@ export default function LoginForm() {
                                     signIn('credentials', {
                                         email,
                                         password,
-                                        callbackUrl: `/${window.location.pathname.split('/')[1]}/dashboard`
+                                        redirect: false
                                     });
                                 }}
                                 className="space-y-4"

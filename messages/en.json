@@ -3,6 +3,32 @@
         "title": "CallDoc - Telemedicine",
         "description": "Book your online consultation"
     },
+    "StaffDashboard": {
+        "title": "Staff Dashboard",
+        "welcome": "Welcome, Staff",
+        "instruction": "Select a menu below to manage patients and appointments.",
+        "patientscard": {
+            "title": "Patient Management",
+            "description": "View and register patients"
+        },
+        "appointmentscard": {
+            "title": "Appointment Management",
+            "description": "Check schedules and update status"
+        }
+    },
+    "StaffDashboard": {
+        "title": "Staff Dashboard",
+        "welcome": "Welcome, Staff",
+        "instruction": "Select a menu below to manage patients and appointments.",
+        "patientscard": {
+            "title": "Patient Management",
+            "description": "View and register patients"
+        },
+        "appointmentscard": {
+            "title": "Appointment Management",
+            "description": "Check schedules and update status"
+        }
+    },
     "Index": {
         "title": "CallDoc Reservation",
         "description": "The best choice for telemedicine reservation",

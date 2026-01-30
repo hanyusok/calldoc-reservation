@@ -10,7 +10,8 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
 
     if (session?.user) {
         // @ts-ignore
-        if (session.user.role === Role.ADMIN) {
+        // @ts-ignore
+        if (session.user.role === Role.ADMIN || session.user.role === Role.STAFF) {
             redirect(`/${locale}/admin`); // Redirect to localized admin
         } else {
             redirect(`/${locale}/dashboard`); // Redirect to localized dashboard

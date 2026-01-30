@@ -39,6 +39,7 @@ model Session {
 enum Role {
   PATIENT
   ADMIN
+  STAFF
 }
 
 model User {

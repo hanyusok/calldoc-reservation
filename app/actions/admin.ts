@@ -17,6 +17,16 @@ async function checkAdmin() {
     return session
 }
 
+async function checkStaffOrAdmin() {
+    const session = await getServerSession(authOptions)
+    // @ts-ignore
+    const role = session?.user?.role
+    if (!session?.user || (role !== Role.ADMIN && role !== Role.STAFF)) {
+        throw new Error("Unauthorized: Admin or Staff access required")
+    }
+    return session
+}
+
 export async function getAdminStats() {
     await checkAdmin()
 
@@ -51,7 +61,7 @@ export async function getAdminStats() {
 }
 
 export async function getAdminPatients(page = 1, pageSize = 10, search = "") {
-    await checkAdmin()
+    await checkStaffOrAdmin()
 
     const skip = (page - 1) * pageSize
 
@@ -77,7 +87,7 @@ export async function getAdminPatients(page = 1, pageSize = 10, search = "") {
 }
 
 export async function getAdminAppointments(page = 1, pageSize = 10, status?: AppointmentStatus) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
 
     const skip = (page - 1) * pageSize
 
@@ -118,7 +128,7 @@ export async function getRecentPrescriptions(limit = 5) {
 }
 
 export async function updateAppointmentStatus(appointmentId: string, status: AppointmentStatus) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
 
     try {
         const updatedAppointment = await prisma.appointment.update({
@@ -251,7 +261,7 @@ export async function createPatient(data: {
     relationship: Relationship
     residentNumber?: string
 }) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
 
     try {
         await prisma.patient.create({
@@ -275,7 +285,7 @@ export async function updatePatient(id: string, data: {
     residentNumber?: string
     dateOfBirth?: string
 }) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
 
     try {
         const updateData: any = { ...data }
@@ -296,7 +306,7 @@ export async function updatePatient(id: string, data: {
 }
 
 export async function deletePatient(id: string) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
 
     try {
         await prisma.patient.delete({
@@ -317,7 +327,7 @@ export async function createAppointmentAdmin(data: {
     status: AppointmentStatus
     amount?: number
 }) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
 
     try {
         await prisma.appointment.create({
@@ -348,7 +358,7 @@ export async function updateAppointmentAdmin(id: string, data: {
     endDateTime?: string
     status?: AppointmentStatus
 }) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
 
     try {
         const updateData: any = { ...data }
@@ -368,7 +378,7 @@ export async function updateAppointmentAdmin(id: string, data: {
 }
 
 export async function deleteAppointment(id: string) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
     try {
         await prisma.appointment.delete({ where: { id } })
         revalidatePath('/admin/appointments')
@@ -381,7 +391,7 @@ export async function deleteAppointment(id: string) {
 
 // Helper to find patients for dropdown
 export async function searchPatients(query: string) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
     return await prisma.patient.findMany({
         where: {
             OR: [
@@ -395,7 +405,7 @@ export async function searchPatients(query: string) {
 }
 
 export async function setAppointmentPayment(appointmentId: string, amount: number) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
     try {
         await prisma.payment.update({
             where: { appointmentId },
@@ -427,7 +437,7 @@ export async function setAppointmentPayment(appointmentId: string, amount: numbe
 }
 
 export async function sendMeetingLink(appointmentId: string, meetingLink: string) {
-    await checkAdmin()
+    await checkStaffOrAdmin()
     try {
         await prisma.appointment.update({
             where: { id: appointmentId },

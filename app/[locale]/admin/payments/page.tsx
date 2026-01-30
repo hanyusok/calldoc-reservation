@@ -5,6 +5,10 @@ import { ko, enUS } from "date-fns/locale";
 import { getTranslations } from "next-intl/server";
 import Pagination from "@/components/admin/Pagination";
 import CancelPaymentButton from "@/components/admin/CancelPaymentButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { Role } from "@prisma/client";
 
 export default async function AdminPaymentsPage({
     searchParams,
@@ -19,6 +23,11 @@ export default async function AdminPaymentsPage({
     const status = statusParam || undefined;
     const t = await getTranslations('Admin');
     const tCommon = await getTranslations('Common');
+
+    const session = await getServerSession(authOptions);
+    if (!session?.user || (session.user as any).role !== Role.ADMIN) {
+        redirect(`/${locale}/admin`);
+    }
 
     const { payments, total, totalPages } = await getAdminPayments(page, 10, status);
     const { dailyRevenue } = await getPaymentStats();

@@ -2,6 +2,9 @@ import { getAdminUsers } from "@/app/actions/admin";
 import Link from "next/link";
 import { Search } from "lucide-react";
 import AddEntityButton from "@/components/admin/AddEntityButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import UserForm from "@/components/admin/UserForm";
 import UserActions from "@/components/admin/UserActions";
 import { getTranslations } from "next-intl/server";
@@ -12,14 +15,22 @@ type UserWithCount = User & {
 };
 
 export default async function AdminUsersPage({
-    searchParams
+    searchParams,
+    params
 }: {
-    searchParams: Promise<{ page?: string, search?: string }>
+    searchParams: Promise<{ page?: string, search?: string }>;
+    params: Promise<{ locale: string }>;
 }) {
     const { page: pageParam, search: searchParam } = await searchParams;
     const page = Number(pageParam) || 1;
     const search = searchParam || "";
     const t = await getTranslations('Admin');
+    const { locale } = await params;
+
+    const session = await getServerSession(authOptions);
+    if (!session?.user || (session.user as any).role !== Role.ADMIN) {
+        redirect(`/${locale}/admin`);
+    }
 
     const result = await getAdminUsers(page, 10, search);
     const users = result.users as unknown as UserWithCount[];

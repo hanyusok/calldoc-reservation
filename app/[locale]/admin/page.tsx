@@ -2,8 +2,20 @@ import { getAdminStats, getRecentPrescriptions } from "@/app/actions/admin";
 import PrescriptionListCard from "@/components/admin/PrescriptionListCard";
 import { Users, Calendar, Clock, DollarSign } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { Role } from "@prisma/client";
+
+import StaffDashboard from "@/components/admin/StaffDashboard";
 
 export default async function AdminDashboardPage() {
+    const session = await getServerSession(authOptions);
+
+    // Render STAFF dashboard
+    if ((session?.user as any)?.role === Role.STAFF) {
+        return <StaffDashboard />;
+    }
+
     const stats = await getAdminStats();
     const recentPrescriptions = await getRecentPrescriptions();
     const t = await getTranslations('Admin.dashboard');

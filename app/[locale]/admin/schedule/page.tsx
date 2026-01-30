@@ -7,6 +7,8 @@ import { useTranslations, useLocale } from 'next-intl';
 import { getGlobalSchedule, updateWeeklySchedule, setDayOverride, clearDayOverride, getSchedule } from '@/app/actions/schedule';
 import { ChevronLeft, ChevronRight, Save, Clock, Calendar as CalendarIcon, X } from 'lucide-react';
 import MeetSettingsCard from '@/components/admin/MeetSettingsCard';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
@@ -14,6 +16,24 @@ export default function AdminSchedulePage() {
     const t = useTranslations('Admin.schedule');
     const locale = useLocale();
     const dateLocale = locale === 'ko' ? ko : enUS;
+
+    // Client-side protection usually needs server component wrapper or session check. 
+    // Since this is a client component ('use client'), we might need to fetch session or handle it in parent.
+    // However, for now, we can use a server component wrapper or check in layout.
+    // But layout already lets STAFF in. 
+    // We should probably convert this page to a server component that renders a client component, OR check session in useEffect.
+    // Checking in useEffect is easier for now.
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (status === 'authenticated' && (session?.user as any).role !== 'ADMIN') {
+            router.replace(`/${locale}/admin`);
+        }
+    }, [session, status, router, locale]);
+
+    if (status === 'loading') return <div>Loading...</div>;
+    if (!session || (session.user as any).role !== 'ADMIN') return null;
     const [loading, setLoading] = useState(true);
     const [weeklySchedule, setWeeklySchedule] = useState<any>({});
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);

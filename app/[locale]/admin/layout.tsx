@@ -18,18 +18,21 @@ export default async function AdminLayout({
     const session = await getServerSession(authOptions);
     const t = await getTranslations('Admin.sidebar');
 
-    // Check for admin role (assuming user object is extended via module augmentation or casting)
-    if (!session?.user || (session.user as any).role !== Role.ADMIN) {
-        redirect(`/${locale}/auth/login`); // Or a specific 403 page
+    // Check for admin or staff role
+    const userRole = (session?.user as any)?.role;
+    if (!session?.user || ![Role.ADMIN, Role.STAFF].includes(userRole)) {
+        redirect(`/${locale}/auth/login`);
     }
 
-    const navItems = [
-        { href: `/${locale}/admin`, label: t('dashboard'), icon: LayoutDashboard },
-        { href: `/${locale}/admin/users`, label: t('users'), icon: UserCog },
-        { href: `/${locale}/admin/patients`, label: t('patients'), icon: Users },
-        { href: `/${locale}/admin/appointments`, label: t('appointments'), icon: Calendar },
-        { href: `/${locale}/admin/payments`, label: t('payments'), icon: Banknote },
+    const allNavItems = [
+        { href: `/${locale}/admin`, label: t('dashboard'), icon: LayoutDashboard, roles: [Role.ADMIN, Role.STAFF] },
+        { href: `/${locale}/admin/users`, label: t('users'), icon: UserCog, roles: [Role.ADMIN] },
+        { href: `/${locale}/admin/patients`, label: t('patients'), icon: Users, roles: [Role.ADMIN, Role.STAFF] },
+        { href: `/${locale}/admin/appointments`, label: t('appointments'), icon: Calendar, roles: [Role.ADMIN, Role.STAFF] },
+        { href: `/${locale}/admin/payments`, label: t('payments'), icon: Banknote, roles: [Role.ADMIN] },
     ];
+
+    const navItems = allNavItems.filter(item => item.roles.includes(userRole));
 
     return (
         <div className="flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -58,13 +61,15 @@ export default async function AdminLayout({
                         <Building2 className="w-5 h-5" />
                         <span className="font-medium">{t('pharmacies')}</span>
                     </Link>
-                    <Link
-                        href={`/${locale}/admin/schedule`}
-                        className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mb-2 text-gray-700"
-                    >
-                        <Clock className="w-5 h-5" />
-                        <span className="font-medium">{t('schedule')}</span>
-                    </Link>
+                    {userRole === Role.ADMIN && (
+                        <Link
+                            href={`/${locale}/admin/schedule`}
+                            className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mb-2 text-gray-700"
+                        >
+                            <Clock className="w-5 h-5" />
+                            <span className="font-medium">{t('schedule')}</span>
+                        </Link>
+                    )}
                     <div className="flex items-center space-x-3 px-4 py-3 text-sm text-gray-500">
                         <span>{session.user.email}</span>
                     </div>
