@@ -338,7 +338,8 @@
         },
         "roleEnum": {
             "ADMIN": "관리자",
-            "PATIENT": "환자"
+            "PATIENT": "환자",
+            "STAFF": "접수"
         },
         "sidebar": {
             "title": "CallDoc 관리자",

@@ -174,11 +174,15 @@ export async function createAppointment(data: {
             }
         })
 
-        // Notify Admins
-        const admins = await prisma.user.findMany({ where: { role: 'ADMIN' } })
-        for (const admin of admins) {
+        // Notify Admins and Staff
+        const recipients = await prisma.user.findMany({
+            where: {
+                role: { in: ['ADMIN', 'STAFF'] }
+            }
+        })
+        for (const recipient of recipients) {
             await createNotification({
-                userId: admin.id,
+                userId: recipient.id,
                 title: "Notifications.bookingRequestTitle",
                 message: "Notifications.bookingRequestMsg",
                 type: "BOOKING",
