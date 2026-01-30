@@ -380,7 +380,27 @@ export async function updateAppointmentAdmin(id: string, data: {
 export async function deleteAppointment(id: string) {
     await checkStaffOrAdmin()
     try {
+        // Get appointment details for notification
+        const appointment = await prisma.appointment.findUnique({
+            where: { id },
+            include: { patient: true }
+        })
+
+        if (!appointment) return { error: "Appointment not found" }
+
         await prisma.appointment.delete({ where: { id } })
+
+        // Notify User
+        if (appointment.patient) {
+            await createNotification({
+                userId: appointment.patient.userId,
+                title: "Notifications.statusChangeTitle",
+                message: "Notifications.statusChangeMsg", // Or specific deletion msg
+                type: "INFO",
+                link: "/dashboard"
+            })
+        }
+
         revalidatePath('/admin/appointments')
         return { success: true }
     } catch (error) {

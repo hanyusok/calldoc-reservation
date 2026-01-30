@@ -52,12 +52,13 @@ export default async function PaymentSuccessPage({ searchParams, params }: {
                 <p className="text-gray-600 mb-6">
                     {t('success.description', { amount: amount.toLocaleString() })}
                 </p>
-                <a
+                <Link
                     href={`/${locale}/dashboard`}
+                    replace
                     className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
                 >
                     {t('success.returnToDashboard')}
-                </a>
+                </Link>
             </div>
         </div>
     );

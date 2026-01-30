@@ -43,7 +43,7 @@
             "copyright": "All rights reserved.",
             "refundPolicy": "환불 규정",
             "companyName": "상호명: 마트의원",
-            "contact": "연락처: 031-657-8279",
+            "contact": "고객센터: 031-657-8279",
             "address": "사업자주소: 경기도 안성시 공도읍 서동대로 4478",
             "representative": "대표자명: 한유석",
             "businessRegistration": "사업자등록번호: 120-90-84343"
@@ -267,6 +267,8 @@
             "table": {
                 "dateTime": "일시",
                 "patient": "환자",
+                "residentNumber": "주민등록번호",
+                "phoneNumber": "휴대폰 번호",
                 "status": "상태",
                 "payment": "결제",
                 "noRecord": "기록 없음"
@@ -341,8 +343,12 @@
             "PATIENT": "환자",
             "STAFF": "접수"
         },
+        "paymentMethodEnum": {
+            "BANK_TRANSFER": "무통장 입금",
+            "KIWOOM": "키움페이"
+        },
         "sidebar": {
-            "title": "CallDoc 관리자",
+            "title": "콜닥-마트의원",
             "dashboard": "대시보드",
             "users": "사용자",
             "patients": "환자",
@@ -505,10 +511,6 @@
             "actions": {
                 "cancel": "취소",
                 "cancelConfirm": "정말 이 결제를 취소하시겠습니까? 상태가 '취소됨'으로 변경됩니다."
-            },
-            "paymentMethodEnum": {
-                "BANK_TRANSFER": "무통장 입금",
-                "KIWOOM": "키움페이"
             }
         }
     },

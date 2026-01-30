@@ -65,6 +65,8 @@ export default async function AdminAppointmentsPage({
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.dateTime')}</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.patient')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.residentNumber')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.phoneNumber')}</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.status')}</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.payment')}</th>
                             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('common.actions')}</th>
@@ -78,6 +80,8 @@ export default async function AdminAppointmentsPage({
                                     <div className="text-sm text-gray-500">{format(appt.startDateTime, 'p', { locale: dateLocale })} - {format(appt.endDateTime, 'p', { locale: dateLocale })}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap font-medium">{appt.patient.name}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{appt.patient.residentNumber || '-'}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{appt.patient.phoneNumber || '-'}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <AppointmentStatusSelect id={appt.id} currentStatus={appt.status} />
                                 </td>

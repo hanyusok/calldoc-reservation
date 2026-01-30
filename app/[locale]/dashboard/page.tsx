@@ -40,7 +40,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
                     <h1 className="text-xl font-bold text-gray-900">{t('title')}</h1>
                     <div className="flex items-center space-x-2 sm:space-x-4">
-                        <div className="text-sm text-gray-500 hidden sm:block">{session.user?.name}</div>
+                        <div className="text-sm text-gray-500 font-medium">{session.user?.name}</div>
                         <LanguageSwitcher />
                         <LogoutButton />
                     </div>

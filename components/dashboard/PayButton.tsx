@@ -46,6 +46,7 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
             const form = document.createElement("form");
             form.method = "POST";
             form.action = process.env.NEXT_PUBLIC_KIWOOM_PAY_ACTION_URL || "https://apitest.kiwoompay.co.kr/pay/linkEnc";
+            form.acceptCharset = "euc-kr";
 
             if (isMobile) {
                 form.target = "_self";
@@ -72,7 +73,7 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
             addField("KIWOOM_ENC", hashResult.KIWOOM_ENC);
 
             // Add Other Params required by Error Message
-            addField("PRODUCTNAME", `Medical Appointment ${appointmentId}`);
+            addField("PRODUCTNAME", "콜닥-마트의원");
             addField("PRODUCTTYPE", "2"); // 1: Real, 2: Digital/Service
             addField("USERID", customerName);
 

@@ -62,7 +62,11 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
 
         // 5. Notify Admin
         const admins = await prisma.user.findMany({
-            where: { role: 'ADMIN' },
+            where: {
+                role: {
+                    in: ['ADMIN', 'STAFF']
+                }
+            },
             select: { id: true }
         });
 

@@ -267,6 +267,8 @@
             "table": {
                 "dateTime": "Date & Time",
                 "patient": "Patient",
+                "residentNumber": "Resident No.",
+                "phoneNumber": "Phone Number",
                 "status": "Status",
                 "payment": "Payment",
                 "noRecord": "No Record"
@@ -335,6 +337,10 @@
             "ADMIN": "Admin",
             "PATIENT": "Patient",
             "STAFF": "Staff"
+        },
+        "paymentMethodEnum": {
+            "BANK_TRANSFER": "Bank Transfer",
+            "KIWOOM": "Kiwoom Pay"
         },
         "sidebar": {
             "title": "CallDoc Admin",

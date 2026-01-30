@@ -99,7 +99,8 @@ export default function AppointmentFlowManager({ appointment }: { appointment: A
                                     type="number"
                                     value={price}
                                     onChange={e => setPrice(Number(e.target.value))}
-                                    className="w-full border p-2 rounded"
+                                    onFocus={(e) => e.target.select()}
+                                    className="w-full border p-2 rounded text-right"
                                 />
                             </div>
                             <button
