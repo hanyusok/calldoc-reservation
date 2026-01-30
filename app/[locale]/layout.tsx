@@ -5,14 +5,23 @@ import { AuthProvider } from "../providers";
 import NotificationManager from "@/components/NotificationManager";
 
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "CallDoc - Telemedicine",
-  description: "Book your online consultation",
-};
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
 
 export default async function RootLayout({
   children,

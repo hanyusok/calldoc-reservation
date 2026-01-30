@@ -1,8 +1,13 @@
 {
+    "Metadata": {
+        "title": "CallDoc - Telemedicine",
+        "description": "Book your online consultation"
+    },
     "Index": {
         "title": "CallDoc Reservation",
         "description": "The best choice for telemedicine reservation",
         "nav": {
+            "brand": "CallDoc",
             "login": "Log In",
             "myPage": "My Page",
             "logout": "Log Out"

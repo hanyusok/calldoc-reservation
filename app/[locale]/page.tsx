@@ -15,7 +15,7 @@ export default function Home() {
           <div className="bg-blue-600 p-2 rounded-lg">
             <Video className="w-6 h-6 text-white" />
           </div>
-          <span className="text-lg sm:text-xl font-bold text-gray-900">CallDoc</span>
+          <span className="text-lg sm:text-xl font-bold text-gray-900">{t('nav.brand')}</span>
         </div>
         <div className="space-x-2 sm:space-x-4 flex items-center">
           <Link href="/auth/login" className="text-sm sm:text-base text-gray-600 hover:text-gray-900 font-medium whitespace-nowrap">{t('nav.login')}</Link>

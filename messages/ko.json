@@ -1,8 +1,13 @@
 {
+    "Metadata": {
+        "title": "콜닥-마트의원",
+        "description": "화상 진료 예약"
+    },
     "Index": {
         "title": "CallDoc 예약",
         "description": "원격진료 예약을 위한 최고의 선택",
         "nav": {
+            "brand": "콜닥",
             "login": "로그인",
             "myPage": "마이페이지",
             "logout": "로그아웃"
