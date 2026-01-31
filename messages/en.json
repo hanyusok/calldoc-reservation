@@ -405,6 +405,7 @@
             "COMPLETED": "Completed",
             "CANCELLED": "Cancelled",
             "PAID": "Paid",
+            "CANCELED": "Canceled",
             "REFUNDED": "Refunded",
             "REJECTED": "Rejected"
         },
@@ -560,6 +561,7 @@
         "pharmacyRequestMsg": "Patient requested prescription transfer.",
         "prescriptionIssuedTitle": "Prescription Issued",
         "prescriptionIssuedMsg": "Prescription has been issued. Please check it.",
+        "paymentConfirmed": "Kiwoom Payment of {amount} KRW confirmed for appointment {orderId}.",
         "viewDetails": "View Details"
     },
     "Payment": {
@@ -570,6 +572,11 @@
         },
         "fail": {
             "title": "Payment Verification Failed",
+            "returnToDashboard": "Return to Dashboard"
+        },
+        "canceled": {
+            "title": "Payment Canceled",
+            "description": "You have canceled the payment.",
             "returnToDashboard": "Return to Dashboard"
         }
     }

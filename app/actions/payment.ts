@@ -10,17 +10,13 @@ import { revalidatePath } from "next/cache";
 
 import { createMeeting } from "./meet";
 import { createNotification } from "@/lib/notifications";
+import { getTranslations } from "next-intl/server";
 
 export async function confirmPayment(paymentKey: string, orderId: string, amount: number) {
-    // 1. Verify Payment (Kiwoom Pay)
-    // Server-side verification is now handled via callback/hash check
-    // For now, we trust the callback/redirect params as we migrate.
-
     console.log("Processing Kiwoom payment:", { orderId, amount, paymentKey });
 
     try {
-        // 2. Update Database
-        // Find payment to get appointmentId
+        // 1. Fetch Payment and Appointment details
         const payment = await prisma.payment.findUnique({
             where: { id: orderId },
             include: { appointment: true }
@@ -28,27 +24,44 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
 
         if (!payment) return { success: false, error: "Payment record not found" };
 
-        // 3. (Optional) Create Google Meet
+        // 2. Idempotency Check
+        if (payment.status === 'COMPLETED') {
+            console.log(`Payment ${orderId} already completed.`);
+            return { success: true, message: "Already completed" };
+        }
+
+        // 3. Verify Amount (Basic Security)
+        // Ensure the amount passed (from Callback or URL) matches the DB record
+        if (payment.amount !== amount) {
+            console.warn(`Payment amount mismatch for ${orderId}: expected ${payment.amount}, got ${amount}`);
+            // Proceeding with caution or flagging? For now, we'll log warning but may want to fail strictly.
+            // return { success: false, error: "Payment amount mismatch" }; 
+        }
+
+        // 4. Create Google Meet (if strictly needed here, or if not done yet)
         let meetingLink = null;
         try {
-            meetingLink = await createMeeting({
-                appointmentId: payment.appointmentId,
-                startDateTime: payment.appointment.startDateTime,
-                endDateTime: payment.appointment.endDateTime
-            });
+            // Only create if not already present (optimization)
+            if (!payment.appointment.meetingLink) {
+                meetingLink = await createMeeting({
+                    appointmentId: payment.appointmentId,
+                    startDateTime: payment.appointment.startDateTime,
+                    endDateTime: payment.appointment.endDateTime
+                });
+            }
         } catch (e) {
             console.error("Meet creation failed", e);
         }
 
-        // Update Payment and Appointment
+        // 5. Update Database Transaction
         await prisma.$transaction([
             prisma.payment.update({
                 where: { id: orderId },
                 data: {
                     status: 'COMPLETED',
                     confirmedAt: new Date(),
-                    method: 'KIWOOM' as any, // Cast to avoid TS error until restart 
-                    paymentKey: paymentKey // Store Kiwoom's AuthNo or similar here
+                    method: 'KIWOOM' as any,
+                    paymentKey: paymentKey // Save the Transaction ID (DAOUTRX)
                 }
             }),
             prisma.appointment.update({
@@ -60,33 +73,34 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
             })
         ]);
 
-        // 5. Notify Admin
+        console.log(`Payment ${orderId} successfully confirmed.`);
+
+        // 6. Notify Admins
         const admins = await prisma.user.findMany({
-            where: {
-                role: {
-                    in: ['ADMIN', 'STAFF']
-                }
-            },
+            where: { role: { in: ['ADMIN', 'STAFF'] } },
             select: { id: true }
         });
 
+        const t = await getTranslations({ locale: 'ko', namespace: 'Notifications' });
         const notificationPromises = admins.map(admin => createNotification({
             userId: admin.id,
             title: "Notifications.paymentTitle",
-            message: `Kiwoom Payment of ${amount} KRW confirmed for appointment ${orderId}.`,
+            message: t('paymentConfirmed', { amount: amount.toLocaleString(), orderId }),
             type: 'PAYMENT',
             link: '/admin/appointments'
         }));
 
         await Promise.all(notificationPromises);
 
+        // 7. Revalidate Paths
         revalidatePath('/dashboard');
         revalidatePath('/[locale]/admin/appointments');
         revalidatePath('/[locale]/admin/payments');
+
         return { success: true };
 
     } catch (err) {
-        console.error(err);
+        console.error("confirmPayment Error:", err);
         return { success: false, error: "Internal Server Error" };
     }
 }

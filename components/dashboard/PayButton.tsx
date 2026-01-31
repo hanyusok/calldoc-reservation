@@ -82,6 +82,7 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
             if (isMobile) {
                 const baseUrl = window.location.origin;
                 addField("ReturnUrl", `${baseUrl}/${locale}/payment/success`);
+                addField("Ret_URL", `${baseUrl}/${locale}/payment/success`); // Added for compatibility
                 addField("StopUrl", `${baseUrl}/${locale}/payment/fail`);
             }
 

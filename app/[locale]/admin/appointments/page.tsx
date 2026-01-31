@@ -69,7 +69,7 @@ export default async function AdminAppointmentsPage({
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.phoneNumber')}</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.status')}</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('appointments.table.payment')}</th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('common.actions')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('common.actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -95,8 +95,8 @@ export default async function AdminAppointmentsPage({
                                         <span className="text-gray-400">{t('appointments.table.noRecord')}</span>
                                     )}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                                    <div className="flex items-center justify-end gap-2">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-left">
+                                    <div className="flex items-center justify-start gap-2">
                                         <AppointmentFlowManager appointment={appt} />
                                         <AppointmentActions appointment={appt} />
                                     </div>

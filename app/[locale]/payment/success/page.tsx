@@ -23,7 +23,8 @@ export default async function PaymentSuccessPage({ searchParams, params }: {
     const { locale } = await params;
     const resolvedSearchParams = await searchParams;
     // Resolve params checking both standard and Kiwoom keys
-    const paymentKey = resolvedSearchParams.paymentKey || resolvedSearchParams.AuthNo || "";
+    // DAOUTRX is the Transaction ID needed for cancellation.
+    const paymentKey = resolvedSearchParams.DAOUTRX || resolvedSearchParams.dAouTrx || resolvedSearchParams.paymentKey || resolvedSearchParams.AuthNo || "";
     const orderId = resolvedSearchParams.orderId || resolvedSearchParams.OrdNo || "";
     const amountStr = resolvedSearchParams.amount || resolvedSearchParams.Price || "0";
     const amount = parseInt(amountStr);
