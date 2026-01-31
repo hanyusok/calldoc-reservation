@@ -118,6 +118,7 @@
             "CONFIRMED": "확정됨",
             "COMPLETED": "완료됨",
             "CANCELLED": "취소됨",
+            "CANCELED": "취소됨",
             "REJECTED": "거절됨"
         },
         "prescriptionStatus": {

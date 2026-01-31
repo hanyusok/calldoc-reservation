@@ -63,7 +63,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                             <span className="font-semibold">{t('appointments.symptomsLabel')}:</span> {appointment.symptoms}
                         </div>
                     )}
-                    {appointment.meetingLink && !isPast && appointment.status !== 'COMPLETED' && (
+                    {appointment.meetingLink && !isPast && !['COMPLETED', 'CANCELLED', 'REJECTED'].includes(appointment.status) && (
                         <a
                             href={appointment.meetingLink}
                             target="_blank"
@@ -80,7 +80,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                     <div className={`text-xs mb-2 ${appointment.payment?.status === 'COMPLETED' ? 'text-green-600' : 'text-red-500'}`}>
                         {appointment.payment?.status === 'PENDING'
                             ? (appointment.payment.amount > 0 ? t('appointments.payment.required') : t('appointments.payment.waiting'))
-                            : t('appointments.payment.paid')}
+                            : (appointment.payment?.status === 'CANCELED' || appointment.payment?.status === 'FAILED' ? t('status.CANCELED') : t('appointments.payment.paid'))}
                     </div>
                     {!isPast && appointment.status === 'PENDING' && appointment.payment?.status === 'PENDING' && appointment.payment.amount > 0 && (
                         <PayButton
