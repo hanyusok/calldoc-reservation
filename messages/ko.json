@@ -566,7 +566,7 @@
         "pharmacyRequestMsg": "환자가 처방전 전송을 요청했습니다.",
         "prescriptionIssuedTitle": "처방전 발급 완료",
         "prescriptionIssuedMsg": "처방전이 발급되었습니다. 확인해주세요.",
-        "paymentConfirmed": "예약 {orderId}에 대한 키움페이 결제({amount}원)가 완료되었습니다.",
+        "paymentConfirmed": "{patientName} 님의 예약에 대한 키움페이 결제({amount}원)가 완료되었습니다.",
         "viewDetails": "자세히 보기"
     },
     "Payment": {

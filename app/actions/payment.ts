@@ -19,7 +19,7 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
         // 1. Fetch Payment and Appointment details
         const payment = await prisma.payment.findUnique({
             where: { id: orderId },
-            include: { appointment: true }
+            include: { appointment: { include: { patient: true } } }
         });
 
         if (!payment) return { success: false, error: "Payment record not found" };
@@ -81,11 +81,12 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
             select: { id: true }
         });
 
+        const patientName = payment.appointment.patient?.name || "Unknown";
         const t = await getTranslations({ locale: 'ko', namespace: 'Notifications' });
         const notificationPromises = admins.map(admin => createNotification({
             userId: admin.id,
             title: "Notifications.paymentTitle",
-            message: t('paymentConfirmed', { amount: amount.toLocaleString(), orderId }),
+            message: t('paymentConfirmed', { amount: amount.toLocaleString(), patientName }),
             type: 'PAYMENT',
             link: '/admin/appointments'
         }));
@@ -134,16 +135,17 @@ export async function cancelPayment(paymentId: string, reason: string) {
     try {
         const payload = {
             CPID: KIWOOM_MID,
-            PAYMETHOD: "CARD", // Defaulting to CARD as PAYMETHOD is required but often generic in cancel
+            PAYMETHOD: "CARD",
             AMOUNT: payment.amount.toString(),
             CANCELREQ: "Y",
-            TRXID: payment.paymentKey, // DAOUTRX
+            TRXID: payment.paymentKey,
             CANCELREASON: reason,
-            TAXFREEAMT: "0"
         };
 
         // Step 1: Ready Request
         const readyUrl = "https://apitest.kiwoompay.co.kr/pay/ready";
+        console.log("Kiwoom Cancel Ready Payload:", JSON.stringify(payload));
+
         const readyRes = await fetch(readyUrl, {
             method: "POST",
             headers: {
@@ -158,6 +160,7 @@ export async function cancelPayment(paymentId: string, reason: string) {
         }
 
         const readyData = await readyRes.json();
+        console.log("Kiwoom Ready Response:", readyData);
         const { TOKEN, RETURNURL } = readyData;
 
         if (!TOKEN || !RETURNURL) {
@@ -166,6 +169,12 @@ export async function cancelPayment(paymentId: string, reason: string) {
         }
 
         // Step 2: Final Request
+        console.log("Kiwoom Cancel Final Request to:", RETURNURL);
+
+        // Encode payload to EUC-KR
+        const iconv = require('iconv-lite');
+        const eucKrBuffer = iconv.encode(JSON.stringify(payload), 'euc-kr');
+
         const finalRes = await fetch(RETURNURL, {
             method: "POST",
             headers: {
@@ -173,7 +182,7 @@ export async function cancelPayment(paymentId: string, reason: string) {
                 "Authorization": AUTH_KEY || "",
                 "TOKEN": TOKEN
             },
-            body: JSON.stringify(payload)
+            body: eucKrBuffer
         });
 
         if (!finalRes.ok) {
