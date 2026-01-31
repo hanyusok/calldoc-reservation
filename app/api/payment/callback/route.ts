@@ -72,20 +72,10 @@ const handleCallback = async (req: NextRequest) => {
             }
 
             if (payment) {
-                await prisma.$transaction([
-                    prisma.payment.update({
-                        where: { id: payment.id },
-                        data: {
-                            status: 'CANCELED',
-                            ...(DAOUTRX ? { paymentKey: DAOUTRX } : {})
-                        }
-                    }),
-                    prisma.appointment.update({
-                        where: { id: payment.appointmentId },
-                        data: { status: 'CANCELLED' }
-                    })
-                ]);
-                console.log(`Payment ${payment.id} marked as CANCELED via callback.`);
+                // Dynamically import the action to avoid circular dependencies if any issues arise, strictly typed
+                const { processCancellationSuccess } = await import("@/app/actions/payment");
+                await processCancellationSuccess(payment.id, DAOUTRX);
+
                 return new NextResponse("OK", { status: 200 });
             } else {
                 console.error("Payment not found for cancellation:", { ORDERNO, DAOUTRX });

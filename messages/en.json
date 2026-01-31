@@ -563,6 +563,8 @@
         "prescriptionIssuedTitle": "Prescription Issued",
         "prescriptionIssuedMsg": "Prescription has been issued. Please check it.",
         "paymentConfirmed": "Kiwoom Payment of {amount} KRW confirmed for {patientName}'s appointment.",
+        "paymentCanceledTitle": "Payment Canceled",
+        "paymentCanceledMsg": "The payment has been canceled by the admin.",
         "viewDetails": "View Details"
     },
     "Payment": {

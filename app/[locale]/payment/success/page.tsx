@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { confirmPayment } from "@/app/actions/payment";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
+import PopupCloseHandler from "@/components/payment/PopupCloseHandler";
 import { getTranslations } from "next-intl/server";
 
 
@@ -47,11 +48,15 @@ export default async function PaymentSuccessPage({ searchParams, params }: {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+            <PopupCloseHandler redirectUrl={`/${locale}/dashboard`} />
             <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('success.title')}</h1>
                 <p className="text-gray-600 mb-6">
                     {t('success.description', { amount: amount.toLocaleString() })}
+                </p>
+                <p className="text-sm text-gray-500 mb-4 animate-pulse">
+                    {(typeof window !== 'undefined' && window.opener) ? "창이 곧 닫힙니다..." : "곧 대시보드로 이동합니다..."}
                 </p>
                 <Link
                     href={`/${locale}/dashboard`}

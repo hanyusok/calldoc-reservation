@@ -77,13 +77,20 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
             addField("PRODUCTTYPE", "2"); // 1: Real, 2: Digital/Service
             addField("USERID", customerName);
 
-            // Add return URLs for Mobile (important for redirect flow)
-            // Even if JSP sample didn't emphasize them, standard mobile flow needs them to return to app
+            // Add return URLs for both Mobile and Desktop (Popup)
+            // Append explicit params (orderId, amount) ensuring success page can find the record
+            // even if Kiwoom doesn't pass callback params in the redirect.
+            const baseUrl = window.location.origin;
+            const successUrl = `${baseUrl}/${locale}/payment/success?orderId=${paymentId}&amount=${amount}`;
+
+            addField("ReturnUrl", successUrl);
+            addField("Ret_URL", successUrl);
+            // HOMEURL: URL to redirect to when user clicks "Confirm" on Kiwoom's success screen
+            addField("HOMEURL", successUrl);
+            addField("StopUrl", `${baseUrl}/${locale}/payment/fail`);
+
             if (isMobile) {
-                const baseUrl = window.location.origin;
-                addField("ReturnUrl", `${baseUrl}/${locale}/payment/success`);
-                addField("Ret_URL", `${baseUrl}/${locale}/payment/success`); // Added for compatibility
-                addField("StopUrl", `${baseUrl}/${locale}/payment/fail`);
+                // Mobile specific target handling if needed (already handled above)
             }
 
             document.body.appendChild(form);
