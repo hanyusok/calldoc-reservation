@@ -378,7 +378,7 @@ export async function updateAppointmentAdmin(id: string, data: {
 }
 
 export async function deleteAppointment(id: string) {
-    await checkStaffOrAdmin()
+    await checkAdmin()
     try {
         // Get appointment details for notification
         const appointment = await prisma.appointment.findUnique({

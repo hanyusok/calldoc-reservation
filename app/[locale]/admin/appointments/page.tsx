@@ -9,6 +9,9 @@ import AddAppointmentButton from "@/components/admin/AddAppointmentButton";
 import AppointmentActions from "@/components/admin/AppointmentActions";
 import AppointmentFlowManager from "@/components/admin/AppointmentFlowManager";
 import { getTranslations } from "next-intl/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { Role } from "@prisma/client";
 
 export default async function AdminAppointmentsPage({
     searchParams,
@@ -22,6 +25,8 @@ export default async function AdminAppointmentsPage({
     const page = Number(pageParam) || 1;
     const status = statusParam as AppointmentStatus | undefined;
     const t = await getTranslations('Admin');
+    const session = await getServerSession(authOptions);
+    const userRole = (session?.user as any)?.role;
 
     const { appointments, total, totalPages } = await getAdminAppointments(page, 10, status);
     const dateLocale = locale === 'ko' ? ko : enUS;
@@ -98,7 +103,7 @@ export default async function AdminAppointmentsPage({
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-left">
                                     <div className="flex items-center justify-start gap-2">
                                         <AppointmentFlowManager appointment={appt} />
-                                        <AppointmentActions appointment={appt} />
+                                        <AppointmentActions appointment={appt} userRole={userRole} />
                                     </div>
                                 </td>
                             </tr>

@@ -1,6 +1,7 @@
 'use server';
 
 import { google } from 'googleapis';
+import { format } from 'date-fns';
 
 const SCOPES = ['https://www.googleapis.com/auth/calendar.events'];
 
@@ -8,12 +9,14 @@ export async function createMeeting({
     appointmentId,
     startDateTime,
     endDateTime,
-    summary
+    summary,
+    patientName
 }: {
     appointmentId: string;
     startDateTime: Date;
     endDateTime: Date;
     summary?: string;
+    patientName?: string;
 }) {
     // 1. Check for Credentials
     const keyData = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
@@ -36,8 +39,10 @@ export async function createMeeting({
 
         // 3. Create Event with Conference Data
         const event = {
-            summary: summary || `Consultation: Appointment ${appointmentId.slice(-6)}`,
-            description: `Automatic video consultation for Appointment ${appointmentId}.`,
+            summary: summary || (patientName
+                ? `콜닥: ${patientName} ${format(startDateTime, 'HH:mm')}~`
+                : `콜닥: ${appointmentId.slice(-6)}`),
+            description: `콜닥 ${appointmentId}.`,
             start: { dateTime: startDateTime.toISOString() },
             end: { dateTime: endDateTime.toISOString() },
             conferenceData: {

@@ -44,7 +44,8 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
                 meetingLink = await createMeeting({
                     appointmentId: payment.appointmentId,
                     startDateTime: payment.appointment.startDateTime,
-                    endDateTime: payment.appointment.endDateTime
+                    endDateTime: payment.appointment.endDateTime,
+                    patientName: payment.appointment.patient?.name
                 });
             }
         } catch (e) {

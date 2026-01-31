@@ -5,7 +5,7 @@ import { deleteAppointment, updateAppointmentStatus } from "@/app/actions/admin"
 import SimpleModal from "./SimpleModal";
 import AppointmentForm from "./AppointmentForm";
 import ActionMenu from "./ActionMenu";
-import { AppointmentStatus } from "@prisma/client";
+import { AppointmentStatus, Role } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -18,7 +18,7 @@ type Appointment = {
     [key: string]: any;
 };
 
-export default function AppointmentActions({ appointment }: { appointment: Appointment }) {
+export default function AppointmentActions({ appointment, userRole }: { appointment: Appointment, userRole?: string }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const router = useRouter();
     const t = useTranslations('Admin.actions');
@@ -33,7 +33,7 @@ export default function AppointmentActions({ appointment }: { appointment: Appoi
         <>
             <ActionMenu
                 onEdit={() => setIsEditOpen(true)}
-                onDelete={handleDelete}
+                onDelete={userRole === Role.ADMIN ? handleDelete : undefined}
                 editLabel={t('editDetails')}
                 deleteLabel={t('delete')}
             />

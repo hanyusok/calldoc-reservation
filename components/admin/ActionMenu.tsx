@@ -6,7 +6,7 @@ import Portal from "@/components/ui/Portal";
 
 interface ActionMenuProps {
     onEdit: () => void;
-    onDelete: () => void;
+    onDelete?: () => void;
     editLabel: string;
     deleteLabel: string;
 }
@@ -53,12 +53,14 @@ export default function ActionMenu({ onEdit, onDelete, editLabel, deleteLabel }:
                         >
                             <Edit className="w-4 h-4" /> {editLabel}
                         </button>
-                        <button
-                            onClick={() => { onDelete(); setIsMenuOpen(false); }}
-                            className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-red-600 flex items-center gap-2"
-                        >
-                            <Trash className="w-4 h-4" /> {deleteLabel}
-                        </button>
+                        {onDelete && (
+                            <button
+                                onClick={() => { onDelete(); setIsMenuOpen(false); }}
+                                className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-red-600 flex items-center gap-2"
+                            >
+                                <Trash className="w-4 h-4" /> {deleteLabel}
+                            </button>
+                        )}
                     </div>
                 </Portal>
             )}
