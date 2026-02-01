@@ -88,6 +88,8 @@ export default function Home() {
           <span className="hidden sm:inline">|</span>
           <span>{t('footer.representative')}</span>
           <span className="hidden sm:inline">|</span>
+          <span>{t('footer.email')}</span>
+          <span className="hidden sm:inline">|</span>
           <span>{t('footer.contact')}</span>
           <span className="hidden sm:inline">|</span>
           <span>{t('footer.address')}</span>
