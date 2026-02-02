@@ -26,43 +26,58 @@ export default async function AdminDashboardPage() {
     };
 
     const statCards = [
-        { label: t('stats.patients'), value: stats.totalPatients, icon: Users, color: "text-blue-600", bg: "bg-blue-100" },
-        { label: t('stats.appointments'), value: stats.totalAppointments, icon: Calendar, color: "text-purple-600", bg: "bg-purple-100" },
-        { label: t('stats.pending'), value: stats.pendingAppointments, icon: Clock, color: "text-orange-600", bg: "bg-orange-100" },
-        { label: t('stats.revenue'), value: formatCurrency(stats.revenue), icon: DollarSign, color: "text-green-600", bg: "bg-green-100" },
+        { label: t('stats.patients'), value: stats.totalPatients, icon: Users },
+        { label: t('stats.appointments'), value: stats.totalAppointments, icon: Calendar },
+        { label: t('stats.pending'), value: stats.pendingAppointments, icon: Clock, highlight: stats.pendingAppointments > 0 },
+        { label: t('stats.revenue'), value: formatCurrency(stats.revenue), icon: DollarSign },
     ];
 
     return (
-        <div className="space-y-6">
-            <h1 className="text-3xl font-bold">{t('title')}</h1>
+        <div className="space-y-8">
+            <div>
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{t('title')}</h1>
+                <p className="text-sm text-gray-500 mt-1">{t('overview')}</p>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 {statCards.map((stat, index) => (
-                    <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-4">
-                        <div className={`p-4 rounded-full flex-shrink-0 ${stat.bg}`}>
-                            <stat.icon className={`w-8 h-8 ${stat.color}`} />
+                    <div key={index} className="bg-white dark:bg-black p-6 rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.02)] border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
+                        <div className="flex justify-between items-start mb-4">
+                            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{stat.label}</span>
+                            <stat.icon className="w-4 h-4 text-gray-400" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium truncate">{stat.label}</p>
-                            <p className="text-xl md:text-2xl font-bold truncate" title={String(stat.value)}>{stat.value}</p>
+                        <div className="flex items-baseline">
+                            <span className={`text-3xl font-bold tracking-tight ${stat.highlight ? 'text-orange-600' : 'text-gray-900 dark:text-white'}`}>
+                                {stat.value}
+                            </span>
                         </div>
                     </div>
                 ))}
             </div>
 
             {/* Lower Section: Recent Activity & Info */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Left: Recent Prescriptions */}
-                <div className="h-full">
-                    <PrescriptionListCard prescriptions={recentPrescriptions} />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left: Recent Prescriptions (Wider 2/3) */}
+                <div className="lg:col-span-2 space-y-4">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('recentPrescriptions')}</h2>
+                    <div className="bg-white dark:bg-black rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
+                        <PrescriptionListCard prescriptions={recentPrescriptions} />
+                    </div>
                 </div>
 
-                {/* Right: Existing Welcome/Instruction */}
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 h-full">
-                    <h2 className="text-xl font-bold mb-4">{t('welcome')}</h2>
-                    <p className="text-gray-600 dark:text-gray-300">
-                        {t('instruction')}
-                    </p>
+                {/* Right: Info/Actions */}
+                <div className="space-y-4">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('quickActions')}</h2>
+                    <div className="bg-white dark:bg-black p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 h-fit">
+                        <h2 className="text-sm font-semibold text-gray-900 mb-2">{t('welcome')}</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                            {t('instruction')}
+                        </p>
+
+                        <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+                            <a href="#" className="text-sm font-medium text-black hover:underline">{t('viewDocumentation')} →</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

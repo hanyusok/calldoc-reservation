@@ -127,7 +127,9 @@
         },
         "prescriptionStatus": {
             "REQUESTED": "Requested",
-            "ISSUED": "Issued"
+            "ISSUED": "Issued",
+            "PENDING": "Pending",
+            "REJECTED": "Rejected"
         }
     },
     "Profile": {
@@ -359,7 +361,9 @@
             "pharmacies": "Pharmacies",
             "payments": "Payments",
             "meet": "Meeting Settings",
-            "logout": "Logout"
+            "logout": "Logout",
+            "platform": "Platform",
+            "management": "Management"
         },
         "pharmacies": {
             "title": "Pharmacy Management",
@@ -399,7 +403,11 @@
                 "status": "Status",
                 "empty": "No recent prescriptions.",
                 "viewAll": "View All"
-            }
+            },
+            "overview": "Overview of your clinic's performance",
+            "recentPrescriptions": "Recent Prescriptions",
+            "quickActions": "Quick Actions",
+            "viewDocumentation": "View Documentation"
         },
         "actions": {
             "edit": "Edit",
@@ -418,7 +426,9 @@
         },
         "prescriptionStatusEnum": {
             "REQUESTED": "Requested",
-            "ISSUED": "Issued"
+            "ISSUED": "Issued",
+            "PENDING": "Pending",
+            "REJECTED": "Rejected"
         },
         "genderEnum": {
             "MALE": "Male",

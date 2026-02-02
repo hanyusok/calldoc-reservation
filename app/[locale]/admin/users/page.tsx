@@ -94,7 +94,15 @@ export default async function AdminUsersPage({
                                     {user._count?.patients || 0}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
-                                    {new Date(user.createdAt).toLocaleDateString()}
+                                    {new Date(user.createdAt).toLocaleString('ko-KR', {
+                                        timeZone: 'Asia/Seoul',
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        hour12: false
+                                    })}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right">
                                     <UserActions user={user} />
