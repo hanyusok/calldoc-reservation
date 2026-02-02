@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Plus, Pencil, Trash2, Search, Building2, MapPin, Phone, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { createPharmacy, updatePharmacy, deletePharmacy, setPharmacyDefault } from "@/app/actions/pharmacy";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import SimpleModal from "./SimpleModal";
 
 interface Pharmacy {
     id: string;
@@ -234,73 +235,72 @@ export default function PharmacyList({ initialPharmacies, totalPages, currentPag
             )}
 
             {/* Modal */}
-            {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-                    <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl transform transition-all scale-100">
-                        <h3 className="text-xl font-bold mb-6 text-gray-900">{editingId ? t('editPharmacy') : t('addPharmacy')}</h3>
-                        <form onSubmit={handleSubmit} className="space-y-5">
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-1.5">{t('form.name')}</label>
-                                <div className="relative">
-                                    <Building2 className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                                    <input
-                                        type="text"
-                                        required
-                                        className="w-full border border-gray-300 rounded-xl pl-10 p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                                        value={formData.name}
-                                        onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('form.phone')}</label>
-                                    <input
-                                        type="text"
-                                        className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                                        value={formData.phone}
-                                        onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('form.fax')}</label>
-                                    <input
-                                        type="text"
-                                        className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                                        value={formData.fax}
-                                        onChange={e => setFormData({ ...formData, fax: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('form.address')}</label>
-                                <input
-                                    type="text"
-                                    className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                                    value={formData.address}
-                                    onChange={e => setFormData({ ...formData, address: e.target.value })}
-                                />
-                            </div>
-                            <div className="flex justify-end gap-3 mt-8">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="px-5 py-2.5 text-gray-700 hover:bg-gray-100 rounded-xl text-sm font-medium transition-colors"
-                                >
-                                    {tCommon('cancel')}
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-md transition-colors"
-                                >
-                                    {loading ? tCommon('saving') : tCommon('save')}
-                                </button>
-                            </div>
-                        </form>
+            <SimpleModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title={editingId ? t('editPharmacy') : t('addPharmacy')}
+            >
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1.5">{t('form.name')}</label>
+                        <div className="relative">
+                            <Building2 className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                            <input
+                                type="text"
+                                required
+                                className="w-full border border-gray-300 rounded-xl pl-10 p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.name}
+                                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                            />
+                        </div>
                     </div>
-                </div>
-            )}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('form.phone')}</label>
+                            <input
+                                type="text"
+                                className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.phone}
+                                onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('form.fax')}</label>
+                            <input
+                                type="text"
+                                className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.fax}
+                                onChange={e => setFormData({ ...formData, fax: e.target.value })}
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('form.address')}</label>
+                        <input
+                            type="text"
+                            className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                            value={formData.address}
+                            onChange={e => setFormData({ ...formData, address: e.target.value })}
+                        />
+                    </div>
+                    <div className="flex justify-end gap-3 mt-8">
+                        <button
+                            type="button"
+                            onClick={() => setIsModalOpen(false)}
+                            className="px-5 py-2.5 text-gray-700 hover:bg-gray-100 rounded-xl text-sm font-medium transition-colors"
+                        >
+                            {tCommon('cancel')}
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-md transition-colors"
+                        >
+                            {loading ? tCommon('saving') : tCommon('save')}
+                        </button>
+                    </div>
+                </form>
+            </SimpleModal>
         </div>
     )
 }
