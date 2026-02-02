@@ -260,14 +260,12 @@ function PrescriptionManager({ appointment, t, tAdmin }: { appointment: any, t: 
                                             {appointment.prescription.pharmacyAddress || '-'}
                                         </div>
                                     </div>
-                                    {!isIssued && (
-                                        <button
-                                            onClick={() => setIsEditingPharmacy(true)}
-                                            className="text-xs text-blue-600 hover:underline"
-                                        >
-                                            {tAdmin('actions.edit')}
-                                        </button>
-                                    )}
+                                    <button
+                                        onClick={() => setIsEditingPharmacy(true)}
+                                        className="text-xs text-blue-600 hover:underline"
+                                    >
+                                        {tAdmin('actions.edit')}
+                                    </button>
                                 </div>
                             </>
                         ) : (
@@ -347,39 +345,36 @@ function PrescriptionManager({ appointment, t, tAdmin }: { appointment: any, t: 
                                 }
                             }}
                             className="w-full border p-2 rounded text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                            disabled={isIssued}
                         />
                         <p className="text-xs text-gray-500 mt-1">
                             선택한 PDF 파일이 팩스로 전송됩니다.
                         </p>
                     </div>
 
-                    {!isIssued && (
-                        <div className="flex flex-col gap-2">
-                            {selectedFile && (
-                                <button
-                                    onClick={handleSendFax}
-                                    disabled={loading || !selectedFile || !appointment.prescription.pharmacyFax}
-                                    className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {loading ? t('faxSending') : t('sendFaxButton')}
-                                </button>
-                            )}
-                            {selectedFile && !appointment.prescription.pharmacyFax && (
-                                <p className="text-xs text-red-500 text-center">
-                                    약국 팩스 번호가 없습니다. 약국을 변경해주세요.
-                                </p>
-                            )}
-
+                    <div className="flex flex-col gap-2">
+                        {selectedFile && (
                             <button
-                                onClick={handleManualIssue}
-                                disabled={loading}
-                                className="w-full bg-gray-200 text-gray-700 py-2 rounded text-sm hover:bg-gray-300"
+                                onClick={handleSendFax}
+                                disabled={loading || !selectedFile || !appointment.prescription.pharmacyFax}
+                                className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {t('issueButton')} (단순 상태 변경)
+                                {loading ? t('faxSending') : (isIssued ? "팩스 재전송" : t('sendFaxButton'))}
                             </button>
-                        </div>
-                    )}
+                        )}
+                        {selectedFile && !appointment.prescription.pharmacyFax && (
+                            <p className="text-xs text-red-500 text-center">
+                                약국 팩스 번호가 없습니다. 약국을 변경해주세요.
+                            </p>
+                        )}
+
+                        <button
+                            onClick={handleManualIssue}
+                            disabled={loading}
+                            className="w-full bg-gray-200 text-gray-700 py-2 rounded text-sm hover:bg-gray-300"
+                        >
+                            {t('issueButton')} (단순 상태 변경)
+                        </button>
+                    </div>
 
                     {isIssued && (
                         <div className="text-center text-sm text-green-600 font-medium py-2">

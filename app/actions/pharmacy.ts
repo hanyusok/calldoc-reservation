@@ -58,6 +58,7 @@ export async function createPharmacy(data: z.infer<typeof pharmacySchema>) {
             data: validated.data
         })
         revalidatePath('/admin/pharmacies')
+        revalidatePath('/dashboard')
         return { success: true }
     } catch (error) {
         console.error(error)
@@ -67,7 +68,8 @@ export async function createPharmacy(data: z.infer<typeof pharmacySchema>) {
 
 export async function updatePharmacy(id: string, data: z.infer<typeof pharmacySchema>) {
     const session = await getServerSession(authOptions)
-    if (!session || session.user.role !== 'ADMIN') return { error: "Unauthorized" }
+    // Allow ADMIN or STAFF
+    if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'STAFF')) return { error: "Unauthorized" }
 
     const validated = pharmacySchema.safeParse(data)
     if (!validated.success) return { error: "Invalid data" }
@@ -78,6 +80,7 @@ export async function updatePharmacy(id: string, data: z.infer<typeof pharmacySc
             data: validated.data
         })
         revalidatePath('/admin/pharmacies')
+        revalidatePath('/dashboard')
         return { success: true }
     } catch (error) {
         console.error(error)
@@ -87,13 +90,15 @@ export async function updatePharmacy(id: string, data: z.infer<typeof pharmacySc
 
 export async function deletePharmacy(id: string) {
     const session = await getServerSession(authOptions)
-    if (!session || session.user.role !== 'ADMIN') return { error: "Unauthorized" }
+    // Allow ADMIN or STAFF
+    if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'STAFF')) return { error: "Unauthorized" }
 
     try {
         await prisma.pharmacy.delete({
             where: { id }
         })
         revalidatePath('/admin/pharmacies')
+        revalidatePath('/dashboard')
         return { success: true }
     } catch (error) {
         console.error(error)

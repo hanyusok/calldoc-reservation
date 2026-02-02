@@ -115,6 +115,7 @@ export async function issuePrescription(
 }
 
 // Update prescription pharmacy details (Admin only or authorized)
+// Update prescription pharmacy details (Admin or Staff)
 export async function updatePrescriptionPharmacy(
     prescriptionId: string,
     pharmacyDetails: {
@@ -125,19 +126,25 @@ export async function updatePrescriptionPharmacy(
     }
 ) {
     const session = await getServerSession(authOptions)
-    if (!session?.user?.role || session.user.role !== 'ADMIN') return { error: "Unauthorized" }
+    // Allow ADMIN or STAFF
+    if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'STAFF')) return { error: "Unauthorized" }
 
     try {
-        await prisma.prescription.update({
+        const updated = await prisma.prescription.update({
             where: { id: prescriptionId },
             data: {
                 pharmacyName: pharmacyDetails.name,
                 pharmacyFax: pharmacyDetails.fax,
                 pharmacyPhone: pharmacyDetails.phone,
                 pharmacyAddress: pharmacyDetails.address
-            }
+            },
+            select: { appointmentId: true }
         })
+
         revalidatePath('/admin/appointments')
+        if (updated?.appointmentId) {
+            revalidatePath(`/dashboard/appointments/${updated.appointmentId}`)
+        }
         return { success: true }
     } catch (error) {
         console.error("Failed to update prescription pharmacy", error)
