@@ -41,7 +41,7 @@ export default function NotificationManager() {
 
                 // Play Sound
                 try {
-                    const audio = new Audio('/notification.mp3');
+                    const audio = new Audio('/malware-warning-sound.mp3');
                     audio.play().catch(e => console.log('Audio play failed', e));
                 } catch (e) {
                     console.log('Audio not supported', e);

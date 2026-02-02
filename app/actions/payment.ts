@@ -196,7 +196,7 @@ export async function cancelPayment(paymentId: string, reason: string) {
     const AUTH_KEY = process.env.KIWOOM_AUTH_KEY; // Secret Key
 
     if (!payment.paymentKey) {
-        return { success: false, error: "No Payment Key (TRXID) available for cancellation" }
+        return { success: false, error: "NO_PAYMENT_KEY" }
     }
 
     try {

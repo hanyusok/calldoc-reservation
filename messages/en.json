@@ -523,7 +523,17 @@
             },
             "actions": {
                 "cancel": "Cancel",
-                "cancelConfirm": "Are you sure you want to cancel this payment? This will update the status to CANCELED."
+                "cancelConfirm": "Are you sure you want to cancel this payment? This will update the status to CANCELED.",
+                "cancelSuccess": "Payment status updated to CANCELED. (Refund requires manual processing in Kiwoom Admin)",
+                "cancelFailed": "Failed to cancel: ",
+                "error": "Error cancelling payment"
+            },
+            "errors": {
+                "NO_PAYMENT_KEY": "No Payment Key (TRXID) available for cancellation",
+                "PAYMENT_NOT_FOUND": "Payment record not found",
+                "UNAUTHORIZED": "Unauthorized",
+                "INTERNAL_SERVER_ERROR": "Internal Server Error",
+                "INIT_CANCEL_FAILED": "Failed to initialize cancellation"
             }
         }
     },

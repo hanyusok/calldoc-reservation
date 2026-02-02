@@ -528,7 +528,17 @@
             },
             "actions": {
                 "cancel": "취소",
-                "cancelConfirm": "정말 이 결제를 취소하시겠습니까? 상태가 '취소됨'으로 변경됩니다."
+                "cancelConfirm": "정말 이 결제를 취소하시겠습니까? 상태가 '취소됨'으로 변경됩니다.",
+                "cancelSuccess": "결제 상태가 취소됨으로 변경되었습니다. (환불은 키움 관리자에서 수동으로 처리해야 합니다)",
+                "cancelFailed": "취소 실패: ",
+                "error": "결제 취소 중 오류가 발생했습니다."
+            },
+            "errors": {
+                "NO_PAYMENT_KEY": "취소할 결제 키(TRXID)가 없습니다.",
+                "PAYMENT_NOT_FOUND": "결제 기록을 찾을 수 없습니다.",
+                "UNAUTHORIZED": "권한이 없습니다.",
+                "INTERNAL_SERVER_ERROR": "내부 서버 오류가 발생했습니다.",
+                "INIT_CANCEL_FAILED": "취소 초기화에 실패했습니다."
             }
         }
     },

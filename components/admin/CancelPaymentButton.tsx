@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { cancelPayment } from "@/app/actions/payment";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function CancelPaymentButton({
     paymentId,
@@ -17,22 +18,29 @@ export default function CancelPaymentButton({
 }) {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const t = useTranslations('Admin.payments');
 
     const handleCancel = async () => {
-        if (!confirm(confirmMsg || "Are you sure you want to cancel this payment?")) return;
+        if (!confirm(confirmMsg || t('actions.cancelConfirm'))) return;
 
         setLoading(true);
         try {
             const result = await cancelPayment(paymentId, "Admin Manual Cancel");
             if (result.success) {
-                alert("Payment status updated to CANCELED. (Refund requires manual processing in Kiwoom Admin)");
+                alert(t('actions.cancelSuccess'));
                 router.refresh();
             } else {
-                alert("Failed to cancel: " + result.error);
+                // Try to translate if it's a known error code
+                const isErrorCode = /^[A-Z_]+$/.test(result.error || "");
+                const errorMessage = isErrorCode
+                    ? t(`errors.${result.error}`)
+                    : result.error;
+
+                alert(t('actions.cancelFailed') + errorMessage);
             }
         } catch (e) {
             console.error(e);
-            alert("Error cancelling payment");
+            alert(t('actions.error'));
         } finally {
             setLoading(false);
         }
