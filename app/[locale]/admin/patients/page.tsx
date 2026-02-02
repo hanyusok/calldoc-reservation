@@ -77,7 +77,15 @@ export default async function AdminPatientsPage({
                                 <td className="px-6 py-4 whitespace-nowrap">{t(`genderEnum.${patient.gender}`)}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">{new Date(patient.dateOfBirth).toLocaleDateString()}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
-                                    {new Date(patient.createdAt).toLocaleDateString()}
+                                    {new Date(patient.createdAt).toLocaleString('ko-KR', {
+                                        timeZone: 'Asia/Seoul',
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        hour12: false
+                                    })}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right">
                                     {/* @ts-ignore - Date types compatible enough */}

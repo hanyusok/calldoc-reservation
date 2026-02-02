@@ -106,6 +106,7 @@
             "descriptionSelect": "목록에서 약국을 검색하여 선택해주세요.",
             "descriptionCreate": "약국 정보를 직접 입력하여 처방전을 전송합니다.",
             "searchLabel": "약국 검색",
+            "recommendedTitle": "추천 약국 (가까운 순)",
             "noResults": "검색 결과가 없습니다.",
             "createNewLink": "새 약국 추가하기",
             "createAndSubmit": "약국 추가 및 전송",
@@ -581,6 +582,7 @@
         "success": {
             "title": "결제가 완료되었습니다!",
             "description": "{amount}원이 정상적으로 결제되었습니다.",
+            "linkComingSoon": "잠시만 기다려주세요. 곧 화상 회의 링크가 전송됩니다.",
             "returnToDashboard": "대시보드로 돌아가기"
         },
         "fail": {

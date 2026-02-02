@@ -17,6 +17,7 @@ interface Pharmacy {
     fax: string | null;
     phone: string | null;
     address: string | null;
+    isDefault: boolean;
 }
 
 export default function PharmacySelector({ appointmentId, onSuccess }: PharmacySelectorProps) {
@@ -43,8 +44,10 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
     useEffect(() => {
         async function fetchPharmacies() {
             try {
-                const data = await getPharmacies();
-                setPharmacies(data);
+                // getPharmacies now supports pagination and returns { pharmacies: [...], total, totalPages }
+                // We fetch a larger number to support client-side filtering for now
+                const data = await getPharmacies(1, 100);
+                setPharmacies((data as any).pharmacies || []);
             } catch (e) {
                 console.error("Failed to fetch pharmacies", e);
             } finally {
@@ -54,9 +57,14 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
         fetchPharmacies();
     }, []);
 
+    const [isFocused, setIsFocused] = useState(false);
+
     // Filter pharmacies
     const filteredPharmacies = useMemo(() => {
-        if (!searchTerm) return [];
+        if (!searchTerm) {
+            // Return ONLY default pharmacy if no search term
+            return pharmacies.filter(p => p.isDefault);
+        }
         const lower = searchTerm.toLowerCase();
         return pharmacies.filter(p =>
             p.name.toLowerCase().includes(lower) ||
@@ -67,6 +75,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
     const handleSelectPharmacy = (pharmacy: Pharmacy) => {
         setSelectedPharmacy(pharmacy);
         setSearchTerm(pharmacy.name); // Show name in input
+        setIsFocused(false);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -132,8 +141,8 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                 <button
                     onClick={() => { setMode('select'); setSelectedPharmacy(null); setSearchTerm(''); }}
                     className={`pb-3 px-4 text-sm font-semibold transition-colors relative ${mode === 'select'
-                            ? 'text-blue-600'
-                            : 'text-gray-500 hover:text-gray-700'
+                        ? 'text-blue-600'
+                        : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     {t('searchMode')}
@@ -144,8 +153,8 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                 <button
                     onClick={() => setMode('create')}
                     className={`pb-3 px-4 text-sm font-semibold transition-colors relative ${mode === 'create'
-                            ? 'text-blue-600'
-                            : 'text-gray-500 hover:text-gray-700'
+                        ? 'text-blue-600'
+                        : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     {t('createMode')}
@@ -173,12 +182,23 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                                     setSearchTerm(e.target.value);
                                     setSelectedPharmacy(null);
                                 }}
+                                onFocus={() => setIsFocused(true)}
+                                onBlur={() => {
+                                    // Delay to allow click on dropdown items
+                                    setTimeout(() => setIsFocused(false), 200);
+                                }}
                                 placeholder={t('searchPlaceholder')}
                                 className="pl-11 w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
                             />
                         </div>
-                        {searchTerm && !selectedPharmacy && (
+                        {/* Show list if search term exists OR input is focused */}
+                        {!selectedPharmacy && (searchTerm || isFocused) && (
                             <div className="absolute z-10 w-full sm:w-[calc(100%-3rem)] bg-white border border-gray-200 rounded-xl shadow-xl mt-1 max-h-60 overflow-y-auto">
+                                {!searchTerm && filteredPharmacies.length > 0 && (
+                                    <div className="px-5 py-2 bg-gray-50 text-xs font-bold text-gray-500 border-b">
+                                        {t('recommendedTitle') || "추천 약국 (가까운 순)"}
+                                    </div>
+                                )}
                                 {filteredPharmacies.length > 0 ? (
                                     filteredPharmacies.map(p => (
                                         <button

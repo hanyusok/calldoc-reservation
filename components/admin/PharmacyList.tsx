@@ -2,8 +2,8 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, Pencil, Trash2, Search, Building2, MapPin, Phone, ChevronLeft, ChevronRight } from "lucide-react";
-import { createPharmacy, updatePharmacy, deletePharmacy } from "@/app/actions/pharmacy";
+import { Plus, Pencil, Trash2, Search, Building2, MapPin, Phone, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { createPharmacy, updatePharmacy, deletePharmacy, setPharmacyDefault } from "@/app/actions/pharmacy";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 interface Pharmacy {
@@ -12,6 +12,7 @@ interface Pharmacy {
     fax: string | null;
     phone: string | null;
     address: string | null;
+    isDefault: boolean;
 }
 
 interface PharmacyListProps {
@@ -174,6 +175,19 @@ export default function PharmacyList({ initialPharmacies, totalPages, currentPag
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button
+                                            onClick={async () => {
+                                                if (loading) return;
+                                                setLoading(true);
+                                                await setPharmacyDefault(pharmacy.id);
+                                                setLoading(false);
+                                                router.refresh();
+                                            }}
+                                            className={`mr-4 p-1 rounded-full transition-colors ${pharmacy.isDefault ? 'text-yellow-500 bg-yellow-50' : 'text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'}`}
+                                            title="Set as Default"
+                                        >
+                                            <Star size={18} fill={pharmacy.isDefault ? "currentColor" : "none"} />
+                                        </button>
                                         <button
                                             onClick={() => handleOpenModal(pharmacy)}
                                             className="text-blue-600 hover:text-blue-900 mr-4 p-1 hover:bg-blue-50 rounded-full transition-colors"

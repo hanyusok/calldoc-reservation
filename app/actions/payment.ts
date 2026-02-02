@@ -92,6 +92,19 @@ export async function confirmPayment(paymentKey: string, orderId: string, amount
 
         await Promise.all(notificationPromises);
 
+        // Notify Patient
+        if (payment.appointment.patient?.userId) {
+            const tPayment = await getTranslations({ locale: 'ko', namespace: 'Payment' });
+            await createNotification({
+                userId: payment.appointment.patient.userId,
+                title: tPayment('success.title'),
+                message: tPayment('success.linkComingSoon'),
+                type: 'PAYMENT',
+                link: '/dashboard'
+            });
+        }
+
+
         // 7. Revalidate Paths
         revalidatePath('/dashboard');
         revalidatePath('/[locale]/admin/appointments', 'page');

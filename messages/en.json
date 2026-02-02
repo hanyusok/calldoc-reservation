@@ -102,16 +102,17 @@
             "addressPlaceholder": "Pharmacy Address (Optional)",
             "submitForTransfer": "Request Transfer",
             "searchMode": "Search Pharmacy",
-            "createMode": "Manual Input",
-            "descriptionSelect": "Search and select a pharmacy from the list.",
-            "descriptionCreate": "Enter pharmacy details manually to request transfer.",
+            "createMode": "Manual Entry",
+            "descriptionSelect": "Search for a partner pharmacy to send the prescription.",
+            "descriptionCreate": "Enter pharmacy details manually to send the prescription.",
             "searchLabel": "Search Pharmacy",
+            "searchPlaceholder": "Search by pharmacy name or address",
+            "recommendedTitle": "Recommended Pharmacies",
             "noResults": "No results found.",
             "createNewLink": "Add New Pharmacy",
             "createAndSubmit": "Add & Send",
             "errorSelect": "Please select a pharmacy.",
             "errorCreate": "Failed to create pharmacy.",
-            "searchPlaceholder": "Search by pharmacy name or address...",
             "change": "Change",
             "success": "Prescription transfer request completed.",
             "processing": "Processing..."
@@ -576,6 +577,7 @@
         "success": {
             "title": "Payment Successful!",
             "description": "Your payment of {amount} KRW has been confirmed.",
+            "linkComingSoon": "Please wait a moment. The Google Meet link will be sent shortly.",
             "returnToDashboard": "Return to Dashboard"
         },
         "fail": {
