@@ -11,7 +11,8 @@ import { createNotification } from "@/lib/notifications"
 async function checkAdmin() {
     const session = await getServerSession(authOptions)
     // @ts-ignore - Role is added in session callback
-    if (!session?.user || session.user.role !== Role.ADMIN) {
+    if (!session?.user || (session.user as any).role !== Role.ADMIN) {
+        console.error("checkAdmin Failed:", { userId: session?.user?.id, role: (session?.user as any)?.role });
         throw new Error("Unauthorized: Admin access required")
     }
     return session
@@ -22,6 +23,7 @@ async function checkStaffOrAdmin() {
     // @ts-ignore
     const role = session?.user?.role
     if (!session?.user || (role !== Role.ADMIN && role !== Role.STAFF)) {
+        console.error("checkStaffOrAdmin Failed:", { userId: session?.user?.id, role });
         throw new Error("Unauthorized: Admin or Staff access required")
     }
     return session
