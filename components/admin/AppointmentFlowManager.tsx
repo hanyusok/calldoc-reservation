@@ -175,18 +175,26 @@ function PrescriptionManager({ appointment, t, tAdmin }: { appointment: any, t: 
     const [isEditingPharmacy, setIsEditingPharmacy] = useState(false);
     const [pharmacies, setPharmacies] = useState<any[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
     const [selectedPharmacy, setSelectedPharmacy] = useState<any | null>(null);
 
+    // Debounce search term
     useEffect(() => {
-        if (isEditingPharmacy && pharmacies.length === 0) {
-            getPharmacies(1, 100).then(data => setPharmacies((data as any).pharmacies || []));
-        }
-    }, [isEditingPharmacy]);
+        const timer = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
 
-    const filteredPharmacies = pharmacies.filter(p =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (p.address && p.address.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    useEffect(() => {
+        if (isEditingPharmacy) {
+            // Always fetch when editing opens or search changes
+            getPharmacies(1, 20, debouncedSearchTerm).then(data => setPharmacies((data as any).pharmacies || []));
+        }
+    }, [isEditingPharmacy, debouncedSearchTerm]);
+
+    // No longer filter client-side, trust server results
+    const filteredPharmacies = pharmacies;
 
     const handleUpdatePharmacy = async () => {
         if (!selectedPharmacy) return;

@@ -12,17 +12,18 @@ import { Readable } from "stream"
 
 const BAROBILL_CERT_KEY = process.env.BAROBILL_CERT_KEY!;
 const BAROBILL_WSDL = process.env.BAROBILL_WSDL!;
-const TEST_CORP_NUM = "1209084343";
-const TEST_USER_ID = "hanyusok"; // Also used for FTP User
+const BAROBILL_CORP_NUM = process.env.BAROBILL_CORP_NUM || "1209084343";
+const BAROBILL_USER_ID = process.env.BAROBILL_USER_ID || "hanyusok";
+const BAROBILL_SENDER_NUMBER = process.env.BAROBILL_SENDER_NUMBER || "00000000";
 
 // FTP Configuration (Add these to .env)
 const FTP_HOST = process.env.BAROBILL_FTP_HOST || "testftp.barobill.co.kr"; // Default to test
-const FTP_USER = process.env.BAROBILL_FTP_USER || TEST_USER_ID;
+const FTP_USER = process.env.BAROBILL_FTP_USER || BAROBILL_USER_ID; // Default to BaroBill User ID
 const FTP_PASSWORD = process.env.BAROBILL_FTP_PASSWORD || "";
 
 export async function sendFax(formData: FormData) {
     const session = await getServerSession(authOptions)
-    if (!session?.user?.email) return { error: "Unauthorized" }
+    if (!session?.user?.id) return { error: "Unauthorized" }
 
     try {
         const file = formData.get("file") as File;
@@ -37,51 +38,62 @@ export async function sendFax(formData: FormData) {
 
         if (!prescription) return { error: "Prescription not found" };
 
-        const receiverFax = prescription.pharmacyFax || "000-000-0000";
+        const receiverFax = prescription.pharmacyFax;
         const receiverName = prescription.pharmacyName || "Pharmacy";
+
+        if (!receiverFax) {
+            return { error: "Pharmacy fax number is missing" };
+        }
 
         const fileName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`; // Sanitize filename
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
+        console.log(`[Fax] Starting process for Prescription ${prescriptionId}`);
+        console.log(`[Fax] Receiver: ${receiverName} (${receiverFax})`);
+
         // 1. Upload to FTP
-        console.log(`Uploading ${fileName} to FTP (${FTP_HOST})...`);
-        const ftp = new FtpClient();
-        // ftp.ftp.verbose = true;
+        const ftpPort = parseInt(process.env.BAROBILL_FTP_PORT || "9030");
+        console.log(`[Fax] Uploading ${fileName} to FTP (${FTP_HOST}:${ftpPort})...`);
+        const ftp = new FtpClient(30000); // Set timeout to 30s
+        // ftp.ftp.verbose = true; // Verbose logging disabled after verification
 
         try {
             await ftp.access({
                 host: FTP_HOST,
                 user: FTP_USER,
                 password: FTP_PASSWORD,
-                port: parseInt(process.env.BAROBILL_FTP_PORT || "9031"),
-                secure: false // BaroBill Test FTP might be plain FTP? Check docs or assume plain first.
+                port: ftpPort,
+                secure: false, // Default to plain FTP
             });
 
             // Upload to root
             const source = Readable.from(buffer);
 
             await ftp.uploadFrom(source, fileName);
-            console.log("FTP Upload Successful");
+            console.log("[Fax] FTP Upload Successful");
 
         } catch (ftpError) {
-            console.error("FTP Error:", ftpError);
+            console.error("[Fax] FTP Error:", ftpError);
             return { error: `FTP Upload Failed: ${(ftpError as Error).message}` };
         } finally {
             ftp.close();
         }
 
         // 2. Call SendFaxFromFTP
-        console.log("Connecting to BaroBill SOAP Service...");
+        console.log("[Fax] Connecting to BaroBill SOAP Service...");
         const client = await soap.createClientAsync(BAROBILL_WSDL);
 
-        console.log("Sending Fax via FTP reference...");
+        console.log("[Fax] Sending Fax via FTP reference...");
+        // Debug params (hide credentials)
+        console.log(`[Fax] Params: SenderID=${BAROBILL_USER_ID}, From=${BAROBILL_SENDER_NUMBER}, To=${receiverFax}`);
+
         const sendArgs = {
             CERTKEY: BAROBILL_CERT_KEY,
-            CorpNum: TEST_CORP_NUM,
-            SenderID: TEST_USER_ID,
+            CorpNum: BAROBILL_CORP_NUM,
+            SenderID: BAROBILL_USER_ID,
             FileName: fileName, // Only the filename
-            FromNumber: "00000000",
+            FromNumber: BAROBILL_SENDER_NUMBER,
             ToNumber: receiverFax,
             ReceiveCorp: receiverName,
             ReceiveName: receiverName,
@@ -94,10 +106,12 @@ export async function sendFax(formData: FormData) {
         // The property name depends on the WSDL, usually SendFaxFromFTPResult
         const result = sendResponse[0].SendFaxFromFTPResult;
 
+        console.log(`[Fax] SendFaxFromFTP Result: ${result}`);
+
         if (!result || (parseInt(result) < 0)) {
             // Error handling
             // If result is negative 5 digit number, it's an error code.
-            console.error("SendFaxFromFTP Failed. Result:", result);
+            console.error("[Fax] SendFaxFromFTP Failed. Result:", result);
 
             // Try to get error string
             try {
@@ -106,13 +120,14 @@ export async function sendFax(formData: FormData) {
                     ErrCode: result
                 });
                 const errMsg = errResponse[0].GetErrStringResult;
+                console.error(`[Fax] Error Details: ${errMsg}`);
                 return { error: `Fax Send Failed (${result}): ${errMsg}` };
             } catch {
                 return { error: `Fax Send Failed. Code: ${result}` };
             }
         }
 
-        console.log("Fax Sent Successfully. SendKey:", result);
+        console.log("[Fax] Fax Sent Successfully. SendKey:", result);
 
         // 3. Update Status
         await prisma.prescription.update({
@@ -127,7 +142,7 @@ export async function sendFax(formData: FormData) {
         return { success: true, receiptNum: result };
 
     } catch (error) {
-        console.error("Failed to send fax via SOAP/FTP lib", error);
+        console.error("[Fax] Failed to send fax via SOAP/FTP lib", error);
         return { error: "Failed to send fax request: " + (error as Error).message };
 
     }
@@ -143,7 +158,7 @@ export async function checkFaxStatus(receiptNum: string) {
 
         const response = await client.GetFaxMessageEx2Async({
             CERTKEY: BAROBILL_CERT_KEY,
-            CorpNum: TEST_CORP_NUM,
+            CorpNum: BAROBILL_CORP_NUM,
             SendKey: receiptNum
         });
 
