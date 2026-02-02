@@ -331,6 +331,7 @@
             "defaultLinkLabel": "Default Meeting Link",
             "defaultLinkHelp": "Enter the default Google Meet URL to be used when creating a new appointment.",
             "save": "Save Settings",
+            "saved": "Saved!",
             "checklistTitle": "Pre-meeting Checklist",
             "checkMic": "Check Microphone",
             "checkCamera": "Check Camera",
@@ -356,6 +357,7 @@
             "schedule": "Schedule Settings",
             "pharmacies": "Pharmacies",
             "payments": "Payments",
+            "meet": "Meeting Settings",
             "logout": "Logout"
         },
         "pharmacies": {

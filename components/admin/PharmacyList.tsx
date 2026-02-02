@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, Pencil, Trash2, Search, Building2, MapPin, Phone } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Building2, MapPin, Phone, ChevronLeft, ChevronRight } from "lucide-react";
 import { createPharmacy, updatePharmacy, deletePharmacy } from "@/app/actions/pharmacy";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 interface Pharmacy {
     id: string;
@@ -13,19 +14,63 @@ interface Pharmacy {
     address: string | null;
 }
 
-export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] }) {
+interface PharmacyListProps {
+    initialPharmacies: Pharmacy[];
+    totalPages: number;
+    currentPage: number;
+    initialQuery: string;
+}
+
+export default function PharmacyList({ initialPharmacies, totalPages, currentPage, initialQuery }: PharmacyListProps) {
     const t = useTranslations('Admin.pharmacies');
     const tCommon = useTranslations('Admin.common');
-    const [searchTerm, setSearchTerm] = useState("");
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    // Local state for immediate UI feedback
+    const [searchTerm, setSearchTerm] = useState(initialQuery);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [formData, setFormData] = useState({ name: "", fax: "", phone: "", address: "" });
     const [loading, setLoading] = useState(false);
 
-    const filtered = pharmacies.filter(p =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (p.address && p.address.toLowerCase().includes(searchTerm.toLowerCase()))
+    // Sync searchTerm with URL query param if it changes externally
+    useEffect(() => {
+        setSearchTerm(initialQuery);
+    }, [initialQuery]);
+
+    // Create a query string generator
+    const createQueryString = useCallback(
+        (name: string, value: string) => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set(name, value);
+            return params.toString();
+        },
+        [searchParams]
     );
+
+    // Debounced search handler
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== initialQuery) {
+                const params = new URLSearchParams(searchParams.toString());
+                if (searchTerm) {
+                    params.set('q', searchTerm);
+                } else {
+                    params.delete('q');
+                }
+                params.set('page', '1'); // Reset to page 1 on search
+                router.push(`${pathname}?${params.toString()}`);
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchTerm, router, pathname, searchParams, initialQuery]);
+
+    const handlePageChange = (page: number) => {
+        router.push(`${pathname}?${createQueryString('page', page.toString())}`);
+    };
 
     const handleOpenModal = (pharmacy?: Pharmacy) => {
         if (pharmacy) {
@@ -62,13 +107,13 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
 
         setLoading(false);
         setIsModalOpen(false);
-        window.location.reload();
+        router.refresh();
     };
 
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure?")) return;
         await deletePharmacy(id);
-        window.location.reload();
+        router.refresh();
     };
 
     return (
@@ -105,7 +150,7 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {filtered.length === 0 ? (
+                        {initialPharmacies.length === 0 ? (
                             <tr>
                                 <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
                                     <div className="flex flex-col items-center justify-center">
@@ -115,7 +160,7 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                                 </td>
                             </tr>
                         ) : (
-                            filtered.map((pharmacy) => (
+                            initialPharmacies.map((pharmacy) => (
                                 <tr key={pharmacy.id} className="hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm font-bold text-gray-900">{pharmacy.name}</div>
@@ -148,6 +193,31 @@ export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] })
                     </tbody>
                 </table>
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-6">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage <= 1}
+                        className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                        <ChevronLeft size={20} className="text-gray-600" />
+                    </button>
+
+                    <span className="text-sm font-medium text-gray-700 px-2">
+                        {currentPage} / {totalPages}
+                    </span>
+
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage >= totalPages}
+                        className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                        <ChevronRight size={20} className="text-gray-600" />
+                    </button>
+                </div>
+            )}
 
             {/* Modal */}
             {isModalOpen && (

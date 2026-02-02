@@ -4,7 +4,7 @@ import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import LogoutButton from "@/components/admin/LogoutButton";
-import { LayoutDashboard, Users, Calendar, LogOut, UserCog, Clock, Building2, Banknote } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, LogOut, UserCog, Clock, Building2, Banknote, Video } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 export default async function AdminLayout({
@@ -30,6 +30,7 @@ export default async function AdminLayout({
         { href: `/${locale}/admin/patients`, label: t('patients'), icon: Users, roles: [Role.ADMIN, Role.STAFF] },
         { href: `/${locale}/admin/appointments`, label: t('appointments'), icon: Calendar, roles: [Role.ADMIN, Role.STAFF] },
         { href: `/${locale}/admin/payments`, label: t('payments'), icon: Banknote, roles: [Role.ADMIN] },
+        { href: `/${locale}/admin/meet`, label: t('meet'), icon: Video, roles: [Role.ADMIN] },
     ];
 
     const navItems = allNavItems.filter(item => item.roles.includes(userRole));
@@ -66,10 +67,10 @@ export default async function AdminLayout({
                             href={`/${locale}/admin/schedule`}
                             className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mb-2 text-gray-700"
                         >
-                            <Clock className="w-5 h-5" />
                             <span className="font-medium">{t('schedule')}</span>
                         </Link>
                     )}
+
                     <div className="flex items-center space-x-3 px-4 py-3 text-sm text-gray-500">
                         <span>{session.user.email}</span>
                     </div>

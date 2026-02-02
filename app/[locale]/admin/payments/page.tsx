@@ -65,7 +65,14 @@ export default async function AdminPaymentsPage({
                         {payments.map((payment) => (
                             <tr key={payment.id} className="hover:bg-gray-50 dark:hover:bg-gray-750">
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                    {format(payment.createdAt, 'PPP p', { locale: dateLocale })}
+                                    {new Intl.DateTimeFormat(locale === 'ko' ? 'ko-KR' : 'en-US', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        timeZone: 'Asia/Seoul'
+                                    }).format(payment.createdAt)}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                     {payment.appointment.patient.name}
@@ -108,6 +115,6 @@ export default async function AdminPaymentsPage({
 
             {/* Pagination */}
             <Pagination page={page} totalPages={totalPages} />
-        </div>
+        </div >
     );
 }

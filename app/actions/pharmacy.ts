@@ -13,13 +13,34 @@ const pharmacySchema = z.object({
     address: z.string().optional(),
 })
 
-export async function getPharmacies() {
+export async function getPharmacies(page: number = 1, limit: number = 10, query: string = "") {
     const session = await getServerSession(authOptions)
-    if (!session) return []
+    if (!session) return { pharmacies: [], total: 0, totalPages: 0 }
 
-    return await prisma.pharmacy.findMany({
-        orderBy: { createdAt: 'desc' }
-    })
+    const skip = (page - 1) * limit
+
+    const where = query ? {
+        OR: [
+            { name: { contains: query, mode: 'insensitive' as const } },
+            { address: { contains: query, mode: 'insensitive' as const } },
+        ]
+    } : {}
+
+    const [pharmacies, total] = await Promise.all([
+        prisma.pharmacy.findMany({
+            where,
+            orderBy: { createdAt: 'desc' },
+            skip,
+            take: limit,
+        }),
+        prisma.pharmacy.count({ where })
+    ])
+
+    return {
+        pharmacies,
+        total,
+        totalPages: Math.ceil(total / limit)
+    }
 }
 
 export async function createPharmacy(data: z.infer<typeof pharmacySchema>) {

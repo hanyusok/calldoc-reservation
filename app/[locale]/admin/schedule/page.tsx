@@ -6,7 +6,7 @@ import { ko, enUS } from 'date-fns/locale';
 import { useTranslations, useLocale } from 'next-intl';
 import { getGlobalSchedule, updateWeeklySchedule, setDayOverride, clearDayOverride, getSchedule } from '@/app/actions/schedule';
 import { ChevronLeft, ChevronRight, Save, Clock, Calendar as CalendarIcon, X } from 'lucide-react';
-import MeetSettingsCard from '@/components/admin/MeetSettingsCard';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -291,7 +291,6 @@ export default function AdminSchedulePage() {
                     </div>
                 </section>
 
-                <MeetSettingsCard />
             </div>
         </div>
     );
