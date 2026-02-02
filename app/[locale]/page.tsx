@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Video, Calendar, ShieldCheck } from "lucide-react";
+import { ArrowRight, Video, Calendar, ShieldCheck, Building2 } from "lucide-react";
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
@@ -18,6 +18,9 @@ export default function Home() {
           <span className="text-lg sm:text-xl font-bold text-gray-900">{t('nav.brand')}</span>
         </div>
         <div className="space-x-2 sm:space-x-4 flex items-center">
+          <Link href="/clinic/martclinic" className="text-sm sm:text-base text-gray-600 hover:text-blue-600 font-medium whitespace-nowrap hidden sm:inline-block">
+            {t('nav.martClinic')}
+          </Link>
           <Link href="/auth/login" className="text-sm sm:text-base text-gray-600 hover:text-gray-900 font-medium whitespace-nowrap">{t('nav.login')}</Link>
           <Link href="/dashboard" className="text-sm sm:text-base bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition whitespace-nowrap">{t('nav.myPage')}</Link>
           <LanguageSwitcher />
@@ -38,6 +41,9 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link href="/book" className="flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-blue-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 {t('hero.bookBtn')} <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+              <Link href="/clinic/martclinic" className="flex items-center justify-center bg-white text-blue-600 border-2 border-blue-100 px-8 py-4 rounded-xl text-lg font-bold hover:border-blue-300 hover:bg-blue-50 transition shadow-sm hover:shadow-md transform hover:-translate-y-1">
+                <Building2 className="mr-2 w-5 h-5" /> {t('hero.visitClinicBtn')}
               </Link>
             </div>
 

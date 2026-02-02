@@ -23,13 +23,15 @@
             "brand": "콜닥",
             "login": "로그인",
             "myPage": "마이페이지",
-            "logout": "로그아웃"
+            "logout": "로그아웃",
+            "martClinic": "제휴 병원(마트의원)"
         },
         "hero": {
             "headlinePrefix": "당신의 주치의,",
             "headlineSuffix": "언제 어디서나.",
             "subtitle": "신뢰할 수 있는 전문의와 화상 상담하세요. 하나의 대시보드에서 본인과 가족의 진료 예약을 간편하게 관리할 수 있습니다.",
             "bookBtn": "예약하기",
+            "visitClinicBtn": "마트의원 방문하기",
             "verifiedDoctor": "검증된 전문의",
             "easyScheduling": "간편한 예약",
             "usage": {
@@ -587,6 +589,50 @@
             "title": "결제가 취소되었습니다",
             "description": "결제 과정을 취소하셨습니다.",
             "returnToDashboard": "대시보드로 돌아가기"
+        }
+    },
+    "MartClinic": {
+        "hero": {
+            "title": "마트의원",
+            "subtitle": "우리 가족 주치의, 가까운 곳에서 만나보세요.",
+            "cta": "진료 예약하기",
+            "badge": "2011년부터 진료"
+        },
+        "about": {
+            "title": "병원 소개",
+            "description": "2011년 개원 이래 안성 롯데마트 2층에서 365일 진료하며 지역 주민의 건강을 지켜오고 있습니다. 소아청소년과 전문의 한유석 원장이 정성을 다해 진료합니다.",
+            "established": "개원일: 2011년 5월 9일",
+            "imageAlt": "마트의원 입구"
+        },
+        "services": {
+            "title": "진료 과목",
+            "subtitle": "포괄적인 진료 서비스",
+            "pediatrics": "소아청소년과",
+            "internal": "내과",
+            "ent": "이비인후과",
+            "dermatology": "피부과",
+            "orthopedics": "통증의학과",
+            "obesity": "비만 클리닉",
+            "ivTherapy": "수액 클리닉",
+            "diagnostics": "초음파/임상병리",
+            "vaccinations": "예방접종"
+        },
+        "info": {
+            "locationTitle": "오시는 길",
+            "hoursTitle": "진료 시간",
+            "contactTitle": "문의 전화",
+            "address": "경기도 안성시 공도읍 서동대로 4478 롯데마트 2층",
+            "row1Label": "월, 목, 금",
+            "row1Time": "10:00 - 18:00",
+            "row2Label": "화, 수",
+            "row2Time": "휴무",
+            "row3Label": "주말 (토, 일)",
+            "row3Time": "10:00 - 18:00",
+            "lunchLabel": "점심시간",
+            "lunchTime": "12:00 - 13:30"
+        },
+        "footer": {
+            "title": "진료 예약할 준비가 되셨나요?"
         }
     }
 }

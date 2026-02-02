@@ -23,13 +23,15 @@
             "brand": "CallDoc",
             "login": "Log In",
             "myPage": "My Page",
-            "logout": "Log Out"
+            "logout": "Log Out",
+            "martClinic": "Mart Clinic"
         },
         "hero": {
             "headlinePrefix": "Your Doctor,",
             "headlineSuffix": "Available Anytime.",
             "subtitle": "Book a video consultation with trusted family physicians. Manage appointments for yourself and your loved ones from one clean dashboard.",
             "bookBtn": "Book Appointment",
+            "visitClinicBtn": "Visit Mart Clinic",
             "verifiedDoctor": "Verified Doctor",
             "easyScheduling": "Easy Scheduling",
             "usage": {
@@ -582,6 +584,50 @@
             "title": "Payment Canceled",
             "description": "You have canceled the payment.",
             "returnToDashboard": "Return to Dashboard"
+        }
+    },
+    "MartClinic": {
+        "hero": {
+            "title": "Mart Clinic",
+            "subtitle": "Trusted Family Healthcare at Your Convenience.",
+            "cta": "Book Appointment",
+            "badge": "Since 2011"
+        },
+        "about": {
+            "title": "About Us",
+            "description": "Located on the 2nd floor of Lotte Mart Anseong, we have been serving the community since 2011. Dr. Yuseok Han, a specialist in Pediatrics, provides comprehensive care for the whole family.",
+            "established": "Established: May 9, 2011",
+            "imageAlt": "Mart Clinic Entrance"
+        },
+        "services": {
+            "title": "Medical Departments",
+            "subtitle": "Comprehensive Care",
+            "pediatrics": "Pediatrics",
+            "internal": "Internal Medicine",
+            "ent": "ENT",
+            "dermatology": "Dermatology",
+            "orthopedics": "Pain Clinic",
+            "obesity": "Obesity Clinic",
+            "ivTherapy": "IV Therapy",
+            "diagnostics": "Ultrasound / Lab",
+            "vaccinations": "Vaccinations"
+        },
+        "info": {
+            "locationTitle": "Location",
+            "hoursTitle": "Clinic Hours",
+            "contactTitle": "Contact",
+            "address": "2F Lotte Mart, 4478 Seodong-daero, Gongdo-eup, Anseong-si",
+            "row1Label": "Mon, Thu, Fri",
+            "row1Time": "10:00 - 18:00",
+            "row2Label": "Tue, Wed",
+            "row2Time": "Closed",
+            "row3Label": "Weekends",
+            "row3Time": "10:00 - 18:00",
+            "lunchLabel": "Lunch Time",
+            "lunchTime": "12:00 - 13:30"
+        },
+        "footer": {
+            "title": "Ready to book your visit?"
         }
     }
 }
