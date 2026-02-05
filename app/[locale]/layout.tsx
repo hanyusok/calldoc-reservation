@@ -31,6 +31,9 @@ export async function generateMetadata({
     },
     verification: {
       google: "I3aangKzJ5UxE4yRakLFJD9ycm9wK7AeXItOY5658Nc",
+      other: {
+        "naver-site-verification": "caa75fa9086c9864cb7acfaed04ebe246285ae40",
+      },
     },
   };
 }
