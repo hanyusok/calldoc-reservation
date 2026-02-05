@@ -10,4 +10,10 @@ const nextConfig = {
     }
 };
 
-export default withNextIntl(nextConfig);
+const withPWA = (await import("@ducanh2912/next-pwa")).default({
+    dest: "public",
+    register: true,
+    skipWaiting: true,
+});
+
+export default withPWA(withNextIntl(nextConfig));

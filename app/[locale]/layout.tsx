@@ -20,6 +20,15 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('description'),
+    manifest: "/manifest.json",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: t('title'),
+    },
+    icons: {
+      apple: "/icons/apple-touch-icon.png",
+    },
   };
 }
 
