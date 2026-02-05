@@ -29,6 +29,9 @@ export async function generateMetadata({
     icons: {
       apple: "/icons/apple-touch-icon.png",
     },
+    verification: {
+      google: "I3aangKzJ5UxE4yRakLFJD9ycm9wK7AeXItOY5658Nc",
+    },
   };
 }
 
