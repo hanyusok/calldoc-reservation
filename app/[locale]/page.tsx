@@ -60,20 +60,34 @@ export default function Home() {
           {/* Hero Image / Illustration */}
           <div className="relative h-64 sm:h-96 w-full bg-blue-50 rounded-3xl overflow-hidden flex items-center justify-center">
             <Image
-              src="/images/landing/doctor_video.png"
-              alt="Professional doctor conducting a video consultation"
+              src="/images/mart_clinic_entrance.jpg"
+              alt="Mart Clinic Entrance"
               fill
               className="object-cover"
               priority
             />
 
-            {/* Usage Overlay */}
-            <div className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-sm p-4 sm:p-6 text-white text-left transition-opacity hover:opacity-100">
-              <h3 className="font-bold text-lg mb-2 text-blue-200">{t('hero.usage.title')}</h3>
-              <ul className="text-sm space-y-1">
-                <li>{t('hero.usage.step1')}</li>
-                <li>{t('hero.usage.step2')}</li>
-                <li>{t('hero.usage.step3')}</li>
+            {/* Usage Floating Card */}
+            <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 bg-white/95 backdrop-blur-sm p-5 sm:p-6 rounded-2xl shadow-xl max-w-[calc(100%-2rem)] sm:max-w-xs text-left border border-gray-100 z-10 transition-transform hover:scale-105 duration-300">
+              <div className="flex items-center space-x-2 mb-3">
+                <div className="bg-blue-100 p-1.5 rounded-full">
+                  <ShieldCheck className="w-4 h-4 text-blue-600" />
+                </div>
+                <h3 className="font-bold text-gray-900 text-base">{t('hero.usage.title')}</h3>
+              </div>
+              <ul className="space-y-2.5">
+                <li className="flex items-start text-sm text-gray-600">
+                  <span className="w-5 h-5 flex items-center justify-center bg-gray-100 rounded-full text-xs font-bold text-gray-500 mr-2 shrink-0">1</span>
+                  {t('hero.usage.step1').replace(/^\d+\.\s*/, '')}
+                </li>
+                <li className="flex items-start text-sm text-gray-600">
+                  <span className="w-5 h-5 flex items-center justify-center bg-gray-100 rounded-full text-xs font-bold text-gray-500 mr-2 shrink-0">2</span>
+                  {t('hero.usage.step2').replace(/^\d+\.\s*/, '')}
+                </li>
+                <li className="flex items-start text-sm text-gray-600">
+                  <span className="w-5 h-5 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-600 mr-2 shrink-0">3</span>
+                  <span className="font-medium text-blue-600">{t('hero.usage.step3').replace(/^\d+\.\s*/, '')}</span>
+                </li>
               </ul>
             </div>
           </div>
