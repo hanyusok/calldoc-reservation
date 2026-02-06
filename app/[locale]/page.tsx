@@ -95,6 +95,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
+      {/* Footer */}
       <footer className="bg-gray-50 mt-12 py-8 text-center text-sm text-gray-400">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4">
           <p>&copy; {new Date().getFullYear()} CallDoc Telemedicine. {t('footer.copyright')}</p>
