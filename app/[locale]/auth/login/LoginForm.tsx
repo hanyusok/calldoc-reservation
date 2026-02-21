@@ -23,7 +23,7 @@ export default function LoginForm() {
     if (status === 'loading') {
         return (
             <div className="flex h-screen items-center justify-center bg-gray-50">
-                <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+                <Loader2 className="h-8 w-8 animate-spin text-rose-600" />
             </div>
         );
     }
@@ -43,7 +43,7 @@ export default function LoginForm() {
                 <div className="mt-8 space-y-4">
                     <button
                         onClick={() => signIn('google')}
-                        className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
                     >
                         <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M23.766 12.2764C23.766 11.4607 23.6999 10.6406 23.5588 9.83807H12.24V14.4591H18.7217C18.4528 15.9494 17.5885 17.2678 16.323 18.1056V21.1039H20.19C22.4608 19.0139 23.766 15.9274 23.766 12.2764Z" fill="#4285F4" />
@@ -77,7 +77,7 @@ export default function LoginForm() {
                     {!isEmailLoginVisible ? (
                         <button
                             onClick={() => setIsEmailLoginVisible(true)}
-                            className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
                         >
                             <span className="mr-2">✉️</span>
                             {t("continueWithEmail")}
@@ -114,7 +114,7 @@ export default function LoginForm() {
                                         type="email"
                                         autoComplete="email"
                                         required
-                                        className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 pl-2"
+                                        className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-rose-600 sm:text-sm sm:leading-6 pl-2"
                                         placeholder={t("emailLabel")}
                                     />
                                 </div>
@@ -126,14 +126,14 @@ export default function LoginForm() {
                                         type="password"
                                         autoComplete="current-password"
                                         required
-                                        className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 pl-2"
+                                        className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-rose-600 sm:text-sm sm:leading-6 pl-2"
                                         placeholder={t("passwordLabel")}
                                     />
                                 </div>
                                 <div>
                                     <button
                                         type="submit"
-                                        className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                        className="flex w-full justify-center rounded-md bg-rose-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
                                     >
                                         {t("signInBtn")}
                                     </button>
@@ -149,7 +149,7 @@ export default function LoginForm() {
 
                 <div className="text-center text-sm text-gray-600">
                     {t("noAccount")}{' '}
-                    <Link href="/auth/register" className="font-medium text-blue-600 hover:text-blue-500">
+                    <Link href="/auth/register" className="font-medium text-rose-600 hover:text-rose-500">
                         {t("signUpLink")}
                     </Link>
                 </div>

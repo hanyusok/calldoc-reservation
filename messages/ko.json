@@ -658,5 +658,11 @@
         "footer": {
             "title": "진료 예약할 준비가 되셨나요?"
         }
+    },
+    "Navigation": {
+        "home": "홈",
+        "appointments": "진료 내역",
+        "book": "진료 신청",
+        "profile": "내 정보"
     }
 }

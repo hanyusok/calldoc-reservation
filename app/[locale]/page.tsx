@@ -12,7 +12,7 @@ export default function Home() {
       {/* Navigation */}
       <nav className="flex items-center justify-between p-4 sm:p-6 max-w-7xl mx-auto">
         <div className="flex items-center space-x-2">
-          <div className="bg-blue-600 p-2 rounded-lg">
+          <div className="bg-rose-500 p-2 rounded-lg">
             <Video className="w-6 h-6 text-white" />
           </div>
           <span className="text-lg sm:text-xl font-bold text-gray-900">{t('nav.brand')}</span>
@@ -22,7 +22,7 @@ export default function Home() {
             {t('nav.martClinic')}
           </Link>
           <Link href="/auth/login" className="text-sm sm:text-base text-gray-600 hover:text-gray-900 font-medium whitespace-nowrap">{t('nav.login')}</Link>
-          <Link href="/dashboard" className="text-sm sm:text-base bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition whitespace-nowrap">{t('nav.myPage')}</Link>
+          <Link href="/dashboard" className="text-sm sm:text-base bg-rose-500 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-rose-600 transition whitespace-nowrap">{t('nav.myPage')}</Link>
           <LanguageSwitcher />
         </div>
       </nav>
@@ -33,16 +33,16 @@ export default function Home() {
           <div className="space-y-6">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
               {t('hero.headlinePrefix')} <br />
-              <span className="text-blue-600">{t('hero.headlineSuffix')}</span>
+              <span className="text-rose-500">{t('hero.headlineSuffix')}</span>
             </h1>
             <p className="text-lg text-gray-600">
               {t('hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link href="/book" className="flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-blue-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <Link href="/book" className="flex items-center justify-center bg-rose-500 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-rose-600 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 {t('hero.bookBtn')} <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
-              <Link href="/clinic/martclinic" className="flex items-center justify-center bg-white text-blue-600 border-2 border-blue-100 px-8 py-4 rounded-xl text-lg font-bold hover:border-blue-300 hover:bg-blue-50 transition shadow-sm hover:shadow-md transform hover:-translate-y-1">
+              <Link href="/clinic/martclinic" className="flex items-center justify-center bg-white text-rose-500 border-2 border-rose-100 px-8 py-4 rounded-xl text-lg font-bold hover:border-rose-300 hover:bg-rose-50 transition shadow-sm hover:shadow-md transform hover:-translate-y-1">
                 <Building2 className="mr-2 w-5 h-5" /> {t('hero.visitClinicBtn')}
               </Link>
             </div>
@@ -52,13 +52,13 @@ export default function Home() {
                 <ShieldCheck className="w-4 h-4 mr-1 text-green-500" /> {t('hero.verifiedDoctor')}
               </div>
               <div className="flex items-center">
-                <Calendar className="w-4 h-4 mr-1 text-blue-500" /> {t('hero.easyScheduling')}
+                <Calendar className="w-4 h-4 mr-1 text-rose-500" /> {t('hero.easyScheduling')}
               </div>
             </div>
           </div>
 
           {/* Hero Image / Illustration */}
-          <div className="relative h-64 sm:h-96 w-full bg-blue-50 rounded-3xl overflow-hidden flex items-center justify-center">
+          <div className="relative h-64 sm:h-96 w-full bg-rose-50 rounded-3xl overflow-hidden flex items-center justify-center">
             <Image
               src="/images/mart_clinic_entrance.jpg"
               alt="Mart Clinic Entrance"
@@ -70,8 +70,8 @@ export default function Home() {
             {/* Usage Floating Card */}
             <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 bg-white/95 backdrop-blur-sm p-5 sm:p-6 rounded-2xl shadow-xl max-w-[calc(100%-2rem)] sm:max-w-xs text-left border border-gray-100 z-10 transition-transform hover:scale-105 duration-300">
               <div className="flex items-center space-x-2 mb-3">
-                <div className="bg-blue-100 p-1.5 rounded-full">
-                  <ShieldCheck className="w-4 h-4 text-blue-600" />
+                <div className="bg-rose-100 p-1.5 rounded-full">
+                  <ShieldCheck className="w-4 h-4 text-rose-500" />
                 </div>
                 <h3 className="font-bold text-gray-900 text-base">{t('hero.usage.title')}</h3>
               </div>
@@ -85,8 +85,8 @@ export default function Home() {
                   {t('hero.usage.step2').replace(/^\d+\.\s*/, '')}
                 </li>
                 <li className="flex items-start text-sm text-gray-600">
-                  <span className="w-5 h-5 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-600 mr-2 shrink-0">3</span>
-                  <span className="font-medium text-blue-600">{t('hero.usage.step3').replace(/^\d+\.\s*/, '')}</span>
+                  <span className="w-5 h-5 flex items-center justify-center bg-rose-100 rounded-full text-xs font-bold text-rose-500 mr-2 shrink-0">3</span>
+                  <span className="font-medium text-rose-500">{t('hero.usage.step3').replace(/^\d+\.\s*/, '')}</span>
                 </li>
               </ul>
             </div>

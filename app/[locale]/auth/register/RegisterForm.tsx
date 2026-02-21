@@ -95,7 +95,7 @@ export default function RegisterForm() {
                                     name="name"
                                     type="text"
                                     required
-                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -111,7 +111,7 @@ export default function RegisterForm() {
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -127,7 +127,7 @@ export default function RegisterForm() {
                                     type="password"
                                     autoComplete="new-password"
                                     required
-                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -143,7 +143,7 @@ export default function RegisterForm() {
                                     type="password"
                                     autoComplete="new-password"
                                     required
-                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -152,7 +152,7 @@ export default function RegisterForm() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="flex w-full justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                                className="flex w-full justify-center rounded-md bg-rose-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 disabled:opacity-50"
                             >
                                 {isLoading ? (
                                     <>
@@ -168,7 +168,7 @@ export default function RegisterForm() {
 
                     <div className="mt-6 text-center text-sm">
                         <span className="text-gray-500">{t("hasAccount")} </span>
-                        <Link href="/auth/login" className="font-medium text-blue-600 hover:text-blue-500">
+                        <Link href="/auth/login" className="font-medium text-rose-600 hover:text-rose-500">
                             {t("loginLink")}
                         </Link>
                     </div>

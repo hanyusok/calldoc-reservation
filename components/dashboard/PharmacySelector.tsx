@@ -132,7 +132,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
     return (
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mt-6">
             <h3 className="text-lg font-bold mb-4 flex items-center">
-                <MapPin className="w-5 h-5 mr-2 text-blue-600" />
+                <MapPin className="w-5 h-5 mr-2 text-rose-600" />
                 {t('title')}
             </h3>
 
@@ -141,25 +141,25 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                 <button
                     onClick={() => { setMode('select'); setSelectedPharmacy(null); setSearchTerm(''); }}
                     className={`pb-3 px-4 text-sm font-semibold transition-colors relative ${mode === 'select'
-                        ? 'text-blue-600'
+                        ? 'text-rose-600'
                         : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     {t('searchMode')}
                     {mode === 'select' && (
-                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600" />
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-rose-600" />
                     )}
                 </button>
                 <button
                     onClick={() => setMode('create')}
                     className={`pb-3 px-4 text-sm font-semibold transition-colors relative ${mode === 'create'
-                        ? 'text-blue-600'
+                        ? 'text-rose-600'
                         : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     {t('createMode')}
                     {mode === 'create' && (
-                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600" />
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-rose-600" />
                     )}
                 </button>
             </div>
@@ -188,7 +188,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                                     setTimeout(() => setIsFocused(false), 200);
                                 }}
                                 placeholder={t('searchPlaceholder')}
-                                className="pl-11 w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+                                className="pl-11 w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none transition-shadow"
                             />
                         </div>
                         {/* Show list if search term exists OR input is focused */}
@@ -217,7 +217,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                                         <button
                                             type="button"
                                             onClick={() => setMode('create')}
-                                            className="text-blue-600 font-bold ml-1 hover:underline"
+                                            className="text-rose-600 font-bold ml-1 hover:underline"
                                         >
                                             {t('createNewLink')}
                                         </button>
@@ -226,16 +226,16 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                             </div>
                         )}
                         {selectedPharmacy && (
-                            <div className="mt-2 p-4 bg-blue-50 rounded-xl border border-blue-100 flex justify-between items-center animate-fadeIn">
+                            <div className="mt-2 p-4 bg-rose-50 rounded-xl border border-rose-100 flex justify-between items-center animate-fadeIn">
                                 <div>
-                                    <div className="font-bold text-blue-900">{selectedPharmacy.name}</div>
-                                    <div className="text-blue-700 text-sm mt-1">{selectedPharmacy.address}</div>
-                                    {selectedPharmacy.fax && <div className="text-blue-600 text-xs mt-1">FAX: {selectedPharmacy.fax}</div>}
+                                    <div className="font-bold text-rose-900">{selectedPharmacy.name}</div>
+                                    <div className="text-rose-700 text-sm mt-1">{selectedPharmacy.address}</div>
+                                    {selectedPharmacy.fax && <div className="text-rose-600 text-xs mt-1">FAX: {selectedPharmacy.fax}</div>}
                                 </div>
                                 <button
                                     type="button"
                                     onClick={() => { setSelectedPharmacy(null); setSearchTerm(''); }}
-                                    className="text-blue-500 hover:text-blue-700 text-sm font-medium"
+                                    className="text-rose-500 hover:text-rose-700 text-sm font-medium"
                                 >
                                     {t('change') || "Change"}
                                 </button>
@@ -254,7 +254,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder={t('namePlaceholder')}
-                                className="w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-rose-500 outline-none"
                             />
                         </div>
 
@@ -266,7 +266,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                                     value={fax}
                                     onChange={(e) => setFax(e.target.value)}
                                     placeholder={t('faxPlaceholder')}
-                                    className="w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-rose-500 outline-none"
                                 />
                             </div>
                             <div>
@@ -276,7 +276,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
                                     placeholder={t('phonePlaceholder')}
-                                    className="w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-rose-500 outline-none"
                                 />
                             </div>
                         </div>
@@ -288,7 +288,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                                 placeholder={t('addressPlaceholder')}
-                                className="w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full border border-gray-300 rounded-xl p-3 text-base focus:ring-2 focus:ring-rose-500 outline-none"
                             />
                         </div>
                     </div>
@@ -297,7 +297,7 @@ export default function PharmacySelector({ appointmentId, onSuccess }: PharmacyS
                 <button
                     type="submit"
                     disabled={loading || (mode === 'select' && !selectedPharmacy)}
-                    className="w-full bg-blue-500 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+                    className="w-full bg-rose-500 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-rose-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-4"
                 >
                     {loading ? t('processing') : (mode === 'create' ? t('createAndSubmit') : t('submitForTransfer'))}
                 </button>

@@ -55,13 +55,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
                     <Link href="/dashboard/profile" className="block">
-                        <div className="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center justify-between active:bg-gray-50 transition">
+                        <div className="bg-white overflow-hidden shadow-md rounded-2xl p-5 flex items-center justify-between active:bg-gray-50 transition">
                             <div className="flex items-center">
-                                <div className="flex-shrink-0 bg-blue-100 rounded-md p-3">
-                                    <Users className="h-6 w-6 text-blue-600" />
+                                <div className="flex-shrink-0 bg-rose-100 rounded-xl p-3">
+                                    <Users className="h-6 w-6 text-rose-600" />
                                 </div>
                                 <div className="ml-4">
-                                    <h3 className="text-lg font-medium text-gray-900">{t('quickActions.family.title')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900">{t('quickActions.family.title')}</h3>
                                     <p className="text-sm text-gray-500">{t('quickActions.family.desc')}</p>
                                 </div>
                             </div>
@@ -70,13 +70,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                     </Link>
 
                     <Link href="/book" className="block">
-                        <div className="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center justify-between active:bg-gray-50 transition border-l-4 border-teal-500">
+                        <div className="bg-white overflow-hidden shadow-md rounded-2xl p-5 flex items-center justify-between active:bg-gray-50 transition border-l-4 border-rose-500">
                             <div className="flex items-center">
-                                <div className="flex-shrink-0 bg-teal-100 rounded-md p-3">
-                                    <Calendar className="h-6 w-6 text-teal-600" />
+                                <div className="flex-shrink-0 bg-rose-50 rounded-xl p-3">
+                                    <Calendar className="h-6 w-6 text-rose-500" />
                                 </div>
                                 <div className="ml-4">
-                                    <h3 className="text-lg font-medium text-gray-900">{t('quickActions.book.title')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900">{t('quickActions.book.title')}</h3>
                                     <p className="text-sm text-gray-500">{t('quickActions.book.desc')}</p>
                                 </div>
                             </div>
@@ -102,11 +102,11 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                             <PastAppointments appointments={past} />
                         </>
                     ) : (
-                        <div className="bg-white shadow rounded-lg p-6 text-center text-gray-500">
-                            <Calendar className="h-10 w-10 mx-auto text-gray-300 mb-2" />
-                            <p>{t('appointments.empty')}</p>
-                            <Link href="/book" className="text-teal-600 font-medium text-sm mt-2 inline-block">
-                                {t('appointments.bookNow')} &rarr;
+                        <div className="bg-white shadow-sm rounded-2xl p-8 text-center text-gray-500 border border-dashed border-gray-200">
+                            <Calendar className="h-10 w-10 mx-auto text-gray-300 mb-3" />
+                            <p className="text-base">{t('appointments.empty')}</p>
+                            <Link href="/book" className="text-rose-600 font-bold text-sm mt-4 inline-flex items-center hover:underline">
+                                {t('appointments.bookNow')} <ChevronRight className="w-4 h-4 ml-1" />
                             </Link>
                         </div>
                     )}

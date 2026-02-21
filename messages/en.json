@@ -653,5 +653,11 @@
         "footer": {
             "title": "Ready to book your visit?"
         }
+    },
+    "Navigation": {
+        "home": "Home",
+        "appointments": "Treatments",
+        "book": "Book",
+        "profile": "Profile"
     }
 }

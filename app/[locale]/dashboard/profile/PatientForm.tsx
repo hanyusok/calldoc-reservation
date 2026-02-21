@@ -140,7 +140,7 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
                     name="name"
                     required
                     defaultValue={editingPatient?.name || ''}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                    className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm p-3 border outline-none"
                 />
             </div>
 
@@ -151,7 +151,7 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
                     name="phoneNumber"
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                    className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm p-3 border outline-none"
                     placeholder="010-1234-5678"
                 />
             </div>
@@ -164,7 +164,7 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
                     required
                     value={residentNumber}
                     onChange={handleResidentNumberChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                    className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm p-3 border outline-none"
                     placeholder={t('form.residentNumberPlaceholder')}
                 />
             </div>
@@ -178,7 +178,7 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
                         required
                         value={dob}
                         onChange={(e) => setDob(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                        className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm p-3 border outline-none"
                     />
                 </div>
                 <div>
@@ -187,7 +187,7 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
                         name="gender"
                         value={gender}
                         onChange={(e) => setGender(e.target.value as 'MALE' | 'FEMALE')}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                        className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm p-3 border outline-none"
                     >
                         <option value="MALE">{t('form.gender.male')}</option>
                         <option value="FEMALE">{t('form.gender.female')}</option>
@@ -200,7 +200,7 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
                 <select
                     name="relationship"
                     defaultValue={editingPatient?.relationship || 'FAMILY'}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                    className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm p-3 border outline-none"
                 >
                     <option value="FAMILY">{t('form.relationship.family')}</option>
                     <option value="SELF">{t('form.relationship.self')}</option>
@@ -211,17 +211,17 @@ export default function PatientForm({ editingPatient }: PatientFormProps) {
                 {editingPatient ? (
                     <Link
                         href="/dashboard/profile"
-                        className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm text-sm font-bold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
                     >
                         {t('form.cancel')}
                     </Link>
                 ) : (
-                    <button type="reset" className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <button type="reset" className="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm text-sm font-bold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
                         {t('form.cancel')}
                     </button>
                 )}
 
-                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 transform active:scale-[0.98] transition-all">
                     {t('form.save')}
                 </button>
             </div>

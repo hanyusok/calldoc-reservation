@@ -15,7 +15,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
     const dateLocale = locale === 'ko' ? ko : enUS;
     const dateFormatStr = locale === 'ko' ? 'yyyy년 M월 d일' : 'MMMM d, yyyy';
 
-    const borderColor = isPast ? 'border-gray-300' : 'border-blue-500';
+    const borderColor = isPast ? 'border-gray-300' : 'border-rose-500';
     const statusColor = appointment.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
     // For rejected/fail
     const finalStatusColor = (appointment.status === 'CANCELLED' || appointment.status === 'REJECTED')
@@ -23,7 +23,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
         : (appointment.status === 'COMPLETED' ? 'bg-gray-100 text-gray-800' : statusColor);
 
     return (
-        <div className={`bg-white shadow rounded-lg p-5 border-l-4 ${borderColor} space-y-4`}>
+        <div className={`bg-white shadow-md rounded-2xl p-5 border-l-4 ${borderColor} space-y-4`}>
             {/* Header: Date/Time and Status */}
             <div className="flex justify-between items-start">
                 <div>
@@ -68,7 +68,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                             href={appointment.meetingLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center px-4 py-2 mt-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                            className="inline-flex items-center px-4 py-2 mt-2 bg-rose-500 text-white text-sm font-medium rounded-lg hover:bg-rose-600 transition-colors shadow-sm"
                         >
                             {t('appointments.joinCall')}
                             <ChevronRight className="ml-1 w-4 h-4" />
@@ -113,7 +113,7 @@ export default function AppointmentCard({ appointment, isPast = false }: { appoi
                                     )}
                                 </div>
                             </div>
-                            <div className={`px-2 py-1 text-xs font-bold rounded ${appointment.prescription.status === 'ISSUED' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+                            <div className={`px-2 py-1 text-xs font-bold rounded ${appointment.prescription.status === 'ISSUED' ? 'bg-green-100 text-green-800' : 'bg-rose-100 text-rose-800'
                                 }`}>
                                 {/* @ts-ignore */}
                                 {t(`prescriptionStatus.${appointment.prescription.status}`)}

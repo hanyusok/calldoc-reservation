@@ -111,7 +111,7 @@ export default function PayButton({ appointmentId, paymentId, amount, customerNa
         <button
             onClick={handlePayClick}
             disabled={loading}
-            className="mt-2 bg-blue-600 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-blue-700 disabled:opacity-50"
+            className="mt-2 bg-rose-500 text-white text-sm px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-rose-600 disabled:opacity-50"
         >
             <CreditCard className="w-4 h-4" />
             {loading ? t('processing') : t('payButton', { amount: amount.toLocaleString() })}

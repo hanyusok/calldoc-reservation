@@ -91,10 +91,10 @@ export default function NotificationManager() {
             {toasts.map((toast) => (
                 <div
                     key={toast.id}
-                    className="bg-white border-l-4 border-blue-600 shadow-lg rounded-r p-4 flex items-start justify-between pointer-events-auto animate-slide-up"
+                    className="bg-white border-l-4 border-rose-600 shadow-lg rounded-r-xl p-4 flex items-start justify-between pointer-events-auto animate-slide-up border border-gray-100"
                 >
                     <div className="flex gap-3">
-                        <div className="mt-1 text-blue-600">
+                        <div className="mt-1 text-rose-600">
                             <Bell size={20} />
                         </div>
                         <div>
@@ -105,7 +105,7 @@ export default function NotificationManager() {
                                 {getTranslatedText(toast.message)}
                             </p>
                             {toast.link && (
-                                <a href={toast.link} className="text-blue-500 text-xs mt-2 block hover:underline">
+                                <a href={toast.link} className="text-rose-500 text-xs mt-2 block hover:underline font-bold">
                                     {getTranslatedText("Notifications.viewDetails")}
                                 </a>
                             )}

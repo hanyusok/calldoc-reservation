@@ -26,8 +26,8 @@ export default async function PaymentFailPage({ searchParams, params }: {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-            <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
-                <XCircle className={`w-16 h-16 mx-auto mb-4 ${isCancel ? 'text-gray-400' : 'text-red-500'}`} />
+            <div className="max-w-md w-full bg-white shadow-xl rounded-2xl p-8 text-center border border-gray-100">
+                <XCircle className={`w-16 h-16 mx-auto mb-4 ${isCancel ? 'text-gray-400' : 'text-rose-500'}`} />
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">
                     {isCancel ? t('canceled.title') : t('fail.title')}
                 </h1>
@@ -39,7 +39,7 @@ export default async function PaymentFailPage({ searchParams, params }: {
                 <Link
                     href={`/${locale}/dashboard`}
                     replace
-                    className="inline-block bg-gray-200 text-gray-800 px-6 py-2 rounded-lg font-medium hover:bg-gray-300 transition mt-6"
+                    className="inline-block bg-gray-100 text-gray-600 px-8 py-3 rounded-xl font-bold hover:bg-gray-200 transition mt-6 active:scale-95 shadow-sm"
                 >
                     {isCancel ? t('canceled.returnToDashboard') : t('fail.returnToDashboard')}
                 </Link>

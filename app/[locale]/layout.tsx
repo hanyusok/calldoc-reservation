@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { AuthProvider } from "../providers";
 import NotificationManager from "@/components/NotificationManager";
+import BottomNavbar from "@/components/BottomNavbar";
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
@@ -54,7 +55,10 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <NotificationManager />
-            {children}
+            <div className="pb-16 sm:pb-0">
+              {children}
+            </div>
+            <BottomNavbar />
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

@@ -16,7 +16,7 @@ export default function PharmacyContentCard({ name, fax, phone, address }: Pharm
     return (
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-lg mt-6">
             <h3 className="text-xl font-bold mb-6 flex items-center text-gray-900">
-                <Building2 className="w-6 h-6 mr-3 text-blue-600" />
+                <Building2 className="w-6 h-6 mr-3 text-rose-600" />
                 {t('title')}
             </h3>
 

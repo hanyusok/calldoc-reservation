@@ -56,13 +56,13 @@ export default function AdminSidebar({ userRole, locale, email }: AdminSidebarPr
             <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-800">
                 {!isCollapsed && (
                     <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-2 animate-fadeIn">
-                        <div className="w-5 h-5 bg-black dark:bg-white rounded-full"></div>
-                        <span>calldoc</span>
+                        <div className="w-5 h-5 bg-rose-500 rounded-full"></div>
+                        <span>calldoc <span className="text-rose-500">admin</span></span>
                     </h1>
                 )}
                 {isCollapsed && (
                     <div className="w-full flex justify-center">
-                        <div className="w-5 h-5 bg-black dark:bg-white rounded-full"></div>
+                        <div className="w-5 h-5 bg-rose-500 rounded-full"></div>
                     </div>
                 )}
             </div>
@@ -85,13 +85,13 @@ export default function AdminSidebar({ userRole, locale, email }: AdminSidebarPr
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all group whitespace-nowrap ${isActive
-                                ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800"
+                            className={`flex items-center px-3 py-2 rounded-xl text-sm font-bold transition-all group whitespace-nowrap ${isActive
+                                ? "bg-rose-50 text-rose-600 shadow-sm"
+                                : "text-gray-600 hover:text-rose-500 hover:bg-rose-50/50"
                                 } ${isCollapsed ? "justify-center" : "space-x-3"}`}
                             title={isCollapsed ? item.label : undefined}
                         >
-                            <item.icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-gray-900 dark:text-white" : "text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"}`} />
+                            <item.icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-rose-600" : "text-gray-400 group-hover:text-rose-500"}`} />
                             {!isCollapsed && <span>{item.label}</span>}
                         </Link>
                     );
@@ -102,26 +102,26 @@ export default function AdminSidebar({ userRole, locale, email }: AdminSidebarPr
 
                     <Link
                         href={`/${locale}/admin/pharmacies`}
-                        className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all group whitespace-nowrap ${pathname.includes('/pharmacies')
-                            ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800"
+                        className={`flex items-center px-3 py-2 rounded-xl text-sm font-bold transition-all group whitespace-nowrap ${pathname.includes('/pharmacies')
+                            ? "bg-rose-50 text-rose-600 shadow-sm"
+                            : "text-gray-600 hover:text-rose-500 hover:bg-rose-50/50"
                             } ${isCollapsed ? "justify-center" : "space-x-3"}`}
                         title={isCollapsed ? t('pharmacies') : undefined}
                     >
-                        <Building2 className="w-4 h-4 flex-shrink-0 text-gray-500 group-hover:text-gray-900" />
+                        <Building2 className="w-4 h-4 flex-shrink-0 text-gray-400 group-hover:text-rose-500" />
                         {!isCollapsed && <span>{t('pharmacies')}</span>}
                     </Link>
 
                     {userRole === Role.ADMIN && (
                         <Link
                             href={`/${locale}/admin/schedule`}
-                            className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all group whitespace-nowrap ${pathname.includes('/schedule')
-                                ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800"
+                            className={`flex items-center px-3 py-2 rounded-xl text-sm font-bold transition-all group whitespace-nowrap ${pathname.includes('/schedule')
+                                ? "bg-rose-50 text-rose-600 shadow-sm"
+                                : "text-gray-600 hover:text-rose-500 hover:bg-rose-50/50"
                                 } ${isCollapsed ? "justify-center" : "space-x-3"}`}
                             title={isCollapsed ? t('schedule') : undefined}
                         >
-                            <Clock className="w-4 h-4 flex-shrink-0 text-gray-500 group-hover:text-gray-900" />
+                            <Clock className="w-4 h-4 flex-shrink-0 text-gray-400 group-hover:text-rose-500" />
                             {!isCollapsed && <span>{t('schedule')}</span>}
                         </Link>
                     )}
@@ -130,7 +130,7 @@ export default function AdminSidebar({ userRole, locale, email }: AdminSidebarPr
 
             <div className="p-4 border-t border-gray-200 dark:border-gray-800 overflow-hidden">
                 <div className={`flex items-center mb-2 ${isCollapsed ? "justify-center" : "space-x-3 px-2"}`}>
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-700 to-gray-900 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                         {email?.[0]?.toUpperCase() || 'U'}
                     </div>
                     {!isCollapsed && (

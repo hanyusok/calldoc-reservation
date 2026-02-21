@@ -10,6 +10,19 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-primary: var(--color-rose-500);
+  --color-primary-hover: var(--color-rose-600);
+  --color-primary-light: var(--color-rose-100);
+}
+
+.mobile-nav-height {
+  height: 64px;
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 @media (prefers-color-scheme: dark) {

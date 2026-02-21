@@ -37,10 +37,10 @@ export default async function PaymentSuccessPage({ searchParams, params }: {
     if (!result.success) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-                <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+                <div className="max-w-md w-full bg-white shadow-xl rounded-2xl p-8 text-center border border-gray-100">
                     <h1 className="text-2xl font-bold text-red-600 mb-4">{t('fail.title')}</h1>
                     <p className="text-gray-600 mb-6">{result.error}</p>
-                    <a href={`/${locale}/dashboard`} className="text-blue-600 hover:underline">{t('fail.returnToDashboard')}</a>
+                    <a href={`/${locale}/dashboard`} className="text-rose-600 font-bold hover:underline">{t('fail.returnToDashboard')}</a>
                 </div>
             </div>
         );
@@ -49,19 +49,19 @@ export default async function PaymentSuccessPage({ searchParams, params }: {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
             <PopupCloseHandler redirectUrl={`/${locale}/dashboard`} />
-            <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
-                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <div className="max-w-md w-full bg-white shadow-xl rounded-2xl p-8 text-center border border-gray-100">
+                <CheckCircle className="w-16 h-16 text-rose-500 mx-auto mb-4" />
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('success.title')}</h1>
                 <p className="text-gray-600 mb-6">
                     {t('success.description', { amount: amount.toLocaleString() })}
                 </p>
-                <p className="text-sm text-gray-500 mb-4 animate-pulse">
+                <p className="text-sm text-gray-500 mb-4 italic">
                     {(typeof window !== 'undefined' && window.opener) ? "창이 곧 닫힙니다..." : "곧 대시보드로 이동합니다..."}
                 </p>
                 <Link
                     href={`/${locale}/dashboard`}
                     replace
-                    className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+                    className="inline-block bg-rose-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-rose-600 transition shadow-lg active:scale-95"
                 >
                     {t('success.returnToDashboard')}
                 </Link>

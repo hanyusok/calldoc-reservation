@@ -40,7 +40,7 @@ export default function AppointmentStepper({ status, paymentStatus, paymentAmoun
                 {/* Connecting Line */}
                 <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 -z-10" />
                 <div
-                    className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-blue-600 -z-10 transition-all duration-500"
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-rose-500 -z-10 transition-all duration-500"
                     style={{ width: `${Math.min((currentStep / (steps.length - 1)) * 100, 100)}%` }}
                 />
 
@@ -53,8 +53,8 @@ export default function AppointmentStepper({ status, paymentStatus, paymentAmoun
                         <div key={step.key} className="flex flex-col items-center">
                             <div
                                 className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 z-10
-                                    ${isCompleted ? 'bg-blue-600 border-blue-600 text-white' : ''}
-                                    ${isCurrent ? 'bg-white border-blue-600 text-blue-600 ring-2 ring-blue-100' : ''}
+                                    ${isCompleted ? 'bg-rose-500 border-rose-500 text-white' : ''}
+                                    ${isCurrent ? 'bg-white border-rose-500 text-rose-500 ring-2 ring-rose-100' : ''}
                                     ${!isCompleted && !isCurrent ? 'bg-white border-gray-300 text-gray-400' : ''}
                                 `}
                             >
@@ -62,7 +62,7 @@ export default function AppointmentStepper({ status, paymentStatus, paymentAmoun
                             </div>
                             <span
                                 className={`mt-2 text-xs font-medium transition-colors duration-300
-                                    ${isCurrent ? 'text-blue-600 font-bold' : 'text-gray-500'}
+                                    ${isCurrent ? 'text-rose-600 font-bold' : 'text-gray-500'}
                                 `}
                             >
                                 {step.label}

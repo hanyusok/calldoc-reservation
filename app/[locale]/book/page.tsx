@@ -89,11 +89,11 @@ export default function BookingPage() {
                         key={p.id}
                         onClick={() => { setSelectedPatientId(p.id); setStep('DATE'); }}
                         className={`w-full text-left p-4 rounded-xl border-2 transition-all flex items-center
-                        ${selectedPatientId === p.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-300'}
+                        ${selectedPatientId === p.id ? 'border-rose-500 bg-rose-50' : 'border-gray-200 hover:border-rose-300'}
                     `}
                     >
-                        <div className="bg-blue-100 p-2 rounded-full mr-3">
-                            <Users className="h-5 w-5 text-blue-600" />
+                        <div className="bg-rose-100 p-2 rounded-full mr-3">
+                            <Users className="h-5 w-5 text-rose-600" />
                         </div>
                         <div>
                             <div className="font-medium text-lg">{p.name}</div>
@@ -105,10 +105,10 @@ export default function BookingPage() {
                     <div className="text-center py-8 text-gray-500">
                         {t('steps.patient.noProfile')}
                         <br />
-                        <Link href="/dashboard/profile" className="text-blue-600 underline text-sm mt-2 inline-block">{t('steps.patient.manageProfiles')}</Link>
+                        <Link href="/dashboard/profile" className="text-rose-600 underline text-sm mt-2 inline-block">{t('steps.patient.manageProfiles')}</Link>
                     </div>
                 )}
-                <Link href="/dashboard/profile" className="text-center text-blue-600 text-sm mt-2 block">{t('steps.patient.addFamily')}</Link>
+                <Link href="/dashboard/profile" className="text-center text-rose-600 text-sm mt-2 block">{t('steps.patient.addFamily')}</Link>
             </div>
         </div>
     );
@@ -129,7 +129,7 @@ export default function BookingPage() {
                                 key={days}
                                 onClick={() => { setSelectedDate(d); setSelectedTime(''); }}
                                 className={`flex-shrink-0 w-16 h-20 flex flex-col items-center justify-center rounded-xl border transition-colors
-                                ${isSelected ? 'bg-blue-600 text-white border-blue-600' : 'bg-white border-gray-200 text-gray-600'}
+                                ${isSelected ? 'bg-rose-600 text-white border-rose-600 shadow-md' : 'bg-white border-gray-200 text-gray-600'}
                             `}
                             >
                                 <span className="text-xs uppercase font-bold">{format(d, dayFormatStr, { locale: dateLocale })}</span>
@@ -152,7 +152,7 @@ export default function BookingPage() {
                                 key={t}
                                 onClick={() => setSelectedTime(t)}
                                 className={`py-2 px-3 rounded-lg text-sm font-medium border transition-all
-                                ${selectedTime === t ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-300' : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'}
+                                ${selectedTime === t ? 'bg-rose-600 text-white border-rose-600 ring-2 ring-rose-200 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:border-rose-300'}
                             `}
                             >
                                 {t}
@@ -167,7 +167,7 @@ export default function BookingPage() {
                 <button
                     disabled={!selectedTime}
                     onClick={() => setStep('CONFIRM')}
-                    className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                    className="w-full bg-rose-500 text-white py-4 rounded-2xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-lg active:scale-[0.98] transition-all"
                 >
                     {t('steps.date.continue')}
                 </button>
@@ -204,14 +204,14 @@ export default function BookingPage() {
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">{t('steps.confirm.symptomsLabel')}</label>
                     <textarea
-                        className="w-full border border-gray-300 rounded-lg p-3 h-24 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full border border-gray-300 rounded-xl p-3 h-24 focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none"
                         placeholder={t('steps.confirm.symptomsPlaceholder')}
                         value={symptoms}
                         onChange={(e) => setSymptoms(e.target.value)}
                     ></textarea>
                 </div>
 
-                <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-800">
+                <div className="bg-rose-50 border border-rose-100 rounded-xl p-4 text-sm text-rose-900">
                     <strong className="block mb-1">{t('steps.confirm.processInfoTitle')}</strong>
                     <ul className="list-disc pl-4 space-y-1 text-xs">
                         <li>{t('steps.confirm.processInfo1')}</li>
@@ -224,7 +224,7 @@ export default function BookingPage() {
                 <button
                     onClick={handleCreateAppointment}
                     disabled={loading}
-                    className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 shadow-lg"
+                    className="w-full bg-rose-500 text-white py-4 rounded-2xl font-bold text-lg disabled:opacity-50 shadow-lg active:scale-[0.98] transition-all"
                 >
                     {loading ? t('steps.confirm.processing') : t('steps.confirm.requestButton')}
                 </button>
@@ -242,8 +242,8 @@ export default function BookingPage() {
                 {t('steps.success.message')}
             </p>
             <div className="pt-8 space-y-3">
-                <button onClick={() => router.push('/dashboard')} className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium">{t('steps.success.dashboardBtn')}</button>
-                <button onClick={() => { setStep('PATIENT'); setSuccessInfo(null); }} className="w-full bg-white text-blue-600 py-3 rounded-lg font-medium">{t('steps.success.bookAnotherBtn')}</button>
+                <button onClick={() => router.push('/dashboard')} className="w-full bg-rose-500 text-white py-3 rounded-xl font-bold active:scale-[0.98] transition-all">{t('steps.success.dashboardBtn')}</button>
+                <button onClick={() => { setStep('PATIENT'); setSuccessInfo(null); }} className="w-full bg-white text-rose-500 border border-rose-100 py-3 rounded-xl font-bold active:bg-rose-50 transition-all">{t('steps.success.bookAnotherBtn')}</button>
             </div>
         </div>
     );

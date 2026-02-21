@@ -54,13 +54,13 @@ export default async function ProfilePage({
                     <h2 className="text-lg font-medium text-gray-900 mb-3">{t('familyMembers')}</h2>
                     <div className="space-y-3">
                         {patients.map((patient) => (
-                            <div key={patient.id} className="bg-white shadow rounded-lg p-4 flex justify-between items-center">
+                            <div key={patient.id} className="bg-white shadow-sm rounded-2xl p-4 flex justify-between items-center border border-gray-100">
                                 <div className="flex items-center">
-                                    <div className="bg-blue-100 p-2 rounded-full mr-3">
-                                        <UserIcon className="h-5 w-5 text-blue-600" />
+                                    <div className="bg-rose-100 p-2 rounded-full mr-3">
+                                        <UserIcon className="h-5 w-5 text-rose-600" />
                                     </div>
                                     <div>
-                                        <div className="font-medium text-gray-900">{patient.name} {patient.relationship === 'SELF' && <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full ml-1">{t('me')}</span>}</div>
+                                        <div className="font-medium text-gray-900">{patient.name} {patient.relationship === 'SELF' && <span className="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full ml-1">{t('me')}</span>}</div>
                                         <div className="text-sm text-gray-500">{format(new Date(patient.dateOfBirth), dateFormatStr, { locale: dateLocale })} • {patient.gender === 'MALE' ? t('form.gender.male') : t('form.gender.female')}</div>
                                     </div>
                                 </div>
@@ -68,7 +68,7 @@ export default async function ProfilePage({
                                     {/* Edit Button */}
                                     <Link
                                         href={`/dashboard/profile?edit=${patient.id}`}
-                                        className="text-blue-500 hover:text-blue-700 p-2"
+                                        className="text-rose-500 hover:text-rose-700 p-2"
                                         aria-label={t('edit')}
                                     >
                                         <Pencil className="h-5 w-5" />
@@ -95,7 +95,7 @@ export default async function ProfilePage({
                 </section>
 
                 {/* Add/Edit Patient Form */}
-                <section className="bg-white shadow rounded-lg p-6">
+                <section className="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
                     <h2 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
                         {editingPatient ? (
                             <><Pencil className="h-5 w-5 mr-2" /> {t('edit')}</>
